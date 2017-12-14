@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 //todo add pair name in the class
 public class BidAsk {
 
-    String exchangeName;
-    BigDecimal bid;
-    BigDecimal ask;
+    private String exchangeName;
+    private BigDecimal bid;
+    private BigDecimal ask;
 
     public String getExchangeName() {
         return exchangeName;

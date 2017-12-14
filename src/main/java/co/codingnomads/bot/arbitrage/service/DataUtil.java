@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 public class DataUtil {
 
-    public BidAsk lowBidFinder(ArrayList<BidAsk> list) {
+    public BidAsk lowAskFinder(ArrayList<BidAsk> list) {
         int lowIndex = 0;
         if (list.size() > 1) {
             for (int i = 1; i < list.size(); i++) {
-                if (list.get(lowIndex).getBid().compareTo(list.get(i).getBid()) > 0) {
+                if (list.get(lowIndex).getAsk().compareTo(list.get(i).getAsk()) > 0) {
                     lowIndex = i;
                 }
             }
@@ -22,11 +22,11 @@ public class DataUtil {
         return list.get(lowIndex);
     }
 
-    public BidAsk highAskFinder(ArrayList<BidAsk> list) {
+    public BidAsk highBidFinder(ArrayList<BidAsk> list) {
         int highIndex = 0;
         if (list.size() > 1) {
             for (int i = 1; i < list.size(); i++) {
-                if (list.get(highIndex).getAsk().compareTo(list.get(i).getAsk()) < 0) {
+                if (list.get(highIndex).getBid().compareTo(list.get(i).getBid()) < 0) {
                     highIndex = i;
                 }
             }

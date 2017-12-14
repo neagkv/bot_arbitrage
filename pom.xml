@@ -28,6 +28,16 @@
             <artifactId>xchange-bitstamp</artifactId>
             <version>4.3.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.knowm.xchange</groupId>
+            <artifactId>xchange-poloniex</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.knowm.xchange</groupId>
+            <artifactId>xchange-bitfinex</artifactId>
+            <version>4.3.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
