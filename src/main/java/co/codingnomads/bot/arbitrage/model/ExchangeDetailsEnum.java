@@ -18,7 +18,6 @@ public enum ExchangeDetailsEnum {
     POLONIEXEXCHANGE("PoloniexExchange", PoloniexExchange.class),
     BITFINEXEXCHANGE("BitfinexExchange", BitfinexExchange.class);
 
-
     private String exchangeName;
     private Class exchangeClass;
 
