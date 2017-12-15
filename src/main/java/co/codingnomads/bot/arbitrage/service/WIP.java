@@ -23,13 +23,14 @@ public class WIP {
 //    @Autowired
 //    DataUtil dataUtil;
 
-    // todo Email action
-    // todo Buy sell action
-    // todo make this method as a thread running every X minutes
-    // todo fix the issue with loger
+    // todo Email action (Kevin later)
+    // todo trade action (Thomas)
+    // todo make this method running every X minutes (Kevin)
+    // todo fix the issue with loger (ryan)
+    // todo fix the issue with autowired (ryan)
 
     // Margin at which we take the risk of running the arbitrage it covers
-    // 1) Fee (which I can't seem to be able to pull from API, somebody?)
+    // 1) Fee (which I can't seem to be able to pull from API, somebody?) (check Kevin and hack the code)
     // 2) Delay leading to movement in bid/ask spread
     /**
      * A trading arbitrage bot
@@ -47,6 +48,7 @@ public class WIP {
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
         // wondering if a hashmap would be more suitable
+        // get all services for all selected exchanges
         ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges);
 
         // todo get a method checking if enough fund (using currencypair.counter and .base) and desactivating exchange if not
@@ -79,7 +81,7 @@ public class WIP {
         if (arbitrageActionSelection.isPrintActionFlag()) {
             arbitrageAction.print(lowAsk, highBid, difference, arbitrageMargin);
         }
-        if (arbitrageActionSelection.isEmailAction()) {
+        if (arbitrageActionSelection.isEmailActionFlag()) {
             arbitrageAction.email();
         }
         if (arbitrageActionSelection.isTradeActionFlag()) {

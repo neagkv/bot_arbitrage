@@ -38,7 +38,7 @@ public class ExchangeDataGetter {
         Ticker ticker;
         try {
             ticker = exchangeServices.getMarketDataService().getTicker(currencyPair);
-        } catch (Exception e)  { //need to refine that exception handling
+        } catch (Exception e)  { //todo need to refine that exception handling
             return null;
         }
         return new BidAsk(exchangeServices.getExchangeName(), ticker.getBid(), ticker.getAsk());

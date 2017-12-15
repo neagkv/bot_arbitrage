@@ -8,7 +8,7 @@ public class ArbitrageActionSelection {
 
     private boolean printActionFlag;
     private boolean tradeActionFlag;
-    private boolean emailAction;
+    private boolean emailActionFlag;
 
     public boolean isPrintActionFlag() {
         return printActionFlag;
@@ -26,17 +26,17 @@ public class ArbitrageActionSelection {
         this.tradeActionFlag = tradeActionFlag;
     }
 
-    public boolean isEmailAction() {
-        return emailAction;
+    public boolean isEmailActionFlag() {
+        return emailActionFlag;
     }
 
-    public void setEmailAction(boolean emailAction) {
-        this.emailAction = emailAction;
+    public void setEmailActionFlag(boolean emailActionFlag) {
+        this.emailActionFlag = emailActionFlag;
     }
 
-    public ArbitrageActionSelection(boolean printActionFlag, boolean tradeActionFlag, boolean emailAction) {
+    public ArbitrageActionSelection(boolean printActionFlag, boolean tradeActionFlag, boolean emailActionFlag) {
         this.printActionFlag = printActionFlag;
         this.tradeActionFlag = tradeActionFlag;
-        this.emailAction = emailAction;
+        this.emailActionFlag = emailActionFlag;
     }
 }

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @Service
 public class ArbitrageAction {
 
+    //todo format the return in %
     public void print(BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin){
          if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
             System.out.println("ARBITRAGE DETECTED!!!"
