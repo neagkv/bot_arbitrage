@@ -1,13 +1,15 @@
 package co.codingnomads.bot.arbitrage.service;
 
 import co.codingnomads.bot.arbitrage.model.BidAsk;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/12/17
  */
-
+@Service
 public class DataUtil {
 
     public BidAsk lowAskFinder(ArrayList<BidAsk> list) {

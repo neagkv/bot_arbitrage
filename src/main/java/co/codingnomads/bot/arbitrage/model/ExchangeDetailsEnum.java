@@ -2,6 +2,7 @@ package co.codingnomads.bot.arbitrage.model;
 
 import org.knowm.xchange.bitfinex.v1.BitfinexExchange;
 import org.knowm.xchange.bitstamp.BitstampExchange;
+import org.knowm.xchange.bittrex.BittrexExchange;
 import org.knowm.xchange.gdax.GDAXExchange;
 import org.knowm.xchange.kraken.KrakenExchange;
 import org.knowm.xchange.poloniex.PoloniexExchange;
@@ -16,6 +17,7 @@ public enum ExchangeDetailsEnum {
     KRAKENEXCHANGE("KrakenExchange", KrakenExchange.class),
     BITSTAMPEXCHANGE("BitstampExchange", BitstampExchange.class),
     POLONIEXEXCHANGE("PoloniexExchange", PoloniexExchange.class),
+    BITTREXEXCHANGE("BitrexExchange", BittrexExchange.class),
     BITFINEXEXCHANGE("BitfinexExchange", BitfinexExchange.class);
 
     private String exchangeName;

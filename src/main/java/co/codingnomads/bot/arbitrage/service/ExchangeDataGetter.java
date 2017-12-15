@@ -5,13 +5,14 @@ import co.codingnomads.bot.arbitrage.model.BidAsk;
 import co.codingnomads.bot.arbitrage.model.ExchangeServices;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/13/17
  */
-
+@Service
 public class ExchangeDataGetter {
 
     public ArrayList<BidAsk> getAllBidAsk(ArrayList<ActivatedExchange> activatedExchanges, CurrencyPair currencyPair) {
@@ -27,13 +28,11 @@ public class ExchangeDataGetter {
                 } else {
                     System.out.println("no pair available for " + exchangeServices.getExchangeName());
                 }
-
             }
         }
         return list;
     }
 
-    // todo make this service into threads so we call cut the API delay
     // todo and an anti hang condition in there (if longer than X wait, return null)
     private static BidAsk getBidAsk(ExchangeServices exchangeServices, CurrencyPair currencyPair) {
         Ticker ticker;

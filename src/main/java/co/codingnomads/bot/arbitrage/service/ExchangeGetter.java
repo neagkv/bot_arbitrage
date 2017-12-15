@@ -44,5 +44,4 @@ public class ExchangeGetter {
         }
         catch (ExchangeException e) { return null; }
     }
-
 }
