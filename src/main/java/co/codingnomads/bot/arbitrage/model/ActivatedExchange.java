@@ -1,20 +1,23 @@
 package co.codingnomads.bot.arbitrage.model;
 
+import org.knowm.xchange.Exchange;
+
 /**
  * Created by Thomas Leruth on 12/14/17
  */
 
 public class ActivatedExchange {
 
-    private ExchangeServices exchangeServices;
+    private Exchange exchange;
     private boolean activated = true;
+    private boolean tradingMode = false;
 
-    public ExchangeServices getExchangeServices() {
-        return exchangeServices;
+    public Exchange getExchange() {
+        return exchange;
     }
 
-    public void setExchangeServices(ExchangeServices exchangeServices) {
-        this.exchangeServices = exchangeServices;
+    public void setExchange(Exchange exchange) {
+        this.exchange = exchange;
     }
 
     public boolean isActivated() {
@@ -25,7 +28,16 @@ public class ActivatedExchange {
         this.activated = activated;
     }
 
-    public ActivatedExchange(ExchangeServices exchangeServices) {
-        this.exchangeServices = exchangeServices;
+    public boolean isTradingMode() {
+        return tradingMode;
+    }
+
+    public void setTradingMode(boolean tradingMode) {
+        this.tradingMode = tradingMode;
+    }
+
+    public ActivatedExchange(Exchange exchange, boolean tradingMode) {
+        this.exchange = exchange;
+        this.tradingMode = tradingMode;
     }
 }

@@ -1,13 +1,10 @@
 package co.codingnomads.bot.arbitrage.service;
 
-import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.BidAsk;
-import co.codingnomads.bot.arbitrage.model.ExchangeDetailsEnum;
+import co.codingnomads.bot.arbitrage.model.*;
+import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,8 +27,9 @@ public class WIP {
     // todo Email action (Kevin later)
     // todo trade action (Thomas)
     // todo make this method running every X minutes (Kevin)
-    // todo fix the issue with loger (ryan)
     // todo fix the issue with autowired (ryan)
+    // todo look more into the fee
+    // todo comment
 
     // Margin at which we take the risk of running the arbitrage it covers
     // 1) Fee (which I can't seem to be able to pull from API, somebody?) (check Kevin and hack the code)
@@ -45,18 +43,16 @@ public class WIP {
      * @throws IOException
      */
     public void test(CurrencyPair currencyPair,
-                     ArrayList<ExchangeDetailsEnum> selectedExchanges,
+                     ArrayList<ExchangeSpecs> selectedExchanges,
                      double arbitrageMargin,
                      ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException {
 
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
-        // wondering if a hashmap would be more suitable
         // get all services for all selected exchanges
         ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges);
 
         // todo get a method checking if enough fund (using currencypair.counter and .base) and desactivating exchange if not
-        // todo only checking if exchange is not desactivated yet
         // todo send a message saying exchange is desactivated
 
         // todo autowire it

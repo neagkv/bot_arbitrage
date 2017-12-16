@@ -1,11 +1,9 @@
 package co.codingnomads.bot.arbitrage.service;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.ExchangeDetailsEnum;
-import co.codingnomads.bot.arbitrage.model.ExchangeServices;
+import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
-import org.knowm.xchange.exceptions.ExchangeException;
 
 import java.util.ArrayList;
 
@@ -15,34 +13,20 @@ import java.util.ArrayList;
  */
 public class ExchangeGetter {
 
-    public ArrayList<ActivatedExchange> getAllSelectedExchangeServices(ArrayList<ExchangeDetailsEnum> selectedExchanges) {
+    public ArrayList<ActivatedExchange> getAllSelectedExchangeServices(ArrayList<ExchangeSpecs> selectedExchanges) {
         ArrayList<ActivatedExchange> list = new ArrayList<>();
 
-        for (ExchangeDetailsEnum selected : selectedExchanges) {
+        for (ExchangeSpecs selected : selectedExchanges) {
             //todo make next line threadable
-            ExchangeServices exchangeServices = getServices(selected.getExchangeClass());
-            if (exchangeServices != null) {
-                list.add(new ActivatedExchange(exchangeServices));
+            Exchange exchange = ExchangeFactory.INSTANCE.createExchange(selected.GetSetupedExchange());
+
+            if (exchange.getAccountService() != null) {
+                list.add(new ActivatedExchange(exchange, selected.getTradingMode()));
             }
             else {
-                System.out.println(selected.getExchangeName() + " was not successfully added");
+                System.out.println(selected.GetSetupedExchange().getExchangeName() + " was not successfully added");
             }
         }
         return list;
-    }
-
-    private static ExchangeServices getServices(Class exchangeClass) {
-
-        try {
-            Exchange exchange = ExchangeFactory.INSTANCE.createExchange(exchangeClass.getName());
-
-            ExchangeServices exchangeServices = new ExchangeServices();
-            exchangeServices.setExchangeName(exchangeClass.getSimpleName());
-            exchangeServices.setMarketDataService(exchange.getMarketDataService());
-            exchangeServices.setTradeService(exchange.getTradeService());
-            exchangeServices.setAccountService(exchange.getAccountService());
-            return exchangeServices;
-        }
-        catch (ExchangeException e) { return null; }
     }
 }

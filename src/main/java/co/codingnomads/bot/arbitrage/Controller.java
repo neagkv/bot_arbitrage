@@ -1,7 +1,9 @@
 package co.codingnomads.bot.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.ExchangeDetailsEnum;
+import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
+import co.codingnomads.bot.arbitrage.model.exchange.GDAXSpecs;
+import co.codingnomads.bot.arbitrage.model.exchange.KrakenSpecs;
 import co.codingnomads.bot.arbitrage.service.WIP;
 import org.knowm.xchange.currency.CurrencyPair;
 
@@ -18,12 +20,15 @@ public class Controller {
     public static void main(String[] args) throws IOException, InterruptedException {
         WIP wip = new WIP();
 
-        ArrayList<ExchangeDetailsEnum> selectedExchanges = new ArrayList<>();
-        selectedExchanges.add(ExchangeDetailsEnum.GDAXEXCHANGE); // internal: waiting limit increase
-        selectedExchanges.add(ExchangeDetailsEnum.KRAKENEXCHANGE); // internal: good limit but slow
-        selectedExchanges.add(ExchangeDetailsEnum.BITSTAMPEXCHANGE); // internal: waiting limit increase
-        selectedExchanges.add(ExchangeDetailsEnum.BITFINEXEXCHANGE); // internal: waiting limit increase
-        selectedExchanges.add(ExchangeDetailsEnum.BITTREXEXCHANGE); // internal all good
+        ArrayList<ExchangeSpecs> selectedExchanges = new ArrayList<>();
+        selectedExchanges.add(new KrakenSpecs());
+        selectedExchanges.add(new GDAXSpecs());
+
+//        selectedExchanges.add(ExchangeDetailsEnum.GDAXEXCHANGE); // internal: waiting limit increase
+//        selectedExchanges.add(ExchangeDetailsEnum.KRAKENEXCHANGE); // internal: good limit but slow
+//        selectedExchanges.add(ExchangeDetailsEnum.BITSTAMPEXCHANGE); // internal: waiting limit increase
+//        selectedExchanges.add(ExchangeDetailsEnum.BITFINEXEXCHANGE); // internal: waiting limit increase
+//        selectedExchanges.add(ExchangeDetailsEnum.BITTREXEXCHANGE); // internal all good
 //        selectedExchanges.add(ExchangeDetailsEnum.POLONIEXEXCHANGE); // internal need to wait for verification
 
         ArbitrageActionSelection arbitrageActionSelection = new ArbitrageActionSelection(true,false, false);

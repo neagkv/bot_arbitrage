@@ -2,7 +2,7 @@ package co.codingnomads.bot.arbitrage.service;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.BidAsk;
-import co.codingnomads.bot.arbitrage.model.ExchangeServices;
+import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.slf4j.Logger;
@@ -26,11 +26,13 @@ public class ExchangeDataGetter {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         CompletionService<BidAsk> pool = new ExecutorCompletionService<>(executor);
 
+        //todo change the thread taking active exchange
+        //todo ask bid/ask sufficient
+        //todo if both out, desactivate exchange
+        //todo run the bid/ask getter and fix for sufficience
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated()) {
-                ExchangeServices exchangeServices = activatedExchange.getExchangeServices();
-                GetBidAskThread temp = new GetBidAskThread(activatedExchange.getExchangeServices().getExchangeName(),
-                        exchangeServices, currencyPair);
+                GetBidAskThread temp = new GetBidAskThread(activatedExchange.getExchange(), currencyPair);
                 pool.submit(temp);
             }
         }
@@ -51,13 +53,13 @@ public class ExchangeDataGetter {
     }
 
     // todo and an anti hang condition in there (if longer than X wait, return null)
-    protected static BidAsk getBidAsk(ExchangeServices exchangeServices, CurrencyPair currencyPair) {
+    protected static BidAsk getBidAsk(Exchange exchange, CurrencyPair currencyPair) {
         Ticker ticker;
         try {
-            ticker = exchangeServices.getMarketDataService().getTicker(currencyPair);
+            ticker = exchange.getMarketDataService().getTicker(currencyPair);
         } catch (Exception e)  { //todo need to refine that exception handling
             return null;
         }
-        return new BidAsk(exchangeServices.getExchangeName(), ticker.getBid(), ticker.getAsk());
+        return new BidAsk(exchange.getExchangeSpecification().getExchangeName(), ticker.getBid(), ticker.getAsk());
     }
 }
