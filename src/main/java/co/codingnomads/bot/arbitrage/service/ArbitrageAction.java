@@ -4,6 +4,7 @@ import co.codingnomads.bot.arbitrage.model.BidAsk;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 /**
  * Created by Thomas Leruth on 12/14/17
@@ -17,7 +18,9 @@ public class ArbitrageAction {
             System.out.println("ARBITRAGE DETECTED!!!"
                     + " buy on " + lowAsk.getExchangeName() + " for " + lowAsk.getAsk()
                     + " and sell on " + highBid.getExchangeName() + " for " + highBid.getBid()
-                    + " and make a return (before fees) of " + difference.add(BigDecimal.valueOf(-1)));
+                    + " and make a return (before fees) of "
+                    + (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100))
+                    + "%");
         } else {
             System.out.println("No arbitrage found");
         }

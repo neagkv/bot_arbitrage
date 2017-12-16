@@ -19,6 +19,7 @@ public class ExchangeGetter {
         ArrayList<ActivatedExchange> list = new ArrayList<>();
 
         for (ExchangeDetailsEnum selected : selectedExchanges) {
+            //todo make next line threadable
             ExchangeServices exchangeServices = getServices(selected.getExchangeClass());
             if (exchangeServices != null) {
                 list.add(new ActivatedExchange(exchangeServices));

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Controller {
 
     // issue with Poloniex (can't create an instance - Bug reported, due to Captcha on their endpoint)
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         WIP wip = new WIP();
 
         ArrayList<ExchangeDetailsEnum> selectedExchanges = new ArrayList<>();
@@ -27,7 +27,7 @@ public class Controller {
 //        selectedExchanges.add(ExchangeDetailsEnum.POLONIEXEXCHANGE); // internal need to wait for verification
 
         ArbitrageActionSelection arbitrageActionSelection = new ArbitrageActionSelection(true,false, false);
-        wip.test(CurrencyPair.ETH_EUR,selectedExchanges,1.02, arbitrageActionSelection);
+        wip.test(CurrencyPair.ETH_EUR,selectedExchanges,1.03, arbitrageActionSelection);
     }
 
 }

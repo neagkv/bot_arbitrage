@@ -5,6 +5,8 @@ import co.codingnomads.bot.arbitrage.model.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.BidAsk;
 import co.codingnomads.bot.arbitrage.model.ExchangeDetailsEnum;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ public class WIP {
 
 //    @Autowired
 //    DataUtil dataUtil;
+
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     // todo Email action (Kevin later)
     // todo trade action (Thomas)
@@ -43,7 +47,7 @@ public class WIP {
     public void test(CurrencyPair currencyPair,
                      ArrayList<ExchangeDetailsEnum> selectedExchanges,
                      double arbitrageMargin,
-                     ArbitrageActionSelection arbitrageActionSelection) throws IOException {
+                     ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException {
 
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
@@ -58,14 +62,23 @@ public class WIP {
         // todo autowire it
         ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
 
+        while (true) {
         // get the bid ask for all exchanges
         ArrayList<BidAsk> listBidAsk = exchangeDataGetter.getAllBidAsk(activatedExchanges, currencyPair);
 
         // todo handle with a custom exception on the getAllBidAsk
         if (listBidAsk.size() == 0) {
-            System.out.println("This pair is not traded on the exchange selected");
+            logger.warn("This pair is not traded on the exchanged selected");
+            // System.out.println("This pair is not traded on the exchange selected");
             return;
         }
+
+        System.out.println();
+        System.out.println("Pulled Data");
+        for (BidAsk bidAsk : listBidAsk) {
+            System.out.println(bidAsk.toString());
+        }
+        System.out.println();
 
         // todo autowire it
         DataUtil dataUtil = new DataUtil();
@@ -73,7 +86,13 @@ public class WIP {
         BidAsk lowAsk = dataUtil.lowAskFinder(listBidAsk);
         BidAsk highBid = dataUtil.highBidFinder(listBidAsk);
 
-        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 10, RoundingMode.HALF_UP);
+        // temporary
+        System.out.println("Sorted result");
+        System.out.println("the lowest ask is on " + lowAsk.getExchangeName() + " at " + lowAsk.getAsk());
+        System.out.println("the highest bid is on " + highBid.getExchangeName() + " at " + highBid.getBid());
+        System.out.println();
+
+        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 3, RoundingMode.HALF_DOWN);
 
         // todo autowire it
         ArbitrageAction arbitrageAction = new ArbitrageAction();
@@ -87,5 +106,7 @@ public class WIP {
         if (arbitrageActionSelection.isTradeActionFlag()) {
             arbitrageAction.trade();
         }
+        Thread.sleep(5000);
+    }
     }
 }
