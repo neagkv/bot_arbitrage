@@ -9,9 +9,18 @@ import java.util.ArrayList;
 /**
  * Created by Thomas Leruth on 12/12/17
  */
+
+/**
+ * Class containing methods to work on data
+ */
 @Service
 public class DataUtil {
 
+    /**
+     * Find the item within a list with the lowest ask
+     * @param list a list of BidAsk for different exchanges
+     * @return the item with the lowest Ask
+     */
     public BidAsk lowAskFinder(ArrayList<BidAsk> list) {
         int lowIndex = 0;
         if (list.size() > 1) {
@@ -24,6 +33,11 @@ public class DataUtil {
         return list.get(lowIndex);
     }
 
+    /**
+     * Find the item within a list with the highest bid
+     * @param list a list of BidAsk for different exchanges
+     * @return the item with highest Ask
+     */
     public BidAsk highBidFinder(ArrayList<BidAsk> list) {
         int highIndex = 0;
         if (list.size() > 1) {

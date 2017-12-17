@@ -1,13 +1,19 @@
 package co.codingnomads.bot.arbitrage.model;
 
+import org.knowm.xchange.currency.CurrencyPair;
+
 import java.math.BigDecimal;
 
 /**
  * Created by Thomas Leruth on 12/11/17
  */
-//todo add pair name in the class
+
+/**
+ * Pojo class to get the bid/ask and the exchangeName as well as the currency pair
+ */
 public class BidAsk {
 
+    private CurrencyPair currencyPair;
     private String exchangeName;
     private BigDecimal bid;
     private BigDecimal ask;
@@ -36,7 +42,20 @@ public class BidAsk {
         this.ask = ask;
     }
 
-    public BidAsk(String exchangeName, BigDecimal bid, BigDecimal ask) {
+    public CurrencyPair getCurrencyPair() {
+        return currencyPair;
+    }
+
+    public void setCurrencyPair(CurrencyPair currencyPair) {
+        this.currencyPair = currencyPair;
+    }
+
+    public void setExchangeName(String exchangeName) {
+        this.exchangeName = exchangeName;
+    }
+
+    public BidAsk(CurrencyPair currencyPair, String exchangeName, BigDecimal bid, BigDecimal ask) {
+        this.currencyPair = currencyPair;
         this.exchangeName = exchangeName;
         this.bid = bid;
         this.ask = ask;
@@ -45,7 +64,8 @@ public class BidAsk {
     @Override
     public String toString() {
         return "BidAsk{" +
-                "exchangeName='" + exchangeName + '\'' +
+                "currencyPair=" + currencyPair +
+                ", exchangeName='" + exchangeName + '\'' +
                 ", bid=" + bid +
                 ", ask=" + ask +
                 '}';

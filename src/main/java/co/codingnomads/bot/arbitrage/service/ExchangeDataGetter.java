@@ -15,24 +15,34 @@ import java.util.concurrent.*;
 /**
  * Created by Thomas Leruth on 12/13/17
  */
+
+/**
+ * A class to get data from exchanges and format it correctly
+ */
 @Service
 public class ExchangeDataGetter {
 
     // protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public ArrayList<BidAsk> getAllBidAsk(ArrayList<ActivatedExchange> activatedExchanges, CurrencyPair currencyPair) {
+    /**
+     * Get All the BidAsk from the selected exchanged
+     * @param activatedExchanges list of currently acrivated exchanges
+     * @param currencyPair the pair the BidAsk is seeked for
+     * @return A list of BidAsk for all the exchanges
+     */
+    public ArrayList<BidAsk> getAllBidAsk(ArrayList<ActivatedExchange> activatedExchanges,
+                                          CurrencyPair currencyPair,
+                                          double baseNeed,
+                                          double counterNeed) {
+
         ArrayList<BidAsk> list = new ArrayList<>();
 
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         CompletionService<BidAsk> pool = new ExecutorCompletionService<>(executor);
 
-        //todo change the thread taking active exchange
-        //todo ask bid/ask sufficient
-        //todo if both out, desactivate exchange
-        //todo run the bid/ask getter and fix for sufficience
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated()) {
-                GetBidAskThread temp = new GetBidAskThread(activatedExchange.getExchange(), currencyPair);
+                GetBidAskThread temp = new GetBidAskThread(activatedExchange, currencyPair, baseNeed, counterNeed);
                 pool.submit(temp);
             }
         }
@@ -60,6 +70,6 @@ public class ExchangeDataGetter {
         } catch (Exception e)  { //todo need to refine that exception handling
             return null;
         }
-        return new BidAsk(exchange.getExchangeSpecification().getExchangeName(), ticker.getBid(), ticker.getAsk());
+        return new BidAsk(currencyPair, exchange.getExchangeSpecification().getExchangeName(), ticker.getBid(), ticker.getAsk());
     }
 }

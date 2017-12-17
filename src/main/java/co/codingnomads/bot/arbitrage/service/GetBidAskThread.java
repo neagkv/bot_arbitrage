@@ -1,38 +1,95 @@
 package co.codingnomads.bot.arbitrage.service;
 
+import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.BidAsk;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.concurrent.Callable;
 
 /**
  * Created by Thomas Leruth on 12/16/17
  */
-// I feel like a magician after writing this
-// in my understanding this cool functional interface is runnable with a potential return type
+
+/**
+ * A runnable class using Callable<BidAsk> to be able to return a BidAsk
+ */
 public class GetBidAskThread implements Callable<BidAsk> {
 
-    private Exchange exchange;
+    private ActivatedExchange activatedExchange;
     private CurrencyPair currencyPair;
     private String exchangeName;
+    boolean tradingEnvironment = true;
+    BigDecimal baseNeed; // base for bid
+    BigDecimal counterNeed; // counter is for ask
 
-    //todo make the call to balance here and make the bid ask wrong if so
+    /**
+     * Find the BidAsk for every exchanges as a callable (runnable with return)
+     * @return the BidAsk for the particular exchanges
+     */
     @Override
     public BidAsk call() {
-        System.out.println("start " + exchangeName);
-        BidAsk bidAsk = ExchangeDataGetter.getBidAsk(exchange, currencyPair);
-        System.out.println("end " + exchangeName);
+        if (tradingEnvironment) {
+
+            try {
+                Wallet wallet = activatedExchange.getExchange().getAccountService().getAccountInfo().getWallet();
+                BigDecimal base =  wallet.getBalance(currencyPair.base).getTotal();
+                BigDecimal counter = wallet.getBalance(currencyPair.counter).getTotal();
+                if (base.compareTo(baseNeed) < 0) {
+                    activatedExchange.setBidSuffisance(false);
+                }
+                else {
+                    activatedExchange.setBidSuffisance(true);
+                    // have this as it is possible the account is refunded (via trade or deposit)
+                }
+                if (counter.compareTo(counterNeed) < 0) {
+                    activatedExchange.setAskSuffisance(false);
+                }
+                else {
+                    activatedExchange.setAskSuffisance(true);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (!activatedExchange.isAskSuffisance() & !activatedExchange.isBidSuffisance()) {
+                System.out.println("No necessary fund to trade");
+                activatedExchange.setActivated(false);
+                return null;
+            }
+        }
+
+        BidAsk bidAsk = ExchangeDataGetter.getBidAsk(activatedExchange.getExchange(), currencyPair);
         if(bidAsk == null) {
             System.out.println("pair not available for " + exchangeName);
+        }
+
+        if (tradingEnvironment && bidAsk != null) {
+            if (!activatedExchange.isAskSuffisance()) {
+                bidAsk.setAsk(BigDecimal.valueOf(987654321)); //not a fan of this but null leads to annoying issue with DataUtil
+                // potentially I could take the current ask value and do *100
+            }
+            if (!activatedExchange.isBidSuffisance()) {
+                bidAsk.setBid(BigDecimal.valueOf(-1));
+            }
         }
         return bidAsk;
     }
 
-    public GetBidAskThread(Exchange exchange, CurrencyPair currencyPair) {
-        this.exchange = exchange;
+    /**
+     * Constructor for the class
+     * @param activatedExchange a pojo containing the exchange and some booleans
+     * @param currencyPair the pair investigated
+     */
+    public GetBidAskThread(ActivatedExchange activatedExchange, CurrencyPair currencyPair, double baseNeed, double counterNeed) {
+        this.activatedExchange = activatedExchange;
         this.currencyPair = currencyPair;
-        exchangeName = exchange.getExchangeSpecification().getExchangeName();
+        exchangeName = activatedExchange.getExchange().getExchangeSpecification().getExchangeName();
+        this.baseNeed = BigDecimal.valueOf(baseNeed);
+        this.counterNeed = BigDecimal.valueOf(counterNeed);
     }
 }

@@ -1,6 +1,7 @@
 package co.codingnomads.bot.arbitrage.service;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
+import co.codingnomads.bot.arbitrage.model.exchange.BitfinexSpecs;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.model.exchange.GDAXSpecs;
 import co.codingnomads.bot.arbitrage.model.exchange.KrakenSpecs;
@@ -14,24 +15,27 @@ import java.util.ArrayList;
  * Created by Thomas Leruth on 12/16/17
  */
 
+/**
+ * Use this method for testing the exchange POJO
+ */
 public class Test {
 
     public static void main(String[] args) throws IOException {
 
-//        ExchangeSpecs krakenSpecs = new KrakenSpecs(
-//                "null",
-//                "null");
-
-        ExchangeSpecs gdaxSpecs = new GDAXSpecs(
-                null,
+        ExchangeSpecs krakenSpecs = new KrakenSpecs(
                 null,
                 null);
+
+//        ExchangeSpecs krakenSpecs = new KrakenSpecs();
+
+        ExchangeSpecs bitfinexSpecs = new BitfinexSpecs("",
+                "");
 
         // ExchangeSpecification exSpec = new KrakenExchange().getDefaultExchangeSpecification();
 
         ArrayList<ExchangeSpecs> selected = new ArrayList<>();
 //        selected.add(krakenSpecs);
-        selected.add(gdaxSpecs);
+        selected.add(bitfinexSpecs);
 
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 

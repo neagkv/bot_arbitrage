@@ -1,35 +1,36 @@
 package co.codingnomads.bot.arbitrage.model.exchange;
 
 import org.knowm.xchange.ExchangeSpecification;
-import org.knowm.xchange.kraken.KrakenExchange;
+import org.knowm.xchange.bitfinex.v1.BitfinexExchange;
 
 /**
  * Created by Thomas Leruth on 12/16/17
  */
 
 /**
- * Extension of the specs for Kraken
+ * Extension of the specs for Bitfinex
  */
-public class KrakenSpecs extends ExchangeSpecs {
+public class BitfinexSpecs extends ExchangeSpecs {
 
-    public KrakenSpecs(String apiKey, String secretKey) {
+    public BitfinexSpecs(String apiKey, String secretKey) {
         super(apiKey, secretKey);
         if (null != apiKey && null != secretKey) {
             setTradingMode(true);
         }
     }
 
-    public KrakenSpecs() {
+    public BitfinexSpecs() {
         super();
     }
 
     @Override
     public ExchangeSpecification GetSetupedExchange() {
-        ExchangeSpecification exSpec = new KrakenExchange().getDefaultExchangeSpecification();
+        ExchangeSpecification exSpec = new BitfinexExchange().getDefaultExchangeSpecification();
         if (super.getTradingMode()) {
             exSpec.setApiKey(super.getApiKey());
             exSpec.setSecretKey(super.getSecretKey());
         }
         return exSpec;
     }
+
 }

@@ -7,6 +7,10 @@ import org.knowm.xchange.kraken.KrakenExchange;
  * Created by Thomas Leruth on 12/16/17
  */
 
+/**
+ * Abstract class to be implemeted for all set up exchanged (needed for Auth params)
+ * The implementation should have a empty constructor (for a version without Auth params) and one fully loaded
+ */
 public abstract class ExchangeSpecs {
 
     private String apiKey;

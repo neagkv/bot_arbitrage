@@ -9,10 +9,20 @@ import java.text.NumberFormat;
 /**
  * Created by Thomas Leruth on 12/14/17
  */
+
+/**
+ * Class to define the potential action once after the difference in price is calculate
+ */
 @Service
 public class ArbitrageAction {
 
-    //todo format the return in %
+    /**
+     * A method to print the arbitrage action to the console
+     * @param lowAsk the lowest ask found (buy)
+     * @param highBid the highest bid found (sell)
+     * @param difference the difference in prices
+     * @param arbitrageMargin the margin difference accepted (not a valid arbitrage is below that value)
+     */
     public void print(BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin){
          if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
             System.out.println("ARBITRAGE DETECTED!!!"

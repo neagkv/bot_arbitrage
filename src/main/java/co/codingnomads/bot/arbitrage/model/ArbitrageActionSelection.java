@@ -4,6 +4,9 @@ package co.codingnomads.bot.arbitrage.model;
  * Created by Thomas Leruth on 12/14/17
  */
 
+/**
+ * Pojo for the three flags of potential actions implemented
+ */
 public class ArbitrageActionSelection {
 
     private boolean printActionFlag;
