@@ -46,14 +46,16 @@ public class ExchangeDataGetter {
                 pool.submit(temp);
             }
         }
-        for (int i = 0; i < activatedExchanges.size(); i++) {
-            try {
-                BidAsk bidAsk = pool.take().get();
-                if (null != bidAsk) {
-                    list.add(bidAsk);
+        for (ActivatedExchange activatedExchange : activatedExchanges) {
+            if (activatedExchange.isActivated()) {
+                try {
+                    BidAsk bidAsk = pool.take().get();
+                    if (null != bidAsk) {
+                        list.add(bidAsk);
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
             }
         }
 

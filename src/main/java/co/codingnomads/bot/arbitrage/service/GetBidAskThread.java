@@ -23,9 +23,9 @@ public class GetBidAskThread implements Callable<BidAsk> {
     private ActivatedExchange activatedExchange;
     private CurrencyPair currencyPair;
     private String exchangeName;
-    boolean tradingEnvironment = true;
-    BigDecimal baseNeed; // base for bid
-    BigDecimal counterNeed; // counter is for ask
+    private boolean tradingEnvironment = false;
+    private BigDecimal baseNeed; // base for bid
+    private BigDecimal counterNeed; // counter is for ask
 
     /**
      * Find the BidAsk for every exchanges as a callable (runnable with return)
@@ -33,8 +33,8 @@ public class GetBidAskThread implements Callable<BidAsk> {
      */
     @Override
     public BidAsk call() {
-        if (tradingEnvironment) {
 
+        if (tradingEnvironment) {
             try {
                 Wallet wallet = activatedExchange.getExchange().getAccountService().getAccountInfo().getWallet();
                 BigDecimal base =  wallet.getBalance(currencyPair.base).getTotal();
@@ -70,8 +70,8 @@ public class GetBidAskThread implements Callable<BidAsk> {
 
         if (tradingEnvironment && bidAsk != null) {
             if (!activatedExchange.isAskSuffisance()) {
-                bidAsk.setAsk(BigDecimal.valueOf(987654321)); //not a fan of this but null leads to annoying issue with DataUtil
-                // potentially I could take the current ask value and do *100
+                bidAsk.setAsk(bidAsk.getAsk().multiply(BigDecimal.valueOf(1000))); // (null creates issues)
+                // 1000 should make sure we never use that one
             }
             if (!activatedExchange.isBidSuffisance()) {
                 bidAsk.setBid(BigDecimal.valueOf(-1));
@@ -91,5 +91,6 @@ public class GetBidAskThread implements Callable<BidAsk> {
         exchangeName = activatedExchange.getExchange().getExchangeSpecification().getExchangeName();
         this.baseNeed = BigDecimal.valueOf(baseNeed);
         this.counterNeed = BigDecimal.valueOf(counterNeed);
+        if (baseNeed > 0 && counterNeed > 0) tradingEnvironment = true; // a bit of a bad workaround to avoid overloading all methods
     }
 }

@@ -41,6 +41,9 @@ public class ArbitrageAction {
     }
 
     public void trade() {
-        // todo to implement
+        // todo make marker order on both exchanges (should be threads) or callable with status return
+        // todo check if executed well looking at end balance (could be first manually by printing)
+        // todo first hardcode trade amount
+        // then get it by
     }
 }

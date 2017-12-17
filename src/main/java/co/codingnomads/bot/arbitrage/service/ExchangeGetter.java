@@ -28,7 +28,10 @@ public class ExchangeGetter {
      * @param selectedExchanges a list of exchanges with their needed authentification set
      * @return list of exchange with all services loaded up
      */
-    public ArrayList<ActivatedExchange> getAllSelectedExchangeServices(ArrayList<ExchangeSpecs> selectedExchanges) {
+    public ArrayList<ActivatedExchange> getAllSelectedExchangeServices(
+            ArrayList<ExchangeSpecs> selectedExchanges,
+            boolean tradingMode) {
+
         ArrayList<ActivatedExchange> list = new ArrayList<>();
 
         for (ExchangeSpecs selected : selectedExchanges) {
@@ -43,9 +46,17 @@ public class ExchangeGetter {
                     list.add(activatedExchange);
                 }
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace(); }
+                e.printStackTrace();
+            }
         }
         executor.shutdown();
+
+        if (tradingMode) {
+            for (ActivatedExchange activatedExchange : list) {
+                // trading mode is set to true if all the Auth parameters were given
+                activatedExchange.setActivated(activatedExchange.isTradingMode());
+            }
+        }
         return list;
     }
 }

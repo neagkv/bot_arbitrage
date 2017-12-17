@@ -1,6 +1,10 @@
 package co.codingnomads.bot.arbitrage.service;
 
 import co.codingnomads.bot.arbitrage.model.*;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.EmailAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.PrintAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.TradingAction;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.slf4j.Logger;
@@ -41,20 +45,20 @@ public class Arbitrage {
      * A trading arbitrage bot with multiple arbitrage action
      * @param currencyPair the pair selected
      * @param selectedExchanges an ArrayList of ExchangeEnum has to be added
-     * @param arbitrageMargin the margin in which arbitrage is accepted (cove the trading fee and delay leading to mov in bid/ask
-     * @param arbitrageActionSelection Pojo including 3 booleans for the potential outcomes
+     * @param arbitrageActionSelection PXXX
      * @throws IOException
      */
     public void run(CurrencyPair currencyPair,
                     ArrayList<ExchangeSpecs> selectedExchanges,
-                    double arbitrageMargin,
-                    ArbitrageActionSelection arbitrageActionSelection,
-                    double baseNeed,
-                    double counterNeed) throws IOException, InterruptedException {
+                    ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException {
+
+        Boolean tradingMode = arbitrageActionSelection instanceof TradingAction;
+        Boolean emailMode = arbitrageActionSelection instanceof EmailAction;
+        Boolean printMode = arbitrageActionSelection instanceof PrintAction;
 
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
-        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges);
+        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
 
         // todo autowire it
         ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
@@ -64,7 +68,23 @@ public class Arbitrage {
         int loop = 1;
 
         while (i < loop) {
-            ArrayList<BidAsk> listBidAsk = exchangeDataGetter.getAllBidAsk(activatedExchanges, currencyPair, baseNeed, counterNeed);
+
+            ArrayList<BidAsk> listBidAsk;
+            if(tradingMode){
+                TradingAction tradingAction = (TradingAction) arbitrageActionSelection;
+                listBidAsk = exchangeDataGetter.getAllBidAsk(
+                        activatedExchanges,
+                        currencyPair,
+                        tradingAction.getBaseMin(),
+                        tradingAction.getCounterMin());
+            }
+            else {
+                listBidAsk = exchangeDataGetter.getAllBidAsk(
+                        activatedExchanges,
+                        currencyPair,
+                        0,
+                        0);
+            }
 
             // todo handle with a custom exception on the getAllBidAsk
             if (listBidAsk.size() == 0) {
@@ -98,13 +118,13 @@ public class Arbitrage {
             // todo autowire it
             ArbitrageAction arbitrageAction = new ArbitrageAction();
 
-            if (arbitrageActionSelection.isPrintActionFlag()) {
-                arbitrageAction.print(lowAsk, highBid, difference, arbitrageMargin);
+            if (printMode) {
+                arbitrageAction.print(lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
             }
-            if (arbitrageActionSelection.isEmailActionFlag()) {
+            if (emailMode) {
                 arbitrageAction.email();
             }
-            if (arbitrageActionSelection.isTradeActionFlag()) {
+            if (tradingMode) {
                 arbitrageAction.trade();
             }
             i++;

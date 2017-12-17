@@ -39,7 +39,7 @@ public class Test {
 
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
-        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selected);
+        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selected, false);
 
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated() && activatedExchange.isTradingMode()) {
@@ -49,12 +49,5 @@ public class Test {
                 System.out.println(wallet.getBalance(Currency.ETH));
             }
         }
-
-//        AccountService accountService = kraken.getAccountService();
-//        Wallet wallet = accountService.getAccountInfo().getWallet();
-//        System.out.println(wallet.getBalance(Currency.EUR).getTotal());
-//        System.out.println(wallet.getBalance(Currency.ETH).getTotal());
-//        System.out.println("break");
     }
-
 }
