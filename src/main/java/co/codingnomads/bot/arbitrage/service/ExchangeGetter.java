@@ -53,7 +53,7 @@ public class ExchangeGetter {
 
         if (tradingMode) {
             for (ActivatedExchange activatedExchange : list) {
-                // trading mode is set to true if all the Auth parameters were given
+                // Arbitrage mode is set to true if all the Auth parameters were given
                 activatedExchange.setActivated(activatedExchange.isTradingMode());
             }
         }

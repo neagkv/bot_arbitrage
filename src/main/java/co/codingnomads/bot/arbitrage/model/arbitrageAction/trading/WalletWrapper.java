@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction;
+package co.codingnomads.bot.arbitrage.model.arbitrageAction.trading;
 
 import org.knowm.xchange.dto.account.Wallet;
 

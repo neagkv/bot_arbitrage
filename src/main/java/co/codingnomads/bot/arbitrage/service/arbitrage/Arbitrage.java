@@ -1,14 +1,15 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage.service.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.*;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.EmailAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.PrintAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.TradingAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
+import co.codingnomads.bot.arbitrage.service.DataUtil;
+import co.codingnomads.bot.arbitrage.service.ExchangeDataGetter;
+import co.codingnomads.bot.arbitrage.service.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,8 +30,6 @@ public class Arbitrage {
 //    @Autowired
 //    DataUtil dataUtil;
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
-
     // todo Email action (Kevin later)
     // todo trade action (Thomas)
     // todo make this method running every X minutes (Kevin)
@@ -43,7 +42,7 @@ public class Arbitrage {
     // 2) Delay leading to movement in bid/ask spread
 
     /**
-     * A trading arbitrage bot with multiple arbitrage action
+     * A Arbitrage arbitrage bot with multiple arbitrage action
      *
      * @param currencyPair             the pair selected
      * @param selectedExchanges        an ArrayList of ExchangeEnum has to be added
@@ -54,13 +53,13 @@ public class Arbitrage {
                     ArrayList<ExchangeSpecs> selectedExchanges,
                     ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException {
 
-        Boolean tradingMode = arbitrageActionSelection instanceof TradingAction;
-        Boolean emailMode = arbitrageActionSelection instanceof EmailAction;
-        Boolean printMode = arbitrageActionSelection instanceof PrintAction;
+        Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
+        Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
+        Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
         double tradeValueBase = -1;
 
-        if (tradingMode) tradeValueBase = ((TradingAction) arbitrageActionSelection).getTradeValueBase();
+        if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
 
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
@@ -82,7 +81,7 @@ public class Arbitrage {
 
             // todo handle with a custom exception on the getAllBidAsk
             if (listBidAsk.size() == 0) {
-                logger.warn("This pair is not traded on the exchanged selected");
+                System.out.println("This pair is not traded on the exchanged selected");
                 // System.out.println("This pair is not traded on the exchange selected");
                 return;
             }
@@ -121,7 +120,7 @@ public class Arbitrage {
                 arbitrageAction.email();
             }
             if (tradingMode) {
-                arbitrageAction.trade(lowAsk, highBid, difference, (TradingAction) arbitrageActionSelection);
+                arbitrageAction.trade(lowAsk, highBid, difference, (ArbitrageTradingAction) arbitrageActionSelection);
             }
             i++;
             if (loop != 1) Thread.sleep(5000);

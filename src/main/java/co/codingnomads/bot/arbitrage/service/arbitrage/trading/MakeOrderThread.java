@@ -1,9 +1,7 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage.service.arbitrage.trading;
 
 import co.codingnomads.bot.arbitrage.model.BidAsk;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.OrderIDWrapper;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.WalletWrapper;
-import org.knowm.xchange.dto.account.Wallet;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
 import org.knowm.xchange.dto.trade.MarketOrder;
 
 import java.io.IOException;

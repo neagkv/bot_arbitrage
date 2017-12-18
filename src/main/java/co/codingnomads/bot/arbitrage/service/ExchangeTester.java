@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Use this method for testing the exchange POJO
  */
-public class Test {
+public class ExchangeTester {
 
     public static void main(String[] args) throws IOException {
 

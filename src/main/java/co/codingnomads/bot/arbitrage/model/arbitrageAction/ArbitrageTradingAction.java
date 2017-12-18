@@ -4,7 +4,7 @@ package co.codingnomads.bot.arbitrage.model.arbitrageAction;
  * Created by Thomas Leruth on 12/17/17
  */
 
-public class TradingAction extends ArbitrageActionSelection {
+public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
     private double tradeValueBase;
 
@@ -16,7 +16,7 @@ public class TradingAction extends ArbitrageActionSelection {
         this.tradeValueBase = tradeValueBase;
     }
 
-    public TradingAction(double arbitrageMargin, double tradeValueBase) {
+    public ArbitrageTradingAction(double arbitrageMargin, double tradeValueBase) {
         super(arbitrageMargin);
         this.tradeValueBase = tradeValueBase;
     }

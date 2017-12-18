@@ -49,9 +49,6 @@ public class GetBidAskThread implements Callable<BidAsk> {
         }
 
         BidAsk bidAsk = ExchangeDataGetter.getBidAsk(activatedExchange.getExchange(), currencyPair);
-        if(bidAsk == null) {
-            System.out.println("pair not available for " + exchangeName);
-        }
 
         if (tradingEnvironment && bidAsk != null) {
 

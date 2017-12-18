@@ -1,11 +1,11 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage.service.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.BidAsk;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.OrderIDWrapper;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.TradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.WalletWrapper;
-import org.knowm.xchange.Exchange;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
+import co.codingnomads.bot.arbitrage.service.arbitrage.trading.GetWalletWrapperThread;
+import co.codingnomads.bot.arbitrage.service.arbitrage.trading.MakeOrderThread;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -13,11 +13,8 @@ import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.concurrent.*;
 
 /**
@@ -59,14 +56,14 @@ public class ArbitrageAction {
     public void trade(BidAsk lowAsk,
                       BidAsk highBid,
                       BigDecimal difference,
-                      TradingAction tradingAction)
+                      ArbitrageTradingAction arbitrageTradingAction)
     {
 
-        if (difference.compareTo(BigDecimal.valueOf(tradingAction.getArbitrageMargin())) > 0) {
+        if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) > 0) {
 
             Currency base = lowAsk.getCurrencyPair().base;
             Currency counter = lowAsk.getCurrencyPair().counter;
-            BigDecimal tradeAmount = BigDecimal.valueOf(tradingAction.getTradeValueBase());
+            BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
             CurrencyPair tradedPair = lowAsk.getCurrencyPair();
             BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
 
