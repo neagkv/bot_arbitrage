@@ -41,10 +41,12 @@ public class Arbitrage {
     // Margin at which we take the risk of running the arbitrage it covers
     // 1) Fee (which I can't seem to be able to pull from API, somebody?) (check Kevin and hack the code)
     // 2) Delay leading to movement in bid/ask spread
+
     /**
      * A trading arbitrage bot with multiple arbitrage action
-     * @param currencyPair the pair selected
-     * @param selectedExchanges an ArrayList of ExchangeEnum has to be added
+     *
+     * @param currencyPair             the pair selected
+     * @param selectedExchanges        an ArrayList of ExchangeEnum has to be added
      * @param arbitrageActionSelection PXXX
      * @throws IOException
      */
@@ -55,6 +57,10 @@ public class Arbitrage {
         Boolean tradingMode = arbitrageActionSelection instanceof TradingAction;
         Boolean emailMode = arbitrageActionSelection instanceof EmailAction;
         Boolean printMode = arbitrageActionSelection instanceof PrintAction;
+
+        double tradeValueBase = -1;
+
+        if (tradingMode) tradeValueBase = ((TradingAction) arbitrageActionSelection).getTradeValueBase();
 
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
@@ -69,22 +75,10 @@ public class Arbitrage {
 
         while (i < loop) {
 
-            ArrayList<BidAsk> listBidAsk;
-            if(tradingMode){
-                TradingAction tradingAction = (TradingAction) arbitrageActionSelection;
-                listBidAsk = exchangeDataGetter.getAllBidAsk(
-                        activatedExchanges,
-                        currencyPair,
-                        tradingAction.getBaseMin(),
-                        tradingAction.getCounterMin());
-            }
-            else {
-                listBidAsk = exchangeDataGetter.getAllBidAsk(
-                        activatedExchanges,
-                        currencyPair,
-                        0,
-                        0);
-            }
+            ArrayList<BidAsk> listBidAsk = exchangeDataGetter.getAllBidAsk(
+                    activatedExchanges,
+                    currencyPair,
+                    tradeValueBase);
 
             // todo handle with a custom exception on the getAllBidAsk
             if (listBidAsk.size() == 0) {
@@ -109,11 +103,13 @@ public class Arbitrage {
 
             // temporary
             System.out.println("Sorted result");
-            System.out.println("the lowest ask is on " + lowAsk.getExchangeName() + " at " + lowAsk.getAsk());
-            System.out.println("the highest bid is on " + highBid.getExchangeName() + " at " + highBid.getBid());
+            System.out.println("the lowest ask is on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName() +
+                    " at " + lowAsk.getAsk());
+            System.out.println("the highest bid is on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName() +
+                    " at " + highBid.getBid());
             System.out.println();
 
-            BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 3, RoundingMode.HALF_DOWN);
+            BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
             // todo autowire it
             ArbitrageAction arbitrageAction = new ArbitrageAction();
@@ -125,10 +121,10 @@ public class Arbitrage {
                 arbitrageAction.email();
             }
             if (tradingMode) {
-                arbitrageAction.trade();
+                arbitrageAction.trade(lowAsk, highBid, difference, (TradingAction) arbitrageActionSelection);
             }
             i++;
-            Thread.sleep(5000);
+            if (loop != 1) Thread.sleep(5000);
         }
     }
 }

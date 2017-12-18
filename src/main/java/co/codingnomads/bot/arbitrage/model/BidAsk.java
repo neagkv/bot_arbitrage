@@ -1,5 +1,6 @@
 package co.codingnomads.bot.arbitrage.model;
 
+import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 
 import java.math.BigDecimal;
@@ -11,19 +12,22 @@ import java.math.BigDecimal;
 /**
  * Pojo class to get the bid/ask and the exchangeName as well as the currency pair
  */
+// todo not a big fan of the name
 public class BidAsk {
 
     private CurrencyPair currencyPair;
-    private String exchangeName;
+    private Exchange exchange;
     private BigDecimal bid;
     private BigDecimal ask;
+    private BigDecimal baseFund;
+    private BigDecimal counterFund;
 
-    public String getExchangeName() {
-        return exchangeName;
+    public Exchange getExchange() {
+        return exchange;
     }
 
-    public void setExchageName(String exchageName) {
-        this.exchangeName = exchageName;
+    public void setExchange(Exchange exchange) {
+        this.exchange = exchange;
     }
 
     public BigDecimal getBid() {
@@ -50,13 +54,25 @@ public class BidAsk {
         this.currencyPair = currencyPair;
     }
 
-    public void setExchangeName(String exchangeName) {
-        this.exchangeName = exchangeName;
+    public BigDecimal getBaseFund() {
+        return baseFund;
     }
 
-    public BidAsk(CurrencyPair currencyPair, String exchangeName, BigDecimal bid, BigDecimal ask) {
+    public void setBaseFund(BigDecimal baseFund) {
+        this.baseFund = baseFund;
+    }
+
+    public BigDecimal getCounterFund() {
+        return counterFund;
+    }
+
+    public void setCounterFund(BigDecimal counterFund) {
+        this.counterFund = counterFund;
+    }
+
+    public BidAsk(CurrencyPair currencyPair, Exchange exchange, BigDecimal bid, BigDecimal ask) {
         this.currencyPair = currencyPair;
-        this.exchangeName = exchangeName;
+        this.exchange = exchange;
         this.bid = bid;
         this.ask = ask;
     }
@@ -65,9 +81,11 @@ public class BidAsk {
     public String toString() {
         return "BidAsk{" +
                 "currencyPair=" + currencyPair +
-                ", exchangeName='" + exchangeName + '\'' +
+                ", exchangeName='" + exchange.getDefaultExchangeSpecification().getExchangeName() +
                 ", bid=" + bid +
                 ", ask=" + ask +
+                ", baseFund=" + baseFund +
+                ", counterFund=" + counterFund +
                 '}';
     }
 }

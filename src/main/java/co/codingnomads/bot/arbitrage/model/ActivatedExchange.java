@@ -17,8 +17,6 @@ public class ActivatedExchange {
     private Exchange exchange;
     private boolean activated = true;
     private boolean tradingMode = false;
-    private boolean bidSuffisance = true;
-    private boolean askSuffisance = true;
 
     public Exchange getExchange() {
         return exchange;
@@ -49,19 +47,4 @@ public class ActivatedExchange {
         this.tradingMode = tradingMode;
     }
 
-    public void setBidSuffisance(boolean bidSuffisance) {
-        this.bidSuffisance = bidSuffisance;
-    }
-
-    public void setAskSuffisance(boolean askSuffisance) {
-        this.askSuffisance = askSuffisance;
-    }
-
-    public boolean isBidSuffisance() {
-        return bidSuffisance;
-    }
-
-    public boolean isAskSuffisance() {
-        return askSuffisance;
-    }
 }

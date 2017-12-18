@@ -32,8 +32,7 @@ public class ExchangeDataGetter {
      */
     public ArrayList<BidAsk> getAllBidAsk(ArrayList<ActivatedExchange> activatedExchanges,
                                           CurrencyPair currencyPair,
-                                          double baseNeed,
-                                          double counterNeed) {
+                                          double tradeValueBase) {
 
         ArrayList<BidAsk> list = new ArrayList<>();
 
@@ -42,7 +41,7 @@ public class ExchangeDataGetter {
 
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated()) {
-                GetBidAskThread temp = new GetBidAskThread(activatedExchange, currencyPair, baseNeed, counterNeed);
+                GetBidAskThread temp = new GetBidAskThread(activatedExchange, currencyPair, tradeValueBase);
                 pool.submit(temp);
             }
         }
@@ -72,6 +71,6 @@ public class ExchangeDataGetter {
         } catch (Exception e)  { //todo need to refine that exception handling
             return null;
         }
-        return new BidAsk(currencyPair, exchange.getExchangeSpecification().getExchangeName(), ticker.getBid(), ticker.getAsk());
+        return new BidAsk(currencyPair, exchange, ticker.getBid(), ticker.getAsk());
     }
 }

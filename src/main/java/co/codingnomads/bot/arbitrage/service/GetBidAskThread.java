@@ -24,8 +24,7 @@ public class GetBidAskThread implements Callable<BidAsk> {
     private CurrencyPair currencyPair;
     private String exchangeName;
     private boolean tradingEnvironment = false;
-    private BigDecimal baseNeed; // base for bid
-    private BigDecimal counterNeed; // counter is for ask
+    private BigDecimal tradeAmountBase;
 
     /**
      * Find the BidAsk for every exchanges as a callable (runnable with return)
@@ -34,32 +33,18 @@ public class GetBidAskThread implements Callable<BidAsk> {
     @Override
     public BidAsk call() {
 
+        BigDecimal baseFund = null;
+        BigDecimal counterFund = null;
+        BigDecimal baseNeed;
+        BigDecimal counterNeed;
+
         if (tradingEnvironment) {
             try {
                 Wallet wallet = activatedExchange.getExchange().getAccountService().getAccountInfo().getWallet();
-                BigDecimal base =  wallet.getBalance(currencyPair.base).getTotal();
-                BigDecimal counter = wallet.getBalance(currencyPair.counter).getTotal();
-                if (base.compareTo(baseNeed) < 0) {
-                    activatedExchange.setBidSuffisance(false);
-                }
-                else {
-                    activatedExchange.setBidSuffisance(true);
-                    // have this as it is possible the account is refunded (via trade or deposit)
-                }
-                if (counter.compareTo(counterNeed) < 0) {
-                    activatedExchange.setAskSuffisance(false);
-                }
-                else {
-                    activatedExchange.setAskSuffisance(true);
-                }
+                baseFund =  wallet.getBalance(currencyPair.base).getTotal();
+                counterFund = wallet.getBalance(currencyPair.counter).getTotal();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-
-            if (!activatedExchange.isAskSuffisance() & !activatedExchange.isBidSuffisance()) {
-                System.out.println("No necessary fund to trade");
-                activatedExchange.setActivated(false);
-                return null;
             }
         }
 
@@ -69,12 +54,26 @@ public class GetBidAskThread implements Callable<BidAsk> {
         }
 
         if (tradingEnvironment && bidAsk != null) {
-            if (!activatedExchange.isAskSuffisance()) {
+
+            baseNeed = tradeAmountBase;
+            counterNeed = tradeAmountBase.multiply(bidAsk.getBid());
+
+            System.out.println(baseNeed + " " + counterNeed);
+            bidAsk.setBaseFund(baseFund);
+            bidAsk.setCounterFund(counterFund);
+
+            if (counterFund.compareTo(counterNeed) < 0) {
                 bidAsk.setAsk(bidAsk.getAsk().multiply(BigDecimal.valueOf(1000))); // (null creates issues)
                 // 1000 should make sure we never use that one
             }
-            if (!activatedExchange.isBidSuffisance()) {
+            if (baseFund.compareTo(baseNeed) < 0) {
                 bidAsk.setBid(BigDecimal.valueOf(-1));
+            }
+            // bad design that I pull bidAsk then turn it null but I need it to figure baseNeed
+            if (counterFund.compareTo(counterNeed) < 0 && baseFund.compareTo(baseNeed) < 0) {
+                System.out.println("No necessary fund to trade");
+                activatedExchange.setActivated(false);
+                return null;
             }
         }
         return bidAsk;
@@ -85,12 +84,11 @@ public class GetBidAskThread implements Callable<BidAsk> {
      * @param activatedExchange a pojo containing the exchange and some booleans
      * @param currencyPair the pair investigated
      */
-    public GetBidAskThread(ActivatedExchange activatedExchange, CurrencyPair currencyPair, double baseNeed, double counterNeed) {
+    public GetBidAskThread(ActivatedExchange activatedExchange, CurrencyPair currencyPair, double tradeAmountBase) {
         this.activatedExchange = activatedExchange;
         this.currencyPair = currencyPair;
         exchangeName = activatedExchange.getExchange().getExchangeSpecification().getExchangeName();
-        this.baseNeed = BigDecimal.valueOf(baseNeed);
-        this.counterNeed = BigDecimal.valueOf(counterNeed);
-        if (baseNeed > 0 && counterNeed > 0) tradingEnvironment = true; // a bit of a bad workaround to avoid overloading all methods
+        this.tradeAmountBase = BigDecimal.valueOf(tradeAmountBase);
+        if (tradeAmountBase > 0) tradingEnvironment = true;
     }
 }

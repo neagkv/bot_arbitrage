@@ -6,28 +6,18 @@ package co.codingnomads.bot.arbitrage.model.arbitrageAction;
 
 public class TradingAction extends ArbitrageActionSelection {
 
-    private double baseMin;
-    private double counterMin;
+    private double tradeValueBase;
 
-    public double getBaseMin() {
-        return baseMin;
+    public double getTradeValueBase() {
+        return tradeValueBase;
     }
 
-    public void setBaseMin(double baseMin) {
-        this.baseMin = baseMin;
+    public void setTradeValueBase(double tradeValueBase) {
+        this.tradeValueBase = tradeValueBase;
     }
 
-    public double getCounterMin() {
-        return counterMin;
-    }
-
-    public void setCounterMin(double counterMin) {
-        this.counterMin = counterMin;
-    }
-
-    public TradingAction(double arbitrageMargin, double baseMin, double counterMin) {
+    public TradingAction(double arbitrageMargin, double tradeValueBase) {
         super(arbitrageMargin);
-        this.baseMin = baseMin;
-        this.counterMin = counterMin;
+        this.tradeValueBase = tradeValueBase;
     }
 }
