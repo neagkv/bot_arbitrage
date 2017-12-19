@@ -3,6 +3,7 @@ package co.codingnomads.bot.arbitrage.service.arbitrage;
 import co.codingnomads.bot.arbitrage.model.BidAsk;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TradingData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.GetWalletWrapperThread;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.MakeOrderThread;
@@ -61,8 +62,6 @@ public class ArbitrageAction {
 
         if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) > 0) {
 
-            Currency base = lowAsk.getCurrencyPair().base;
-            Currency counter = lowAsk.getCurrencyPair().counter;
             BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
             CurrencyPair tradedPair = lowAsk.getCurrencyPair();
             BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
@@ -134,36 +133,15 @@ public class ArbitrageAction {
             }
             executorWalletWrapper.shutdown();
 
-            // load all this here to make it clearer
-            // todo should we load all that in one class?
-            BigDecimal oldBaseBuy = lowAsk.getBaseFund();
-            BigDecimal oldCounterBuy = lowAsk.getCounterFund();
-            BigDecimal oldBaseSell = highBid.getBaseFund();
-            BigDecimal oldCounterSell = highBid.getCounterFund();
-            BigDecimal newBaseBuy = walletBuy.getBalance(base).getTotal();
-            BigDecimal newCounterBuy = walletBuy.getBalance(counter).getTotal();
-            BigDecimal newBaseSell = walletSell.getBalance(base).getTotal();
-            BigDecimal newCounterSell = walletSell.getBalance(counter).getTotal();
-            BigDecimal oldTotalBase = oldBaseBuy.add(oldBaseSell);
-            BigDecimal newTotalBase = newBaseBuy.add(newBaseSell);
-
-            BigDecimal differenceBaseBuy = newBaseBuy.subtract(oldBaseBuy);
-            BigDecimal differenceCounterBuy = newCounterBuy.subtract(oldCounterBuy);
-            BigDecimal differenceBaseSell = newBaseSell.subtract(oldBaseSell);
-            BigDecimal differenceCounterSell = newCounterSell.subtract(oldCounterSell);
-
-            BigDecimal realAsk = differenceCounterBuy.divide(differenceBaseBuy, 5, BigDecimal.ROUND_HALF_EVEN).abs();
-            BigDecimal realBid = differenceCounterSell.divide(differenceBaseSell,5, BigDecimal.ROUND_HALF_EVEN).abs();
-            BigDecimal differenceBidAsk = realBid.divide(realAsk, 5, RoundingMode.HALF_EVEN);
-            BigDecimal realDifferenceFormated = differenceBidAsk.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
-
-            BigDecimal differenceTotalBase = newTotalBase.divide(oldTotalBase, 5, BigDecimal.ROUND_HALF_EVEN).add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
+            TradingData tradingData = new TradingData(lowAsk, highBid, walletBuy, walletSell);
 
             // this need to be tested
             System.out.println();
-            System.out.println("your base moved by (should be 0%) " + differenceTotalBase + "%");
-            System.out.println("real bid was " + realBid + " and real ask was " + realAsk + " for a difference (after fees) of " +
-            realDifferenceFormated + "% vs an expected of " + expectedDifferenceFormated + " %");
+            System.out.println("your base moved by (should be 0%) " + tradingData.getDifferenceCounterSell() + "%");
+            System.out.println("real bid was " + tradingData.getRealBid()
+                    + " and real ask was " + tradingData.getRealAsk()
+                    + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
+                    + "% vs an expected of " + expectedDifferenceFormated + " %");
 
         } else {
             System.out.println("No arbitrage found");
