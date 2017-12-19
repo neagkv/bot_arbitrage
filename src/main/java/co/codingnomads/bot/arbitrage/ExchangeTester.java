@@ -1,10 +1,10 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.exchange.BitfinexSpecs;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
-import co.codingnomads.bot.arbitrage.model.exchange.GDAXSpecs;
 import co.codingnomads.bot.arbitrage.model.exchange.KrakenSpecs;
+import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.Wallet;
 

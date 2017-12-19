@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage.service.general.thread;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;

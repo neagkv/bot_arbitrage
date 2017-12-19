@@ -98,7 +98,8 @@ public class ArbitrageAction {
                 }
                 executorMakeOrder.shutdown();
 
-                // would have to check better handling if it fails (see what kind of error we get first)
+                // todo better handling of error (maybe while re-run it til we get an number OR checking if number is valid
+                // with another API call?
                 if (marketOrderBuyId.equals("failed")) System.out.println("marketOrderBuy failed");
                 if (marketOrderSellId.equals("failed")) System.out.println("marketOrderSell failed");
                 if (!marketOrderBuyId.equals("failed") && !marketOrderSellId.equals("failed")){

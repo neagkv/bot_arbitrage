@@ -1,12 +1,11 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage.service.general;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.service.general.thread.GetBidAskThread;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ public class ExchangeDataGetter {
     }
 
     // todo and an anti hang condition in there (if longer than X wait, return null)
-    protected static BidAsk getBidAsk(Exchange exchange, CurrencyPair currencyPair) {
+    public static BidAsk getBidAsk(Exchange exchange, CurrencyPair currencyPair) {
         Ticker ticker;
         try {
             ticker = exchange.getMarketDataService().getTicker(currencyPair);

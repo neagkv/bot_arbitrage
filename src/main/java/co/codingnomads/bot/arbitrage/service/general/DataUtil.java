@@ -1,7 +1,6 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage.service.general;
 
 import co.codingnomads.bot.arbitrage.model.BidAsk;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

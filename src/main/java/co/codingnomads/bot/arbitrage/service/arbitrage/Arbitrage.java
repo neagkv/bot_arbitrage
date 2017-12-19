@@ -6,9 +6,9 @@ import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
-import co.codingnomads.bot.arbitrage.service.DataUtil;
-import co.codingnomads.bot.arbitrage.service.ExchangeDataGetter;
-import co.codingnomads.bot.arbitrage.service.ExchangeGetter;
+import co.codingnomads.bot.arbitrage.service.general.DataUtil;
+import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
+import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.stereotype.Service;
 

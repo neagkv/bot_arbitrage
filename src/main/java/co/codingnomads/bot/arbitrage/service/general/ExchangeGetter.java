@@ -1,11 +1,8 @@
-package co.codingnomads.bot.arbitrage.service;
+package co.codingnomads.bot.arbitrage.service.general;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.BidAsk;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
-import com.sun.org.apache.bcel.internal.ExceptionConstants;
-import org.knowm.xchange.Exchange;
-import org.knowm.xchange.ExchangeFactory;
+import co.codingnomads.bot.arbitrage.service.general.thread.GetExchangeThread;
 
 import java.util.ArrayList;
 import java.util.concurrent.*;
