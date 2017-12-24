@@ -8,6 +8,7 @@ import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TradingData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
+import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.GetWalletWrapperThread;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.MakeOrderThread;
 import com.amazonaws.regions.Regions;
@@ -22,8 +23,11 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.springframework.stereotype.Service;
+import software.amazon.ion.Timestamp;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.concurrent.*;
 
 /**
@@ -59,37 +63,57 @@ public class ArbitrageAction {
     }
 
     public void email (ArbitrageEmailAction arbitrageEmailAction, Email email, EmailBody emailBody,
-                       BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin){
+                       BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin) throws EmailLimitException {
 
-        try {
+        int emailDailyCount = 0;
 
-            AmazonSimpleEmailService client =
-                    AmazonSimpleEmailServiceClientBuilder.standard()
-                            // Replace US_EAST_1 with the AWS Region you're using for
-                            // Amazon SES.
-                            .withRegion(Regions.US_EAST_1).build();
-            SendEmailRequest request = new SendEmailRequest()
-                    .withDestination(
-                            new com.amazonaws.services.simpleemail.model.Destination().withToAddresses(arbitrageEmailAction.getEmail()))
-                    .withMessage(new Message()
-                            .withBody(new Body()
-                                    .withHtml(new Content()
-                                            .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk,highBid,difference,arbitrageMargin)))
-                                    .withText(new Content()
-                                            .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk,highBid,difference,arbitrageMargin))))
-                            .withSubject(new Content()
-                                    .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk,highBid,difference,arbitrageMargin))))
-                    .withSource(email.getFROM());
-            // Comment or remove the next line if you are not using a
-            // configuration set
-            // .withConfigurationSetName(CONFIGSET);
-            client.sendEmail(request);
-            System.out.println("Email sent!");
-        } catch (Exception ex) {
-            System.out.println("The email was not sent. Error message: "
-                    + ex.getMessage());
+        if (emailBody.getTimeOfFirstSend().compareTo(emailBody.getNow()) > 24) {
+
+            emailBody.setTimeOfFirstSend(emailBody.getNow());
+
+        } else
+
+            if (emailDailyCount < 200) {
+
+
+                try {
+
+                    AmazonSimpleEmailService client =
+                            AmazonSimpleEmailServiceClientBuilder.standard()
+                                    // Replace US_EAST_1 with the AWS Region you're using for
+                                    // Amazon SES.
+                                    .withRegion(Regions.US_EAST_1).build();
+                    SendEmailRequest request = new SendEmailRequest()
+                            .withDestination(
+                                    new com.amazonaws.services.simpleemail.model.Destination().withToAddresses(arbitrageEmailAction.getEmail()))
+                            .withMessage(new Message()
+                                    .withBody(new Body()
+                                            .withHtml(new Content()
+                                                    .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk, highBid, difference, arbitrageMargin)))
+                                            .withText(new Content()
+                                                    .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk, highBid, difference, arbitrageMargin))))
+                                    .withSubject(new Content()
+                                            .withCharset("UTF-8").withData(emailBody.printSubject())))
+                            .withSource(email.getFROM());
+                    // Comment or remove the next line if you are not using a
+                    // configuration set
+                    // .withConfigurationSetName(CONFIGSET);
+                    client.sendEmail(request);
+                    System.out.println("Email sent!");
+                } catch (Exception ex) {
+                    System.out.println("The email was not sent. Error message: "
+                            + ex.getMessage());
+                }
+
+                ++emailDailyCount;
+            }
+            else {
+
+            throw new EmailLimitException("You can not send more than 200 per day, please try again in 24 hours");
+
+            }
+
         }
-    }
 
     public void trade(BidAsk lowAsk,
                       BidAsk highBid,

@@ -6,6 +6,7 @@ import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionPrintAction;
+import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import co.codingnomads.bot.arbitrage.service.detection.Detection;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class Controller {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, EmailLimitException {
 
 
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();

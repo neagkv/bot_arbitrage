@@ -7,6 +7,7 @@ import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
+import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
@@ -53,7 +54,7 @@ public class Arbitrage {
      */
     public void run(CurrencyPair currencyPair,
                     ArrayList<ExchangeSpecs> selectedExchanges,
-                    ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException {
+                    ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException {
 
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;

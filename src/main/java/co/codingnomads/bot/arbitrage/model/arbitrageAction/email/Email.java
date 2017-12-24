@@ -1,5 +1,10 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @author Kevin Neag
  */
@@ -16,18 +21,15 @@ public class Email extends EmailBody{
     // static final String CONFIGSET = "ConfigSet";
 
     // The subject line for the email.
-    String SUBJECT = "Amazon SES test (AWS SDK for Java)";
+    String SUBJECT;
 
     // The HTML body for the email.
-   String HTMLBODY = "<h1>Amazon SES test (AWS SDK for Java)</h1>"
-            + "<p>This email was sent with <a href='https://aws.amazon.com/ses/'>"
-            + "Amazon SES</a> using the <a href='https://aws.amazon.com/sdk-for-java/'>"
-            + "AWS SDK for Java</a>";
+   String HTMLBODY;
 
     // The email body for recipients with non-HTML email clients.
     //TODO print action
-    static  String TEXTBODY = "This email was sent through Amazon SES "
-            + "using the AWS SDK for Java.";
+    static  String TEXTBODY;
+
 
     public Email(double arbitrageMargin) {
         super(arbitrageMargin);
@@ -72,4 +74,6 @@ public class Email extends EmailBody{
     public static void setTEXTBODY(String TEXTBODY) {
         Email.TEXTBODY = TEXTBODY;
     }
+
+
 }
