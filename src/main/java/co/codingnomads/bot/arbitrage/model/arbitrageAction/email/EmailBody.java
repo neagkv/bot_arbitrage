@@ -16,8 +16,8 @@ public class EmailBody extends ArbitragePrintAction {
     String textBody;
     String HTMLBody;
     String subjectBody;
-    Timestamp timeOfFirstSend = Timestamp.from(Instant.from(LocalDateTime.now()));
-    Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+    software.amazon.ion.Timestamp timeOfFirstSend = software.amazon.ion.Timestamp.now();
+
 
     public EmailBody(double arbitrageMargin) {
         super(arbitrageMargin);
@@ -47,20 +47,12 @@ public class EmailBody extends ArbitragePrintAction {
         this.subjectBody = subjectBody;
     }
 
-    public Timestamp getTimeOfFirstSend() {
+    public software.amazon.ion.Timestamp getTimeOfFirstSend() {
         return timeOfFirstSend;
     }
 
-    public void setTimeOfFirstSend(Timestamp timeOfFirstSend) {
+    public void setTimeOfFirstSend(software.amazon.ion.Timestamp timeOfFirstSend) {
         this.timeOfFirstSend = timeOfFirstSend;
-    }
-
-    public Timestamp getNow() {
-        return now;
-    }
-
-    public void setNow(Timestamp now) {
-        this.now = now;
     }
 
     public String printTextBody(BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin) {
