@@ -5,9 +5,7 @@ import org.knowm.xchange.bitfinex.v1.BitfinexExchange;
 
 /**
  * Created by Thomas Leruth on 12/16/17
- */
-
-/**
+ *
  * Extension of the specs for Bitfinex
  */
 public class BitfinexSpecs extends ExchangeSpecs {

@@ -1,6 +1,5 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.trading;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.Wallet;
 
@@ -9,6 +8,8 @@ import java.math.RoundingMode;
 
 /**
  * Created by Thomas Leruth on 12/19/17
+ *
+ * POJO class setting a lot of needed data for the trading action
  */
 
 public class TradingData {
@@ -35,7 +36,7 @@ public class TradingData {
     BigDecimal realDifferenceFormated;
     BigDecimal differenceTotalBase;
 
-    public TradingData(BidAsk lowAsk, BidAsk highBid, Wallet walletBuy, Wallet walletSell) {
+    public TradingData(TickerDataTrading lowAsk, TickerDataTrading highBid, Wallet walletBuy, Wallet walletSell) {
         this.base = lowAsk.getCurrencyPair().base;
         this.counter = lowAsk.getCurrencyPair().counter;
         this.oldBaseBuy = lowAsk.getBaseFund();

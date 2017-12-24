@@ -1,6 +1,5 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction.detection;
+package co.codingnomads.bot.arbitrage.model.detectionAction;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
 import org.knowm.xchange.currency.CurrencyPair;
 
 import java.math.BigDecimal;
@@ -8,6 +7,8 @@ import java.sql.Timestamp;
 
 /**
  * Created by Thomas Leruth on 12/18/17
+ *
+ * POJO class to hold various information needed from the detection
  */
 
 public class DifferenceWrapper {
@@ -19,6 +20,16 @@ public class DifferenceWrapper {
     private String lowAskExchange;
     private BigDecimal highBid;
     private String highBidExchange;
+
+    public DifferenceWrapper(CurrencyPair currencyPair, BigDecimal difference, BigDecimal lowAsk, String lowAskExchange, BigDecimal highBid, String highBidExchange) {
+        timestamp = new Timestamp(System.currentTimeMillis());
+        this.currencyPair = currencyPair;
+        this.difference = difference;
+        this.lowAsk = lowAsk;
+        this.lowAskExchange = lowAskExchange;
+        this.highBid = highBid;
+        this.highBidExchange = highBidExchange;
+    }
 
     public CurrencyPair getCurrencyPair() {
         return currencyPair;
@@ -65,16 +76,6 @@ public class DifferenceWrapper {
     }
 
     public void setHighBidExchange(String highBidExchange) {
-        this.highBidExchange = highBidExchange;
-    }
-
-    public DifferenceWrapper(CurrencyPair currencyPair, BigDecimal difference, BigDecimal lowAsk, String lowAskExchange, BigDecimal highBid, String highBidExchange) {
-        timestamp = new Timestamp(System.currentTimeMillis());
-        this.currencyPair = currencyPair;
-        this.difference = difference;
-        this.lowAsk = lowAsk;
-        this.lowAskExchange = lowAskExchange;
-        this.highBid = highBid;
         this.highBidExchange = highBidExchange;
     }
 

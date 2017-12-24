@@ -1,6 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage.trading;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
 import org.knowm.xchange.dto.trade.MarketOrder;
 
@@ -9,18 +9,20 @@ import java.util.concurrent.Callable;
 
 /**
  * Created by Thomas Leruth on 12/17/17
+ *
+ * Callable class to get the OrderIDWrapper
  */
 
 public class MakeOrderThread implements Callable<OrderIDWrapper> {
 
     MarketOrder marketOrder;
-    BidAsk bidAsk;
+    TickerData tickerData;
 
     @Override
     public OrderIDWrapper call() {
         try {
-            String orderID = bidAsk.getExchange().getTradeService().placeMarketOrder(marketOrder);
-            String exchangeName = bidAsk.getExchange().getExchangeSpecification().getExchangeName();
+            String orderID = tickerData.getExchange().getTradeService().placeMarketOrder(marketOrder);
+            String exchangeName = tickerData.getExchange().getExchangeSpecification().getExchangeName();
             return new OrderIDWrapper(orderID, exchangeName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,8 +31,8 @@ public class MakeOrderThread implements Callable<OrderIDWrapper> {
 
     }
 
-    public MakeOrderThread(MarketOrder marketOrder, BidAsk bidAsk) {
+    public MakeOrderThread(MarketOrder marketOrder, TickerData tickerData) {
         this.marketOrder = marketOrder;
-        this.bidAsk = bidAsk;
+        this.tickerData = tickerData;
     }
 }

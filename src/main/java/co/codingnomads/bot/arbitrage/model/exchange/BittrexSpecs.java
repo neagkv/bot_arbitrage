@@ -5,6 +5,8 @@ import org.knowm.xchange.bittrex.BittrexExchange;
 
 /**
  * Created by Thomas Leruth on 12/16/17
+ *
+ * Extension of the specs for Bittrex
  */
 //todo implement
 public class BittrexSpecs extends ExchangeSpecs  {

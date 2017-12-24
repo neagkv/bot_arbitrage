@@ -4,7 +4,11 @@ import org.knowm.xchange.dto.account.Wallet;
 
 /**
  * Created by Thomas Leruth on 12/17/17
+ *
+ * POJO class to wrap the wallet with an item to recognize the wallet (this class is needed because of the
+ * drawback of using Callable<> being that they come back in unpredictable order
  */
+
 
 public class WalletWrapper {
 

@@ -13,10 +13,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/16/17
- */
-
-/**
- * Use this method for testing the exchange POJO
+ * Use this method for testing the exchange POJO (seeing if that some have special needed Auth elements)
  */
 public class ExchangeTester {
 

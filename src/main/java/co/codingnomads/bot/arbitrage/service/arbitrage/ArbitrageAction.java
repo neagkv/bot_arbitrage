@@ -1,13 +1,13 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TickerDataTrading;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TradingData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.GetWalletWrapperThread;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.MakeOrderThread;
-import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Wallet;
@@ -20,30 +20,31 @@ import java.util.concurrent.*;
 
 /**
  * Created by Thomas Leruth on 12/14/17
- */
-
-/**
- * Class to define the potential action once after the difference in price is calculate
+ *
+ * Class to define the potential acting behaviors of the arbitrage bot
  */
 @Service
 public class ArbitrageAction {
 
     /**
-     * A method to print the arbitrage action to the console
+     * Method to print the arbitrage action to the console
      * @param lowAsk the lowest ask found (buy)
      * @param highBid the highest bid found (sell)
-     * @param difference the difference in prices
-     * @param arbitrageMargin the margin difference accepted (not a valid arbitrage is below that value)
+     * @param arbitrageMargin the margin difference accepted (not a valid arbitrage if below that value)
      */
-    public void print(BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin){
+    public void print(TickerData lowAsk, TickerData highBid, double arbitrageMargin){
+
+        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+
          if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
-            System.out.println("ARBITRAGE DETECTED!!!"
+             BigDecimal differenceFormated = (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100));
+             System.out.println("ARBITRAGE DETECTED!!!"
                     + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
                     + " for " + lowAsk.getAsk()
                     + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
                     + " for " + highBid.getBid()
                     + " and make a return (before fees) of "
-                    + (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100))
+                    + differenceFormated
                     + "%");
         } else {
             System.out.println("No arbitrage found");
@@ -54,11 +55,18 @@ public class ArbitrageAction {
         // todo to implement
     }
 
-    public void trade(BidAsk lowAsk,
-                      BidAsk highBid,
-                      BigDecimal difference,
-                      ArbitrageTradingAction arbitrageTradingAction)
-    {
+    /**
+     * Method to enable trading
+     * @param lowAsk TickerData for the best buy
+     * @param highBid TickerData for the best sell
+     * @param arbitrageTradingAction Some instance variables needed to trade
+     * @return true if no arbitrage found or trading worked as expected
+     */
+    public boolean trade(TickerData lowAsk,
+                      TickerData highBid,
+                      ArbitrageTradingAction arbitrageTradingAction) {
+
+        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
         if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) > 0) {
 
@@ -66,17 +74,19 @@ public class ArbitrageAction {
             CurrencyPair tradedPair = lowAsk.getCurrencyPair();
             BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
 
+            // temp
             System.out.println("initiating trade of " + tradeAmount + tradedPair.base.toString() + " you should make a return (before fees) of "
                     + expectedDifferenceFormated + "%");
 
-            boolean live = false; // just a security right now
+            // temp
+            boolean live = true; // just a security right now
             if (live) {
                 MarketOrder marketOrderBuy = new MarketOrder(Order.OrderType.BID, tradeAmount, tradedPair);
                 MarketOrder marketOrderSell = new MarketOrder(Order.OrderType.ASK, tradeAmount, tradedPair);
 
+                //todo make into action trade?
                 String marketOrderBuyId = "failed";
                 String marketOrderSellId = "failed";
-
                 ExecutorService executorMakeOrder = Executors.newFixedThreadPool(2);
                 CompletionService<OrderIDWrapper> poolMakeOrder = new ExecutorCompletionService<>(executorMakeOrder);
                 poolMakeOrder.submit(new MakeOrderThread(marketOrderBuy, lowAsk));
@@ -98,7 +108,9 @@ public class ArbitrageAction {
                 executorMakeOrder.shutdown();
 
                 // todo better handling of error (maybe while re-run it til we get an number OR checking if number is valid
-                // with another API call?
+                // with another API call, I'd say return number is better but we need to try to see what happens if order fail
+                // I am expecting a null pointer for temp we need to handle that with better exception handing in make order ?
+                // I do not think "failed" will ever stay (either replace by ID or exception before)
                 if (marketOrderBuyId.equals("failed")) System.out.println("marketOrderBuy failed");
                 if (marketOrderSellId.equals("failed")) System.out.println("marketOrderSell failed");
                 if (!marketOrderBuyId.equals("failed") && !marketOrderSellId.equals("failed")){
@@ -108,14 +120,12 @@ public class ArbitrageAction {
                 }
             }
 
+            // todo trade get wallet?
             Wallet walletBuy = null;
             Wallet walletSell = null;
-
             ExecutorService executorWalletWrapper = Executors.newFixedThreadPool(2);
             CompletionService<WalletWrapper> poolWalletWrapper = new ExecutorCompletionService<>(executorWalletWrapper);
 
-            // The issue with pool is that it comes out in unpredictable order so I have to check
-            // not really pretty but I still think more efficient then run API consequently
             poolWalletWrapper.submit(new GetWalletWrapperThread(lowAsk));
             poolWalletWrapper.submit(new GetWalletWrapperThread(highBid));
             for (int i = 0; i < 2; i++) {
@@ -133,7 +143,13 @@ public class ArbitrageAction {
             }
             executorWalletWrapper.shutdown();
 
-            TradingData tradingData = new TradingData(lowAsk, highBid, walletBuy, walletSell);
+            // calculate a bunch of data
+            TradingData tradingData =
+                    new TradingData(
+                            (TickerDataTrading) lowAsk,
+                            (TickerDataTrading) highBid,
+                            walletBuy,
+                            walletSell);
 
             // this need to be tested
             System.out.println();
@@ -142,10 +158,11 @@ public class ArbitrageAction {
                     + " and real ask was " + tradingData.getRealAsk()
                     + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
                     + "% vs an expected of " + expectedDifferenceFormated + " %");
-
         } else {
             System.out.println("No arbitrage found");
+            return true;
         }
+        return false;
         // todo return flag true to continue as long as realDifference is positive and differenceTotalBase did not move
     }
 }

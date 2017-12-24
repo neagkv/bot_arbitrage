@@ -4,19 +4,22 @@ import org.knowm.xchange.Exchange;
 
 /**
  * Created by Thomas Leruth on 12/14/17
- */
-
-/**
- * Pojo Class for Activated Exchanges having
- * echange: The exchange
- * activate : If it is currently active or not
- * tradingMode : if the exchange is set up for private actions (if the auth param were provided)
+ *
+ * POJO Class for Activated Exchanges having
+ * Notes:
+ * - activated = If it is currently active or not (can be desactivated if trading and without enough funds)
+ * - tradingMode = if the exchange is set up for trading [private action] (if the auth param were provided)
  */
 public class ActivatedExchange {
 
     private Exchange exchange;
     private boolean activated = true;
     private boolean tradingMode = false;
+
+    public ActivatedExchange(Exchange exchange, boolean tradingMode) {
+        this.exchange = exchange;
+        this.tradingMode = tradingMode;
+    }
 
     public Exchange getExchange() {
         return exchange;
@@ -39,11 +42,6 @@ public class ActivatedExchange {
     }
 
     public void setTradingMode(boolean tradingMode) {
-        this.tradingMode = tradingMode;
-    }
-
-    public ActivatedExchange(Exchange exchange, boolean tradingMode) {
-        this.exchange = exchange;
         this.tradingMode = tradingMode;
     }
 

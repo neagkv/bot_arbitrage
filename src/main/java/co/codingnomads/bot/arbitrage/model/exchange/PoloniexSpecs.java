@@ -5,6 +5,8 @@ import org.knowm.xchange.poloniex.PoloniexExchange;
 
 /**
  * Created by Thomas Leruth on 12/16/17
+ *
+ * Extension of the specs for Poloniex
  */
 //todo implement
 public class PoloniexSpecs extends ExchangeSpecs {

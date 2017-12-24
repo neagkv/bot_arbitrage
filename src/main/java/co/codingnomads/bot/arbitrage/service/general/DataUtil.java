@@ -1,26 +1,24 @@
 package co.codingnomads.bot.arbitrage.service.general;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/12/17
- */
-
-/**
+ *
  * Class containing methods to work on data
  */
 @Service
 public class DataUtil {
 
     /**
-     * Find the item within a list with the lowest ask
-     * @param list a list of BidAsk for different exchanges
+     * Find the item within a list with the lowest ask (best buy)
+     * @param list a list of TickerData for different exchanges
      * @return the item with the lowest Ask
      */
-    public BidAsk lowAskFinder(ArrayList<BidAsk> list) {
+    public TickerData lowAskFinder(ArrayList<TickerData> list) {
         int lowIndex = 0;
         if (list.size() > 1) {
             for (int i = 1; i < list.size(); i++) {
@@ -33,11 +31,11 @@ public class DataUtil {
     }
 
     /**
-     * Find the item within a list with the highest bid
-     * @param list a list of BidAsk for different exchanges
+     * Find the item within a list with the highest bid (best sell)
+     * @param list a list of TickerData for different exchanges
      * @return the item with highest Ask
      */
-    public BidAsk highBidFinder(ArrayList<BidAsk> list) {
+    public TickerData highBidFinder(ArrayList<TickerData> list) {
         int highIndex = 0;
         if (list.size() > 1) {
             for (int i = 1; i < list.size(); i++) {
