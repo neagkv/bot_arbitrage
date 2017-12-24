@@ -1,13 +1,22 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TradingData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.GetWalletWrapperThread;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.MakeOrderThread;
-import org.knowm.xchange.currency.Currency;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
+import com.amazonaws.services.simpleemail.model.Body;
+import com.amazonaws.services.simpleemail.model.Content;
+import com.amazonaws.services.simpleemail.model.Message;
+import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Wallet;
@@ -15,7 +24,6 @@ import org.knowm.xchange.dto.trade.MarketOrder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.concurrent.*;
 
 /**
@@ -50,8 +58,37 @@ public class ArbitrageAction {
         }
     }
 
-    public void email (){
-        // todo to implement
+    public void email (ArbitrageEmailAction arbitrageEmailAction, Email email, EmailBody emailBody,
+                       BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin){
+
+        try {
+
+            AmazonSimpleEmailService client =
+                    AmazonSimpleEmailServiceClientBuilder.standard()
+                            // Replace US_EAST_1 with the AWS Region you're using for
+                            // Amazon SES.
+                            .withRegion(Regions.US_EAST_1).build();
+            SendEmailRequest request = new SendEmailRequest()
+                    .withDestination(
+                            new com.amazonaws.services.simpleemail.model.Destination().withToAddresses(arbitrageEmailAction.getEmail()))
+                    .withMessage(new Message()
+                            .withBody(new Body()
+                                    .withHtml(new Content()
+                                            .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk,highBid,difference,arbitrageMargin)))
+                                    .withText(new Content()
+                                            .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk,highBid,difference,arbitrageMargin))))
+                            .withSubject(new Content()
+                                    .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk,highBid,difference,arbitrageMargin))))
+                    .withSource(email.getFROM());
+            // Comment or remove the next line if you are not using a
+            // configuration set
+            // .withConfigurationSetName(CONFIGSET);
+            client.sendEmail(request);
+            System.out.println("Email sent!");
+        } catch (Exception ex) {
+            System.out.println("The email was not sent. Error message: "
+                    + ex.getMessage());
+        }
     }
 
     public void trade(BidAsk lowAsk,

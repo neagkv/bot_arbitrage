@@ -5,6 +5,8 @@ import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelect
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
@@ -112,12 +114,13 @@ public class Arbitrage {
 
             // todo autowire it
             ArbitrageAction arbitrageAction = new ArbitrageAction();
+            Email email = new Email(arbitrageActionSelection.getArbitrageMargin());
 
             if (printMode) {
                 arbitrageAction.print(lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
             }
             if (emailMode) {
-                arbitrageAction.email();
+                arbitrageAction.email((ArbitrageEmailAction) arbitrageActionSelection, email, email, lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
             }
             if (tradingMode) {
                 arbitrageAction.trade(lowAsk, highBid, difference, (ArbitrageTradingAction) arbitrageActionSelection);

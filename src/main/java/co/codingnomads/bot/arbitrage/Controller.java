@@ -1,9 +1,13 @@
 package co.codingnomads.bot.arbitrage;
 
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
+import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import org.knowm.xchange.currency.CurrencyPair;
 
@@ -33,30 +37,30 @@ public class Controller {
         // ExchangeList.add(new PoloniexSpecs()); // need Pojo building and CAPTCHA issue resolving (internal: verif)
 
 ////        start for arbitrage
-//        Arbitrage arbitrage = new Arbitrage();
-//        //ArbitrageActionSelection arbitrageActionSelection = new ArbitrageTradingAction(1.01,0.02);
+           Arbitrage arbitrage = new Arbitrage();
+           //ArbitrageActionSelection arbitrageActionSelection = new ArbitrageTradingAction(1.01,0.02);
 //        // do not use anything else than Kraken or GDAX for Arbitrage up to now. Kraken min ETH is 0.02 and GDAX: 0.01
-//        ArbitrageActionSelection arbitrageActionSelection = new ArbitragePrintAction(1.01);
-//        // ArbitrageActionSelection arbitrageActionSelection = new ArbitrageEmailAction(1.03, "Kevin@loves.tortugas");
+        ArbitrageActionSelection arbitrageActionSelection = new ArbitragePrintAction(1.01);
+        ArbitrageActionSelection arbitrageActionSelection2 = new ArbitrageEmailAction(1.03, "neagkv@gmail.com");
 //
-//        arbitrage.run(
-//                CurrencyPair.ETH_EUR,
-//                ExchangeList,
-//                arbitrageActionSelection);
+        arbitrage.run(
+                CurrencyPair.ETH_EUR,
+                ExchangeList,
+                arbitrageActionSelection2);
 ////        end for arbitrage
 
 //        start for detection
-        Detection detection = new Detection();
+       // Detection detection = new Detection();
 
         ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
         currencyPairList.add(CurrencyPair.BCH_EUR);
         currencyPairList.add(CurrencyPair.ETH_EUR);
         currencyPairList.add(CurrencyPair.BTC_EUR);
 
-         DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+        // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
         //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
 
-        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+       // detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 //        end for detection
 
     }
