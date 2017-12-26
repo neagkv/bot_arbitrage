@@ -8,10 +8,9 @@ import org.knowm.xchange.poloniex.PoloniexExchange;
  *
  * Extension of the specs for Poloniex
  */
-//todo implement
 public class PoloniexSpecs extends ExchangeSpecs {
 
-    protected PoloniexSpecs(String apiKey, String secretKey) {
+    public PoloniexSpecs(String apiKey, String secretKey) {
         super(apiKey, secretKey);
         if (null != apiKey && null != secretKey) {
             setTradingMode(true);

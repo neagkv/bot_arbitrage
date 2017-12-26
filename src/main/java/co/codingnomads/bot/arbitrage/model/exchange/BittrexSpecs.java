@@ -8,10 +8,9 @@ import org.knowm.xchange.bittrex.BittrexExchange;
  *
  * Extension of the specs for Bittrex
  */
-//todo implement
 public class BittrexSpecs extends ExchangeSpecs  {
 
-    protected BittrexSpecs(String apiKey, String secretKey) {
+    public BittrexSpecs(String apiKey, String secretKey) {
         super(apiKey, secretKey);
         if (null != apiKey && null != secretKey) {
             setTradingMode(true);
