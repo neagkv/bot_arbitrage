@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class BidAsk {
 
     private CurrencyPair currencyPair;
-    private Exchange exchange;
+    Exchange exchange;
     private BigDecimal bid;
     private BigDecimal ask;
     private BigDecimal baseFund;

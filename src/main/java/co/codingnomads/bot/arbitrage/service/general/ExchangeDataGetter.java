@@ -23,6 +23,8 @@ public class ExchangeDataGetter {
 
     // protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private final static int TIMEOUT = 30;
+
     /**
      * Get All the BidAsk from the selected exchanged
      * @param activatedExchanges list of currently acrivated exchanges
@@ -63,13 +65,26 @@ public class ExchangeDataGetter {
     }
 
     // todo and an anti hang condition in there (if longer than X wait, return null)
-    public static BidAsk getBidAsk(Exchange exchange, CurrencyPair currencyPair) {
-        Ticker ticker;
+    public static BidAsk getBidAsk(Exchange exchange, CurrencyPair currencyPair) throws TimeoutException {
+
+        final ExecutorService service = Executors.newSingleThreadExecutor();
+
         try {
-            ticker = exchange.getMarketDataService().getTicker(currencyPair);
-        } catch (Exception e)  { //todo need to refine that exception handling
-            return null;
+            final Future<BidAsk> f = service.submit(() -> {
+                Ticker ticker = exchange.getMarketDataService().getTicker(currencyPair);
+                return new BidAsk(currencyPair, exchange, ticker.getBid(), ticker.getAsk());
+            });
+
+            return f.get(TIMEOUT, TimeUnit.SECONDS);
+        } catch (final TimeoutException e) {
+            throw e;
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            service.shutdown();
         }
-        return new BidAsk(currencyPair, exchange, ticker.getBid(), ticker.getAsk());
     }
 }
+
+
+

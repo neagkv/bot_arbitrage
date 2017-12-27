@@ -9,6 +9,7 @@ import org.knowm.xchange.dto.account.Wallet;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Thomas Leruth on 12/16/17
@@ -47,7 +48,12 @@ public class GetBidAskThread implements Callable<BidAsk> {
             }
         }
 
-        BidAsk bidAsk = ExchangeDataGetter.getBidAsk(activatedExchange.getExchange(), currencyPair);
+        BidAsk bidAsk = null;
+        try {
+            bidAsk = ExchangeDataGetter.getBidAsk(activatedExchange.getExchange(), currencyPair);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
         if (tradingEnvironment && bidAsk != null) {
 

@@ -65,13 +65,11 @@ public class ArbitrageAction {
     public void email (ArbitrageEmailAction arbitrageEmailAction, Email email, EmailBody emailBody,
                        BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin) throws EmailLimitException {
 
-        software.amazon.ion.Timestamp currentTime = software.amazon.ion.Timestamp.now();
 
         int emailDailyCount = 0;
 
-        if (emailBody.getTimeOfFirstSend().compareTo(currentTime > emailBody.getTimeOfFirstSend().addHour(24))) {
+        if (emailBody.getEmailfirstCalltime() < System.currentTimeMillis()) {
 
-            emailBody.setTimeOfFirstSend(emailBody.getNow());
 
         } else
 
