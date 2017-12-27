@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.service.general.thread;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.account.Wallet;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * A runnable class using Callable<BidAsk> to be able to return a BidAsk
  */
-public class GetBidAskThread implements Callable<BidAsk> {
+public class GetTickerDataThread implements Callable<TickerData> {
 
     private ActivatedExchange activatedExchange;
     private CurrencyPair currencyPair;
@@ -31,7 +31,7 @@ public class GetBidAskThread implements Callable<BidAsk> {
      * @return the BidAsk for the particular exchanges
      */
     @Override
-    public BidAsk call() {
+    public TickerData call() {
 
         BigDecimal baseFund = null;
         BigDecimal counterFund = null;
@@ -48,28 +48,28 @@ public class GetBidAskThread implements Callable<BidAsk> {
             }
         }
 
-        BidAsk bidAsk = null;
+        TickerData tickerData = null;
         try {
-            bidAsk = ExchangeDataGetter.getBidAsk(activatedExchange.getExchange(), currencyPair);
+            tickerData = ExchangeDataGetter.getTickerData(activatedExchange.getExchange(), currencyPair);
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
 
-        if (tradingEnvironment && bidAsk != null) {
+        if (tradingEnvironment && tickerData != null) {
 
             baseNeed = tradeAmountBase;
-            counterNeed = tradeAmountBase.multiply(bidAsk.getBid());
+            counterNeed = tradeAmountBase.multiply(tickerData.getBid());
 
             System.out.println(baseNeed + " " + counterNeed);
-            bidAsk.setBaseFund(baseFund);
-            bidAsk.setCounterFund(counterFund);
+            tickerData.setBaseFund(baseFund);
+            tickerData.setCounterFund(counterFund);
 
             if (counterFund.compareTo(counterNeed) < 0) {
-                bidAsk.setAsk(bidAsk.getAsk().multiply(BigDecimal.valueOf(1000))); // (null creates issues)
+                tickerData.setAsk(tickerData.getAsk().multiply(BigDecimal.valueOf(1000))); // (null creates issues)
                 // 1000 should make sure we never use that one
             }
             if (baseFund.compareTo(baseNeed) < 0) {
-                bidAsk.setBid(BigDecimal.valueOf(-1));
+                tickerData.setBid(BigDecimal.valueOf(-1));
             }
             // bad design that I pull bidAsk then turn it null but I need it to figure baseNeed
             if (counterFund.compareTo(counterNeed) < 0 && baseFund.compareTo(baseNeed) < 0) {
@@ -78,7 +78,7 @@ public class GetBidAskThread implements Callable<BidAsk> {
                 return null;
             }
         }
-        return bidAsk;
+        return tickerData;
     }
 
     /**
@@ -86,7 +86,7 @@ public class GetBidAskThread implements Callable<BidAsk> {
      * @param activatedExchange a pojo containing the exchange and some booleans
      * @param currencyPair the pair investigated
      */
-    public GetBidAskThread(ActivatedExchange activatedExchange, CurrencyPair currencyPair, double tradeAmountBase) {
+    public GetTickerDataThread(ActivatedExchange activatedExchange, CurrencyPair currencyPair, double tradeAmountBase) {
         this.activatedExchange = activatedExchange;
         this.currencyPair = currencyPair;
         exchangeName = activatedExchange.getExchange().getExchangeSpecification().getExchangeName();

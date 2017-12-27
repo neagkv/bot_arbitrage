@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionPrintAction;
@@ -51,7 +51,7 @@ public class Detection {
 
             for (CurrencyPair currencyPair : currencyPairList) {
 
-                ArrayList<BidAsk> listBidAsk = exchangeDataGetter.getAllBidAsk(
+                ArrayList<TickerData> listBidAsk = exchangeDataGetter.getAllBidAsk(
                         activatedExchanges,
                         currencyPair,
                         tradeValueBase);
@@ -61,8 +61,8 @@ public class Detection {
                     continue;
                 }
 
-                BidAsk lowAsk = dataUtil.lowAskFinder(listBidAsk);
-                BidAsk highBid = dataUtil.highBidFinder(listBidAsk);
+                TickerData lowAsk = dataUtil.lowAskFinder(listBidAsk);
+                TickerData highBid = dataUtil.highBidFinder(listBidAsk);
 
                 BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
                 BigDecimal differenceFormatted = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));

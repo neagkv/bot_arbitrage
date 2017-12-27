@@ -1,6 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
@@ -24,7 +24,6 @@ import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.springframework.stereotype.Service;
 import software.amazon.ion.Timestamp;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -47,7 +46,7 @@ public class ArbitrageAction {
      * @param difference the difference in prices
      * @param arbitrageMargin the margin difference accepted (not a valid arbitrage is below that value)
      */
-    public void print(BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin){
+    public void print(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin){
          if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
             System.out.println("ARBITRAGE DETECTED!!!"
                     + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
@@ -62,18 +61,19 @@ public class ArbitrageAction {
         }
     }
 
+   // TODO add email rate limit monitor method
     public void email (ArbitrageEmailAction arbitrageEmailAction, Email email, EmailBody emailBody,
-                       BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin) throws EmailLimitException {
+                       TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) throws EmailLimitException {
 
 
-        int emailDailyCount = 0;
+//        int emailDailyCount = 0;
 
-        if (emailBody.getEmailfirstCalltime() < System.currentTimeMillis()) {
+        //if (emailBody.getEmailfirstCalltime() < System.currentTimeMillis()) {
 
 
-        } else
-
-            if (emailDailyCount < 200) {
+//        } else
+//
+//            if (emailDailyCount < 200) {
 
 
                 try {
@@ -105,19 +105,19 @@ public class ArbitrageAction {
                             + ex.getMessage());
                 }
 
-                ++emailDailyCount;
+               // ++emailDailyCount;
             }
 
-            else {
+//            else {
+//
+//            throw new EmailLimitException("You can not send more than 200 per day, please try again in 24 hours");
 
-            throw new EmailLimitException("You can not send more than 200 per day, please try again in 24 hours");
+          //  }
 
-            }
+       // }
 
-        }
-
-    public void trade(BidAsk lowAsk,
-                      BidAsk highBid,
+    public void trade(TickerData lowAsk,
+                      TickerData highBid,
                       BigDecimal difference,
                       ArbitrageTradingAction arbitrageTradingAction)
     {

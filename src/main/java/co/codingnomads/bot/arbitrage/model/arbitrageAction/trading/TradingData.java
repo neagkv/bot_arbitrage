@@ -1,6 +1,5 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.trading;
-
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.Wallet;
 
@@ -35,7 +34,7 @@ public class TradingData {
     BigDecimal realDifferenceFormated;
     BigDecimal differenceTotalBase;
 
-    public TradingData(BidAsk lowAsk, BidAsk highBid, Wallet walletBuy, Wallet walletSell) {
+    public TradingData(TickerData lowAsk, TickerData highBid, Wallet walletBuy, Wallet walletSell) {
         this.base = lowAsk.getCurrencyPair().base;
         this.counter = lowAsk.getCurrencyPair().counter;
         this.oldBaseBuy = lowAsk.getBaseFund();

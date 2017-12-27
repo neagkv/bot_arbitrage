@@ -1,6 +1,5 @@
 package co.codingnomads.bot.arbitrage.service.general;
-
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class DataUtil {
      * @param list a list of BidAsk for different exchanges
      * @return the item with the lowest Ask
      */
-    public BidAsk lowAskFinder(ArrayList<BidAsk> list) {
+    public TickerData lowAskFinder(ArrayList<TickerData> list) {
         int lowIndex = 0;
         if (list.size() > 1) {
             for (int i = 1; i < list.size(); i++) {
@@ -37,7 +36,7 @@ public class DataUtil {
      * @param list a list of BidAsk for different exchanges
      * @return the item with highest Ask
      */
-    public BidAsk highBidFinder(ArrayList<BidAsk> list) {
+    public TickerData highBidFinder(ArrayList<TickerData> list) {
         int highIndex = 0;
         if (list.size() > 1) {
             for (int i = 1; i < list.size(); i++) {

@@ -1,8 +1,8 @@
 package co.codingnomads.bot.arbitrage.service.general;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.BidAsk;
-import co.codingnomads.bot.arbitrage.service.general.thread.GetBidAskThread;
+import co.codingnomads.bot.arbitrage.model.TickerData;
+import co.codingnomads.bot.arbitrage.service.general.thread.GetTickerDataThread;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
@@ -31,27 +31,27 @@ public class ExchangeDataGetter {
      * @param currencyPair the pair the BidAsk is seeked for
      * @return A list of BidAsk for all the exchanges
      */
-    public ArrayList<BidAsk> getAllBidAsk(ArrayList<ActivatedExchange> activatedExchanges,
-                                          CurrencyPair currencyPair,
-                                          double tradeValueBase) {
+    public ArrayList<TickerData> getAllBidAsk(ArrayList<ActivatedExchange> activatedExchanges,
+                                              CurrencyPair currencyPair,
+                                              double tradeValueBase) {
 
-        ArrayList<BidAsk> list = new ArrayList<>();
+        ArrayList<TickerData> list = new ArrayList<>();
 
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        CompletionService<BidAsk> pool = new ExecutorCompletionService<>(executor);
+        CompletionService<TickerData> pool = new ExecutorCompletionService<>(executor);
 
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated()) {
-                GetBidAskThread temp = new GetBidAskThread(activatedExchange, currencyPair, tradeValueBase);
+                GetTickerDataThread temp = new GetTickerDataThread(activatedExchange, currencyPair, tradeValueBase);
                 pool.submit(temp);
             }
         }
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated()) {
                 try {
-                    BidAsk bidAsk = pool.take().get();
-                    if (null != bidAsk) {
-                        list.add(bidAsk);
+                    TickerData tickerData = pool.take().get();
+                    if (null != tickerData) {
+                        list.add(tickerData);
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -64,15 +64,14 @@ public class ExchangeDataGetter {
         return list;
     }
 
-    // todo and an anti hang condition in there (if longer than X wait, return null)
-    public static BidAsk getBidAsk(Exchange exchange, CurrencyPair currencyPair) throws TimeoutException {
+    public static TickerData getTickerData(Exchange exchange, CurrencyPair currencyPair) throws TimeoutException {
 
         final ExecutorService service = Executors.newSingleThreadExecutor();
 
         try {
-            final Future<BidAsk> f = service.submit(() -> {
+            final Future<TickerData> f = service.submit(() -> {
                 Ticker ticker = exchange.getMarketDataService().getTicker(currencyPair);
-                return new BidAsk(currencyPair, exchange, ticker.getBid(), ticker.getAsk());
+                return new TickerData(currencyPair, exchange, ticker.getBid(), ticker.getAsk());
             });
 
             return f.get(TIMEOUT, TimeUnit.SECONDS);

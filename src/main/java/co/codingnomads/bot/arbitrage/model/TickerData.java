@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * Pojo class to get the bid/ask and the exchangeName as well as the currency pair
  */
 // todo not a big fan of the name
-public class BidAsk {
+public class TickerData {
 
     private CurrencyPair currencyPair;
     Exchange exchange;
@@ -70,7 +70,7 @@ public class BidAsk {
         this.counterFund = counterFund;
     }
 
-    public BidAsk(CurrencyPair currencyPair, Exchange exchange, BigDecimal bid, BigDecimal ask) {
+    public TickerData(CurrencyPair currencyPair, Exchange exchange, BigDecimal bid, BigDecimal ask) {
         this.currencyPair = currencyPair;
         this.exchange = exchange;
         this.bid = bid;

@@ -77,7 +77,7 @@ public class Arbitrage {
 
         while (i < loop) {
 
-            ArrayList<BidAsk> listBidAsk = exchangeDataGetter.getAllBidAsk(
+            ArrayList<TickerData> listBidAsk = exchangeDataGetter.getAllBidAsk(
                     activatedExchanges,
                     currencyPair,
                     tradeValueBase);
@@ -92,16 +92,16 @@ public class Arbitrage {
             // temporary
             System.out.println();
             System.out.println("Pulled Data");
-            for (BidAsk bidAsk : listBidAsk) {
-                System.out.println(bidAsk.toString());
+            for (TickerData tickerData : listBidAsk) {
+                System.out.println(tickerData.toString());
             }
             System.out.println();
 
             // todo autowire it
             DataUtil dataUtil = new DataUtil();
 
-            BidAsk lowAsk = dataUtil.lowAskFinder(listBidAsk);
-            BidAsk highBid = dataUtil.highBidFinder(listBidAsk);
+            TickerData lowAsk = dataUtil.lowAskFinder(listBidAsk);
+            TickerData highBid = dataUtil.highBidFinder(listBidAsk);
 
             // temporary
             System.out.println("Sorted result");
