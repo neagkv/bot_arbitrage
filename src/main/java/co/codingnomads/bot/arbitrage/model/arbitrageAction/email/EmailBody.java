@@ -8,6 +8,12 @@ import java.util.Date;
 /**
  * @author Kevin Neag
  */
+
+/**
+ * Builder Pojo class that extends the ArbitragePrintAction class
+ * provides the body in text as well as HTML format based on the parameters the user queries
+ * Also provides an email subject
+ */
 public class EmailBody extends ArbitragePrintAction {
 
     String textBody;
@@ -43,6 +49,14 @@ public class EmailBody extends ArbitragePrintAction {
     }
 
 
+    /**
+     * Prints the low asking price and high selling price as well as the difference in the body of each email.
+     * @param lowAsk
+     * @param highBid
+     * @param difference
+     * @param arbitrageMargin
+     * @return
+     */
     public String printTextBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
 
@@ -62,6 +76,14 @@ public class EmailBody extends ArbitragePrintAction {
         return textBody;
     }
 
+    /**
+     * Converts the email body into HTML format
+     * @param lowAsk
+     * @param highBid
+     * @param difference
+     * @param arbitrageMargin
+     * @return
+     */
     public String printHTMLBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
             setHTMLBody("<h1>ARBITRAGE DETECTED!!!<h1>"
@@ -78,6 +100,10 @@ public class EmailBody extends ArbitragePrintAction {
         return HTMLBody;
     }
 
+    /**
+     * Sets "Arbitrage Update" as the subject of each email
+     * @return
+     */
     public String printSubject(){
         setSubjectBody("Arbitrage Update");
         return subjectBody;

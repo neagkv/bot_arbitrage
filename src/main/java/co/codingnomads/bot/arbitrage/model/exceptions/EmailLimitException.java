@@ -3,10 +3,16 @@ package co.codingnomads.bot.arbitrage.model.exceptions;
 /**
  * @author Kevin Neag
  */
+
+
 public class EmailLimitException extends Exception{
 
     String errorMsg;
 
+    /**
+     * An exception so the user can not exceed the daily email limit set by Amazon SES
+     * @param message
+     */
     public EmailLimitException(String message) {
         super(message);
         this.errorMsg = errorMsg;

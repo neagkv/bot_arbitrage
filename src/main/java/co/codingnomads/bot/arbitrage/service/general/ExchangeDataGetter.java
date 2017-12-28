@@ -64,7 +64,14 @@ public class ExchangeDataGetter {
         return list;
     }
 
-
+    /**
+     * Takes an exchange and currency pairs throws them in a thread and calls the corresponding api to the exchange and
+     * returns the bid and ask price for each currency pair. If the api call is longer than the timeout, the thread is terminated.
+     * @param exchange
+     * @param currencyPair
+     * @return TickerData object
+     * @throws TimeoutException if it takes longer than 30 seconds for the api to be called
+     */
     public static TickerData getTickerData(Exchange exchange, CurrencyPair currencyPair) throws TimeoutException {
 
         final ExecutorService service = Executors.newSingleThreadExecutor();

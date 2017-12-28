@@ -66,6 +66,18 @@ public class ArbitrageAction {
     }
 
    // TODO add email rate limit monitor method
+
+    /**
+     * Method to send email alert of the arbitrage action
+     * @param arbitrageEmailAction
+     * @param email
+     * @param emailBody
+     * @param lowAsk
+     * @param highBid
+     * @param difference
+     * @param arbitrageMargin
+     * @throws EmailLimitException
+     */
     public void email (ArbitrageEmailAction arbitrageEmailAction, Email email, EmailBody emailBody,
                        TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) throws EmailLimitException {
 

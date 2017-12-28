@@ -8,6 +8,11 @@ import java.util.Date;
 /**
  * @author Kevin Neag
  */
+
+/**
+ * Email pojo class than extends the EmailBody class
+ * Provides the From email address to a pre-verified email address that is allowed to send 200 emails per day
+ */
 public class Email extends EmailBody{
 
 
