@@ -2,6 +2,9 @@ package co.codingnomads.bot.arbitrage.model.arbitrageAction.trading;
 
 /**
  * Created by Thomas Leruth on 12/17/17
+ *
+ * POJO class to wrap the orderID with an item to recognize the orderID (this class is needed because of the
+ * drawback of using Callable<> being that they come back in unpredictable order
  */
 
 public class OrderIDWrapper {

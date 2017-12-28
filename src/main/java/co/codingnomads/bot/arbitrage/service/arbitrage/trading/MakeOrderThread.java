@@ -8,6 +8,8 @@ import java.util.concurrent.Callable;
 
 /**
  * Created by Thomas Leruth on 12/17/17
+ *
+ * Callable class to get the OrderIDWrapper
  */
 
 public class MakeOrderThread implements Callable<OrderIDWrapper> {

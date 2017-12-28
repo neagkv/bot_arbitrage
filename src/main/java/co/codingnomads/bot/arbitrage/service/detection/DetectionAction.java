@@ -1,11 +1,13 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DifferenceWrapper;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DifferenceWrapper;
 
 import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/18/17
+ *
+ * Class to define the potential acting behaviors of the detection bot
  */
 
 public class DetectionAction {

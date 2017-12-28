@@ -5,6 +5,8 @@ import org.knowm.xchange.bitstamp.BitstampExchange;
 
 /**
  * Created by Thomas Leruth on 12/16/17
+ *
+ * Extension of the specs for Bistamp
  */
 // todo implement but have no key yet
 public class BitstampSpecs extends ExchangeSpecs {

@@ -7,15 +7,12 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
 /**
  * Created by Thomas Leruth on 12/13/17
- */
-
-/**
+ *
  * A class to get data from exchanges and format it correctly
  */
 @Service
@@ -26,12 +23,15 @@ public class ExchangeDataGetter {
     private final static int TIMEOUT = 30;
 
     /**
-     * Get All the BidAsk from the selected exchanged
+     *
+     * Get All the TickerData from the selected exchanged
      * @param activatedExchanges list of currently acrivated exchanges
-     * @param currencyPair the pair the BidAsk is seeked for
-     * @return A list of BidAsk for all the exchanges
+     * @param currencyPair the pair the TickerData is seeked for
+     * @param tradeValueBase the value of the trade if using the trading action as behavior
+     * @return A list of TickerData for all the exchanges
      */
-    public ArrayList<TickerData> getAllBidAsk(ArrayList<ActivatedExchange> activatedExchanges,
+    public ArrayList<TickerData> getAllTickerData(ArrayList<ActivatedExchange> activatedExchanges,
+
                                               CurrencyPair currencyPair,
                                               double tradeValueBase) {
 
@@ -63,6 +63,7 @@ public class ExchangeDataGetter {
 
         return list;
     }
+
 
     public static TickerData getTickerData(Exchange exchange, CurrencyPair currencyPair) throws TimeoutException {
 

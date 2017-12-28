@@ -5,9 +5,7 @@ import org.knowm.xchange.kraken.KrakenExchange;
 
 /**
  * Created by Thomas Leruth on 12/16/17
- */
-
-/**
+ *
  * Extension of the specs for Kraken
  */
 public class KrakenSpecs extends ExchangeSpecs {

@@ -8,9 +8,7 @@ import java.util.Map;
 
 /**
  * Created by Thomas Leruth on 12/16/17
- */
-
-/**
+*
  * Extension of the specs for GDAX
  */
 public class GDAXSpecs extends ExchangeSpecs {
