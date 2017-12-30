@@ -3,6 +3,8 @@ package co.codingnomads.bot.arbitrage;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
@@ -44,7 +46,7 @@ public class Controller {
         ArbitrageActionSelection arbitrageActionSelection = new ArbitragePrintAction(1.01);
         ArbitrageActionSelection arbitrageActionSelection2 = new ArbitrageEmailAction(1.03, "neagkv@gmail.com");
 //
-        arbitrage.run(
+       arbitrage.run(
                 CurrencyPair.ETH_EUR,
                 ExchangeList,
                 arbitrageActionSelection2);
@@ -64,7 +66,7 @@ public class Controller {
        // detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 //        end for detection
 
-        ExchangeList.add(new GDAXSpecs("qqq", "", "")); // internal: good but waiting limit increase
+//        ExchangeList.add(new GDAXSpecs("qqq", "", "")); // internal: good but waiting limit increase
 //        ExchangeList.add(new KrakenSpecs("bbbb", "dadad")); // internal: good but slow
 //        ExchangeList.add(new BitfinexSpecs()); // internal: good but waiting limit increase
 //        ExchangeList.add(new BittrexSpecs()); // Need Pojo building (internal: all good)
@@ -72,19 +74,19 @@ public class Controller {
 //        ExchangeList.add(new PoloniexSpecs()); // need Pojo building and CAPTCHA issue resolving (internal: verif)
 
 
-////        start for detection
-//        Detection detection = new Detection();
-//
-//        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-////        currencyPairList.add(CurrencyPair.BCH_EUR);
-//        currencyPairList.add(CurrencyPair.ETH_EUR);
-////        currencyPairList.add(CurrencyPair.BTC_EUR);
-//
-//        //DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+//        start for detection
+      //  Detection detection = new Detection();
+
+       // ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+//        currencyPairList.add(CurrencyPair.BCH_EUR);
+        //currencyPairList.add(CurrencyPair.ETH_EUR);
+//        currencyPairList.add(CurrencyPair.BTC_EUR);
+
+        //DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
 //        DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
 //
 //        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
-////        end for detection
+//        end for detection
 
     }
 
