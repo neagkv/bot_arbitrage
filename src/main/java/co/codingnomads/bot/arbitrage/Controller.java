@@ -3,7 +3,7 @@ package co.codingnomads.bot.arbitrage;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.TimeOfCall;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailSendTime;
 import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
@@ -14,8 +14,8 @@ import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
-import org.apache.ibatis.annotations.Mapper;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +29,6 @@ import java.util.ArrayList;
  */
 
 public class Controller {
-
 
 
     public static void main(String[] args) throws IOException, InterruptedException, EmailLimitException {
@@ -51,10 +50,10 @@ public class Controller {
         ArbitrageActionSelection arbitrageActionSelection = new ArbitragePrintAction(1.01);
         ArbitrageActionSelection arbitrageActionSelection2 = new ArbitrageEmailAction(1.03, "neagkv@gmail.com");
 //
-       arbitrage.run(
-                CurrencyPair.ETH_EUR,
-                ExchangeList,
-                arbitrageActionSelection);
+//       arbitrage.run(
+//                CurrencyPair.ETH_EUR,
+//                ExchangeList,
+//                arbitrageActionSelection2);
 ////        end for arbitrage
 
 //        start for detection
@@ -65,11 +64,11 @@ public class Controller {
         currencyPairList.add(CurrencyPair.ETH_EUR);
         currencyPairList.add(CurrencyPair.BTC_EUR);
 
-        TimeOfCall timeOfCall = new TimeOfCall();
+        EmailSendTime emailSendTime = new EmailSendTime();
 
-        MapperService mapperService = new MapperService();
-        mapperService.insertTimeOfCall(timeOfCall);
-
+      MapperService mapperService = new MapperService();
+       mapperService.insertTimeOfCall(emailSendTime);
+       // mapperService.getALL();
 
         // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
         //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
