@@ -10,6 +10,7 @@ import java.util.ArrayList;
  *
  * Class containing methods to work on data
  */
+
 @Service
 public class DataUtil {
 

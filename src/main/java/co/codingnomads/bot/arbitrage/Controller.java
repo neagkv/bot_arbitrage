@@ -3,15 +3,18 @@ package co.codingnomads.bot.arbitrage;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.TimeOfCall;
 import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
+import co.codingnomads.bot.arbitrage.service.MapperService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
+import org.apache.ibatis.annotations.Mapper;
 import org.knowm.xchange.currency.CurrencyPair;
 
 import java.io.IOException;
@@ -26,6 +29,8 @@ import java.util.ArrayList;
  */
 
 public class Controller {
+
+
 
     public static void main(String[] args) throws IOException, InterruptedException, EmailLimitException {
 
@@ -49,7 +54,7 @@ public class Controller {
        arbitrage.run(
                 CurrencyPair.ETH_EUR,
                 ExchangeList,
-                arbitrageActionSelection2);
+                arbitrageActionSelection);
 ////        end for arbitrage
 
 //        start for detection
@@ -59,6 +64,12 @@ public class Controller {
         currencyPairList.add(CurrencyPair.BCH_EUR);
         currencyPairList.add(CurrencyPair.ETH_EUR);
         currencyPairList.add(CurrencyPair.BTC_EUR);
+
+        TimeOfCall timeOfCall = new TimeOfCall();
+
+        MapperService mapperService = new MapperService();
+        mapperService.insertTimeOfCall(timeOfCall);
+
 
         // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
         //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
