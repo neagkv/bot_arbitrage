@@ -1,6 +1,5 @@
 package co.codingnomads.bot.arbitrage;
 
-
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
@@ -16,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-
+import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -29,17 +27,13 @@ import java.util.ArrayList;
  * Controller for running the arbitrage or detection bot
  */
 
-@SpringBootApplication
+@Service
 public class Controller {
 
     @Autowired
     MapperService mapperService;
-    public static void main(String[] args) throws IOException, InterruptedException, EmailLimitException {
 
-        SpringApplication.run(Controller.class);
-
-
-
+    public  void runBot() throws IOException, InterruptedException, EmailLimitException {
 
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
 
@@ -57,11 +51,11 @@ public class Controller {
         ArbitrageActionSelection arbitrageActionSelection = new ArbitragePrintAction(1.01);
         ArbitrageActionSelection arbitrageActionSelection2 = new ArbitrageEmailAction(1.03, "neagkv@gmail.com");
 //
-//       arbitrage.run(
-//                CurrencyPair.ETH_EUR,
-//                ExchangeList,
-//                arbitrageActionSelection2);
-////        end for arbitrage
+       arbitrage.run(
+                CurrencyPair.ETH_EUR,
+                ExchangeList,
+                arbitrageActionSelection2);
+       // end for arbitrage
 
 //        start for detection
        // Detection detection = new Detection();
@@ -73,12 +67,11 @@ public class Controller {
 
         EmailSendTime emailSendTime = new EmailSendTime();
 
-        Controller controller = new Controller();
-        controller.testEmail();
+        mapperService.insertTimeOfCall(emailSendTime);
 
-      //MapperService mapperService = new MapperService();
-       // mapperService.insertTimeOfCall(emailSendTime);
-       // mapperService.getALL();
+        //MapperService mapperService = new MapperService();
+        // mapperService.insertTimeOfCall(emailSendTime);
+        // mapperService.getALL();
 
         // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
         //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
@@ -110,10 +103,6 @@ public class Controller {
 
     }
 
-    public void testEmail(){
-        EmailSendTime emailSendTime = new EmailSendTime();
-        mapperService.insertTimeOfCall(emailSendTime);
-    }
 
 }
 
