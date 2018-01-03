@@ -1,5 +1,6 @@
 package co.codingnomads.bot.arbitrage;
 
+
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
@@ -10,12 +11,12 @@ import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.MapperService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
-import co.codingnomads.bot.arbitrage.service.detection.Detection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.model.exchange.*;
-import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,10 +29,16 @@ import java.util.ArrayList;
  * Controller for running the arbitrage or detection bot
  */
 
+@SpringBootApplication
 public class Controller {
 
-
+    @Autowired
+    MapperService mapperService;
     public static void main(String[] args) throws IOException, InterruptedException, EmailLimitException {
+
+        SpringApplication.run(Controller.class);
+
+
 
 
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
@@ -66,8 +73,11 @@ public class Controller {
 
         EmailSendTime emailSendTime = new EmailSendTime();
 
-      MapperService mapperService = new MapperService();
-       mapperService.insertTimeOfCall(emailSendTime);
+        Controller controller = new Controller();
+        controller.testEmail();
+
+      //MapperService mapperService = new MapperService();
+       // mapperService.insertTimeOfCall(emailSendTime);
        // mapperService.getALL();
 
         // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
@@ -98,6 +108,11 @@ public class Controller {
 //        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 //        end for detection
 
+    }
+
+    public void testEmail(){
+        EmailSendTime emailSendTime = new EmailSendTime();
+        mapperService.insertTimeOfCall(emailSendTime);
     }
 
 }
