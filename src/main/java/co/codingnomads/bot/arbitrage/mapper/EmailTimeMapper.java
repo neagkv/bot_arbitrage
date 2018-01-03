@@ -4,7 +4,10 @@ import com.amazonaws.services.dynamodbv2.xspec.S;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
+import org.apache.ibatis.type.MappedTypes;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kevin Neag
