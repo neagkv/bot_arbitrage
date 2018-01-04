@@ -24,11 +24,8 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.springframework.stereotype.Service;
-import software.amazon.ion.Timestamp;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.concurrent.*;
 
 /**

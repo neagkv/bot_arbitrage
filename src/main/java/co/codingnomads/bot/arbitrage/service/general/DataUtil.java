@@ -2,7 +2,6 @@ package co.codingnomads.bot.arbitrage.service.general;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 
 /**

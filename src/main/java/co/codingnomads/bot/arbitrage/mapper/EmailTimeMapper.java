@@ -1,8 +1,8 @@
 package co.codingnomads.bot.arbitrage.mapper;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailSendTime;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
 
 /**
  * @author Kevin Neag
@@ -11,15 +11,15 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface EmailTimeMapper {
 
-    String INSERT_TimeOfCALL = "INSERT INTO `bot.arbitrage`.`new_table` (`timeofcall`) VALUES " + "(#{timeOfCall})";
-    String SelectAll ="SELECT * FROM `bot.arbitrage`.`new_table`";
+    String INSERT_EmailTime = "INSERT INTO `bot.arbitrage`.`emailinfo` (`TimeOfCall`) VALUES " + "(#{currentTime})";
 
-    @Select(SelectAll)
-    public EmailSendTime getALL();
+    String GET_Last_CallTime = "SELECT * FROM `bot.arbitrage`.`emailinfo` where TimeOfCall = #{currentTime}";
 
-    @Insert(INSERT_TimeOfCALL)
-    public int insertValue(int timeOfCall);
+    @Insert(INSERT_EmailTime)
+    public void insertEmailTime(String currentTime);
 
+    @Select(GET_Last_CallTime)
+    public String getLastCallTime(String currentTime);
 
 
 

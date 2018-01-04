@@ -1,9 +1,10 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
+
 
 /**
  * @author Kevin Neag
@@ -14,11 +15,21 @@ import java.util.Date;
  * provides the body in text as well as HTML format based on the parameters the user queries
  * Also provides an email subject
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmailBody extends ArbitragePrintAction {
 
+    String ToAddress = "neagkv@gmail.com";
     String textBody;
     String HTMLBody;
-    String subjectBody;
+    String subjectBody = "Arbitrage Update";
+
+    java.util.Date dt = new java.util.Date();
+
+    java.text.SimpleDateFormat sdf =
+            new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    String currentTime = sdf.format(dt);
 
     public EmailBody(double arbitrageMargin) {
         super(arbitrageMargin);
@@ -48,6 +59,21 @@ public class EmailBody extends ArbitragePrintAction {
         this.subjectBody = subjectBody;
     }
 
+    public String getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public String getToAddress() {
+        return ToAddress;
+    }
+
+    public void setToAddress(String toAddress) {
+        ToAddress = toAddress;
+    }
 
     /**
      * Prints the low asking price and high selling price as well as the difference in the body of each email.

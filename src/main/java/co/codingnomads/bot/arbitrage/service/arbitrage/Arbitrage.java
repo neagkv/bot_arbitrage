@@ -6,7 +6,6 @@ import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;

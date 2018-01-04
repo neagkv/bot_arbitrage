@@ -1,8 +1,6 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.trading;
-import co.codingnomads.bot.arbitrage.model.TickerData;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.Wallet;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 

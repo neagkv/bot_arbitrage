@@ -1,7 +1,6 @@
 package co.codingnomads.bot.arbitrage.model.detectionAction;
 
 import org.knowm.xchange.currency.CurrencyPair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 

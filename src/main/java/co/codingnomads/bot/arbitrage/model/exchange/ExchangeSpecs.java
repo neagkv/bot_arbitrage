@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.model.exchange;
 
 import org.knowm.xchange.ExchangeSpecification;
-import org.knowm.xchange.kraken.KrakenExchange;
+
 
 /**
  * Created by Thomas Leruth on 12/16/17

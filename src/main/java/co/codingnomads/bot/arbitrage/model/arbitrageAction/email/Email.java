@@ -1,9 +1,5 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * @author Kevin Neag

@@ -3,18 +3,14 @@ package co.codingnomads.bot.arbitrage;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailSendTime;
-import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionLogAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailAddress;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.MapperService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,9 +61,11 @@ public class Controller {
         currencyPairList.add(CurrencyPair.ETH_EUR);
         currencyPairList.add(CurrencyPair.BTC_EUR);
 
-        EmailSendTime emailSendTime = new EmailSendTime();
 
-        mapperService.insertTimeOfCall(emailSendTime);
+        EmailBody emailBody = new EmailBody(arbitrageActionSelection2.getArbitrageMargin());
+
+        mapperService.insertEmailStuff(emailBody);
+        mapperService.getLastEmailCallTime(emailBody);
 
         //MapperService mapperService = new MapperService();
         // mapperService.insertTimeOfCall(emailSendTime);
