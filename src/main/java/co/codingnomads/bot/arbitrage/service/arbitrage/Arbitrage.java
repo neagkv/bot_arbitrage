@@ -2,10 +2,9 @@ package co.codingnomads.bot.arbitrage.service.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.*;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
@@ -13,7 +12,6 @@ import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,7 +49,7 @@ public class Arbitrage {
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
-        Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
+        Boolean emailMode = arbitrageActionSelection instanceof EmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
         double tradeValueBase = -1;
@@ -106,15 +104,17 @@ public class Arbitrage {
 
             // todo autowire it
              arbitrageAction = new ArbitrageAction();
-            Email email = new Email(arbitrageActionSelection.getArbitrageMargin());
+
 
 
             if (printMode) {
                 arbitrageAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
             }
             if (emailMode) {
-                arbitrageAction.email((ArbitrageEmailAction) arbitrageActionSelection, email, email, lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
-            }
+                EmailAction emailAction = (EmailAction) arbitrageActionSelection;
+                arbitrageAction.email(emailAction, lowAsk, highBid, difference);
+
+           }
             if (tradingMode) {
                 if (!(arbitrageAction.trade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection))) return;
             }

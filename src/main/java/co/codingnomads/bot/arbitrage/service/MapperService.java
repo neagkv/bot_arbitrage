@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.service;
 
 import co.codingnomads.bot.arbitrage.mapper.EmailTimeMapper;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +16,16 @@ public class MapperService {
     @Autowired
     EmailTimeMapper mapper;
 
-    public void insertEmailStuff(EmailBody emailBody){
+    public void insertEmailStuff(EmailAction email){
 
-        mapper.insertEmailTime(emailBody.getCurrentTime());
+        mapper.insertEmailRecord(email.getTimeEmailSent());
     }
 
-    public void getLastEmailCallTime(EmailBody emailBody){
+    public String getLastEmailCallTime(){
 
-        System.out.println("++++++++++++++++++++++++++++++++++++++++");
-        mapper.getLastCallTime(emailBody.getCurrentTime());
-        System.out.println(emailBody.getCurrentTime());
-        System.out.println("++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(emailBody.getCurrentTime());
-        System.out.println("++++++++++++++++++++++++++++++++++++++++");
+        return mapper.getLastCallTime();
+
     }
+
 
 }

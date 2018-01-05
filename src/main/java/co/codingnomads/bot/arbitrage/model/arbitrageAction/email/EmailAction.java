@@ -1,9 +1,12 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
 import co.codingnomads.bot.arbitrage.model.TickerData;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
+import co.codingnomads.bot.arbitrage.service.arbitrage.ArbitrageAction;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -11,68 +14,103 @@ import java.math.BigDecimal;
  */
 
 /**
- * Builder Pojo class that extends the ArbitragePrintAction class
- * provides the body in text as well as HTML format based on the parameters the user queries
- * Also provides an email subject
+ * Email pojo class than extends the EmailBody class
+ * Provides the From email address to a pre-verified email address that is allowed to send 200 emails per day
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EmailBody extends ArbitragePrintAction {
+public class EmailAction extends ArbitrageActionSelection {
 
-    String ToAddress = "neagkv@gmail.com";
-    String textBody;
-    String HTMLBody;
-    String subjectBody = "Arbitrage Update";
+    // This address must be verified with Amazon SES.
+    String FROM = "cryptoarbitragebot25@gmail.com";
+
+    String TO;
+
+    // The subject line for the email.
+    String SUBJECT;
+
+    // The HTML body for the email.
+   String HTMLBODY;
+
+    // The email body for recipients with non-HTML email clients.
+    String TEXTBODY;
 
     java.util.Date dt = new java.util.Date();
 
     java.text.SimpleDateFormat sdf =
             new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    String currentTime = sdf.format(dt);
+    String timeEmailSent = sdf.format(dt);
 
-    public EmailBody(double arbitrageMargin) {
+    public EmailAction(double arbitrageMargin) {
         super(arbitrageMargin);
     }
 
-    public String getTextBody() {
-        return textBody;
+
+    public EmailAction(double arbitrageMargin, String FROM, String TO, String SUBJECT, String HTMLBODY, String TEXTBODY, String timeEmailSent) {
+        super(arbitrageMargin);
+        this.FROM = FROM;
+        this.TO = TO;
+        this.SUBJECT = SUBJECT;
+        this.HTMLBODY = HTMLBODY;
+        this.TEXTBODY = TEXTBODY;
+        this.dt = dt;
+        this.sdf = sdf;
+        this.timeEmailSent = timeEmailSent;
     }
 
-    public void setTextBody(String textBody) {
-        this.textBody = textBody;
+    public EmailAction(double arbitrageMargin, String TO) {
+        super(arbitrageMargin);
+        this.TO = TO;
     }
 
-    public String getHTMLBody() {
-        return HTMLBody;
+    public String getFROM() {
+        return FROM;
     }
 
-    public void setHTMLBody(String HTMLBody) {
-        this.HTMLBody = HTMLBody;
+    public void setFROM(String FROM) {
+        this.FROM = FROM;
     }
 
-    public String getSubjectBody() {
-        return subjectBody;
+
+    public String getSUBJECT() {
+        return SUBJECT;
     }
 
-    public void setSubjectBody(String subjectBody) {
-        this.subjectBody = subjectBody;
+    public void setSUBJECT(String SUBJECT) {
+        this.SUBJECT = SUBJECT;
     }
 
-    public String getCurrentTime() {
-        return currentTime;
+    public String getHTMLBODY() {
+        return HTMLBODY;
     }
 
-    public void setCurrentTime(String currentTime) {
-        this.currentTime = currentTime;
+    public void setHTMLBODY(String HTMLBODY) {
+        this.HTMLBODY = HTMLBODY;
     }
 
-    public String getToAddress() {
-        return ToAddress;
+    public String getTEXTBODY() {
+        return TEXTBODY;
     }
 
-    public void setToAddress(String toAddress) {
-        ToAddress = toAddress;
+    public void setTEXTBODY(String TEXTBODY) {
+        this.TEXTBODY = TEXTBODY;
+    }
+
+    public String getTO() {
+        return TO;
+    }
+
+    public void setTO(String TO) {
+        this.TO = TO;
+    }
+
+    public String getTimeEmailSent() {
+        return timeEmailSent;
+    }
+
+    public void setTimeEmailSent(String timeEmailSent) {
+        this.timeEmailSent = timeEmailSent;
     }
 
     /**
@@ -86,7 +124,7 @@ public class EmailBody extends ArbitragePrintAction {
     public String printTextBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
 
-            setTextBody("ARBITRAGE DETECTED!!!"
+            setTEXTBODY("ARBITRAGE DETECTED!!!"
                     + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
                     + " for " + lowAsk.getAsk()
                     + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
@@ -97,9 +135,9 @@ public class EmailBody extends ArbitragePrintAction {
 
         } else {
 
-            setTextBody("No arbitrage found");
+            setTEXTBODY("No arbitrage found");
         }
-        return textBody;
+        return TEXTBODY;
     }
 
     /**
@@ -112,7 +150,7 @@ public class EmailBody extends ArbitragePrintAction {
      */
     public String printHTMLBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
-            setHTMLBody("<h1>ARBITRAGE DETECTED!!!<h1>"
+            setHTMLBODY("<h1>ARBITRAGE DETECTED!!!<h1>"
                     + " <p>buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
                     + " for " + lowAsk.getAsk()
                     + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
@@ -121,9 +159,9 @@ public class EmailBody extends ArbitragePrintAction {
                     + (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100))
                     + "%<p>");
         } else {
-            setHTMLBody("No arbitrage found");
+            setHTMLBODY("No arbitrage found");
         }
-        return HTMLBody;
+        return HTMLBODY;
     }
 
     /**
@@ -131,7 +169,7 @@ public class EmailBody extends ArbitragePrintAction {
      * @return
      */
     public String printSubject(){
-        setSubjectBody("Arbitrage Update");
-        return subjectBody;
+        setSUBJECT("Arbitrage Update");
+        return SUBJECT;
     }
 }

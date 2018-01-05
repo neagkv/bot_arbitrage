@@ -1,15 +1,14 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailBody;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TickerDataTrading;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TradingData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
+import co.codingnomads.bot.arbitrage.service.MapperService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.GetWalletWrapperThread;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.MakeOrderThread;
 import com.amazonaws.regions.Regions;
@@ -23,6 +22,7 @@ import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.dto.trade.MarketOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -35,6 +35,9 @@ import java.util.concurrent.*;
  */
 @Service
 public class ArbitrageAction {
+
+    @Autowired
+    MapperService EmailmapperService;
 
     /**
      * Method to print the arbitrage action to the console
@@ -66,29 +69,28 @@ public class ArbitrageAction {
 
     /**
      * Method to send email alert of the arbitrage action
-     * @param arbitrageEmailAction
+     * @param
      * @param email
-     * @param emailBody
      * @param lowAsk
      * @param highBid
      * @param difference
-     * @param arbitrageMargin
+     * @param
      * @throws EmailLimitException
      */
-    public void email (ArbitrageEmailAction arbitrageEmailAction, Email email, EmailBody emailBody,
-                       TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) throws EmailLimitException {
+    public void email (EmailAction email,
+                       TickerData lowAsk, TickerData highBid, BigDecimal difference) throws EmailLimitException {
 
 
-//        int emailDailyCount = 0;
+       int emailDailyCount = 0;
 
-        //if (emailBody.getEmailfirstCalltime() < System.currentTimeMillis()) {
+//         EmailmapperService.getLastEmailCallTime(emailBody); {
+
+//        }
 
 
 //        } else
 //
 //            if (emailDailyCount < 200) {
-
-
                 try {
 
                     AmazonSimpleEmailService client =
@@ -98,19 +100,16 @@ public class ArbitrageAction {
                                     .withRegion(Regions.US_EAST_1).build();
                     SendEmailRequest request = new SendEmailRequest()
                             .withDestination(
-                                    new com.amazonaws.services.simpleemail.model.Destination().withToAddresses(arbitrageEmailAction.getEmail()))
+                                    new com.amazonaws.services.simpleemail.model.Destination().withToAddresses(email.getTO()))
                             .withMessage(new Message()
                                     .withBody(new Body()
                                             .withHtml(new Content()
-                                                    .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk, highBid, difference, arbitrageMargin)))
+                                                    .withCharset("UTF-8").withData(email.printHTMLBody(lowAsk, highBid, difference, email.getArbitrageMargin())))
                                             .withText(new Content()
-                                                    .withCharset("UTF-8").withData(emailBody.printTextBody(lowAsk, highBid, difference, arbitrageMargin))))
+                                                    .withCharset("UTF-8").withData(email.printTextBody(lowAsk, highBid, difference, email.getArbitrageMargin()))))
                                     .withSubject(new Content()
-                                            .withCharset("UTF-8").withData(emailBody.printSubject())))
+                                            .withCharset("UTF-8").withData(email.printSubject())))
                             .withSource(email.getFROM());
-                    // Comment or remove the next line if you are not using a
-                    // configuration set
-                    // .withConfigurationSetName(CONFIGSET);
                     client.sendEmail(request);
                     System.out.println("Email sent!");
                 } catch (Exception ex) {

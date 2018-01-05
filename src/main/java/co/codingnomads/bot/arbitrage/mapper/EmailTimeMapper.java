@@ -11,17 +11,15 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface EmailTimeMapper {
 
-    String INSERT_EmailTime = "INSERT INTO `bot.arbitrage`.`emailinfo` (`TimeOfCall`) VALUES " + "(#{currentTime})";
+    String INSERT_EmailRecord = "INSERT INTO `bot.arbitrage`.`emailinfo` (`TimeOfCall`, `EmailAddress`) VALUES " + "(#{arg1}, #{arg2})";
 
-    String GET_Last_CallTime = "SELECT * FROM `bot.arbitrage`.`emailinfo` where TimeOfCall = #{currentTime}";
+    String GET_Last_CallTime = "SELECT `TimeOfCall` FROM `bot.arbitrage`.`emailinfo` ORDER BY id DESC Limit 1";
 
-    @Insert(INSERT_EmailTime)
-    public void insertEmailTime(String currentTime);
+    @Insert(INSERT_EmailRecord)
+    public void insertEmailRecord(String timeEmailSent);
 
     @Select(GET_Last_CallTime)
-    public String getLastCallTime(String currentTime);
-
-
+    public String getLastCallTime();
 
 }
 
