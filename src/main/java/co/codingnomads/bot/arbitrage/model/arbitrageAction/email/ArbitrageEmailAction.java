@@ -2,8 +2,19 @@ package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.service.arbitrage.ArbitrageAction;
+import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
+import co.codingnomads.bot.arbitrage.service.EmailService;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
+import com.amazonaws.services.simpleemail.model.Body;
+import com.amazonaws.services.simpleemail.model.Content;
+import com.amazonaws.services.simpleemail.model.Message;
+import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,28 +30,17 @@ import java.util.Date;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Service
 public class ArbitrageEmailAction extends ArbitrageActionSelection {
 
-    // This address must be verified with Amazon SES.
-    String FROM = "cryptoarbitragebot25@gmail.com";
+    @Autowired
+    EmailService emailService;
 
-    String TO;
+    Email email = new Email();
 
-    // The subject line for the email.
-    String SUBJECT;
 
-    // The HTML body for the email.
-   String HTMLBODY;
 
-    // The email body for recipients with non-HTML email clients.
-    String TEXTBODY;
 
-    java.util.Date dt = new java.util.Date();
-
-    java.text.SimpleDateFormat sdf =
-            new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    String timeEmailSent = sdf.format(dt);
 
     public ArbitrageEmailAction(double arbitrageMargin) {
         super(arbitrageMargin);
@@ -49,127 +49,72 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
 
     public ArbitrageEmailAction(double arbitrageMargin, String FROM, String TO, String SUBJECT, String HTMLBODY, String TEXTBODY, String timeEmailSent) {
         super(arbitrageMargin);
-        this.FROM = FROM;
-        this.TO = TO;
-        this.SUBJECT = SUBJECT;
-        this.HTMLBODY = HTMLBODY;
-        this.TEXTBODY = TEXTBODY;
-        this.dt = dt;
-        this.sdf = sdf;
-        this.timeEmailSent = timeEmailSent;
+        email.setFROM(FROM);
+        email.setTO(TO);
+        email.setSUBJECT(SUBJECT);
+        email.setHTMLBODY(HTMLBODY);
+        email.setTEXTBODY(TEXTBODY);
+        email.setTimeEmailSent(timeEmailSent);
+
     }
 
     public ArbitrageEmailAction(double arbitrageMargin, String TO) {
         super(arbitrageMargin);
-        this.TO = TO;
+        email.setTO(TO);
+
     }
 
-    public String getFROM() {
-        return FROM;
+    public ArbitrageEmailAction() {
     }
 
-    public void setFROM(String FROM) {
-        this.FROM = FROM;
+    public Email getEmail() {
+        return email;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
     }
 
 
-    public String getSUBJECT() {
-        return SUBJECT;
-    }
 
-    public void setSUBJECT(String SUBJECT) {
-        this.SUBJECT = SUBJECT;
-    }
 
-    public String getHTMLBODY() {
-        return HTMLBODY;
-    }
+    public void email(Email email,
+                      TickerData lowAsk, TickerData highBid, BigDecimal difference, double margin) throws EmailLimitException {
 
-    public void setHTMLBODY(String HTMLBODY) {
-        this.HTMLBODY = HTMLBODY;
-    }
 
-    public String getTEXTBODY() {
-        return TEXTBODY;
-    }
+        if (!emailService.underEmailLimit()) {
 
-    public void setTEXTBODY(String TEXTBODY) {
-        this.TEXTBODY = TEXTBODY;
-    }
 
-    public String getTO() {
-        return TO;
-    }
-
-    public void setTO(String TO) {
-        this.TO = TO;
-    }
-
-    public String getTimeEmailSent() {
-        return timeEmailSent;
-    }
-
-    public void setTimeEmailSent(String timeEmailSent) {
-        this.timeEmailSent = timeEmailSent;
-    }
-
-    /**
-     * Prints the low asking price and high selling price as well as the difference in the body of each email.
-     * @param lowAsk
-     * @param highBid
-     * @param difference
-     * @param arbitrageMargin
-     * @return
-     */
-    public String printTextBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
-        if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
-
-            setTEXTBODY("ARBITRAGE DETECTED!!!"
-                    + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
-                    + " for " + lowAsk.getAsk()
-                    + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
-                    + " for " + highBid.getBid()
-                    + " and make a return (before fees) of "
-                    + (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100))
-                    + "%");
-
-        } else {
-
-            setTEXTBODY("No arbitrage found");
+            throw new EmailLimitException("Email limit reached for the Day, please try again tomorrow");
         }
-        return TEXTBODY;
-    }
+        email.buildHTMLBody(lowAsk,highBid,difference,margin);
+        email.buildTextBody(lowAsk,highBid,difference,margin);
+        email.setSUBJECT("Arbitrage Update");
+        try {
 
-    /**
-     * Converts the email body into HTML format
-     * @param lowAsk
-     * @param highBid
-     * @param difference
-     * @param arbitrageMargin
-     * @return
-     */
-    public String printHTMLBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
-        if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
-            setHTMLBODY("<h1>ARBITRAGE DETECTED!!!<h1>"
-                    + " <p>buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
-                    + " for " + lowAsk.getAsk()
-                    + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
-                    + " for " + highBid.getBid()
-                    + " and make a return (before fees) of "
-                    + (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100))
-                    + "%<p>");
-        } else {
-            setHTMLBODY("No arbitrage found");
+            AmazonSimpleEmailService client =
+                    AmazonSimpleEmailServiceClientBuilder.standard()
+                            // Replace US_EAST_1 with the AWS Region you're using for
+                            // Amazon SES.
+                            .withRegion(Regions.US_EAST_1).build();
+            SendEmailRequest request = new SendEmailRequest()
+                    .withDestination(
+                            new com.amazonaws.services.simpleemail.model.Destination().withToAddresses(email.getTO()))
+                    .withMessage(new Message()
+                            .withBody(new Body()
+                                    .withHtml(new Content()
+                                            .withCharset("UTF-8").withData(email.HTMLBODY))
+                                    .withText(new Content()
+                                            .withCharset("UTF-8").withData(email.TEXTBODY)))
+                            .withSubject(new Content()
+                                    .withCharset("UTF-8").withData(email.getSUBJECT())))
+                    .withSource(email.getFROM());
+            client.sendEmail(request);
+            System.out.println("Email sent!");
+        } catch (Exception ex) {
+            System.out.println("The email was not sent. Error message: "
+                    + ex.getMessage());
         }
-        return HTMLBODY;
     }
 
-    /**
-     * Sets "Arbitrage Update" as the subject of each email
-     * @return
-     */
-    public String printSubject(){
-        setSUBJECT("Arbitrage Update");
-        return SUBJECT;
-    }
 }
