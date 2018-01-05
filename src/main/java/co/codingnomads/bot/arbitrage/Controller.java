@@ -2,7 +2,7 @@ package co.codingnomads.bot.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.MapperService;
@@ -43,7 +43,7 @@ public class Controller {
            //ArbitrageActionSelection arbitrageActionSelection = new ArbitrageTradingAction(1.01,0.02);
 //        // do not use anything else than Kraken or GDAX for Arbitrage up to now. Kraken min ETH is 0.02 and GDAX: 0.01
         ArbitrageActionSelection arbitrageActionSelection = new ArbitragePrintAction(1.01);
-        ArbitrageActionSelection arbitrageActionSelection2 = new EmailAction(1.03, "neagkv@gmail.com");
+        ArbitrageActionSelection arbitrageActionSelection2 = new ArbitrageEmailAction(1.03, "neagkv@gmail.com");
 //
        arbitrage.run(
                 CurrencyPair.ETH_EUR,
@@ -59,15 +59,8 @@ public class Controller {
         currencyPairList.add(CurrencyPair.ETH_EUR);
         currencyPairList.add(CurrencyPair.BTC_EUR);
 
-
-//        Email email = new Email();
-
-
-
-        //MapperService mapperService = new MapperService();
-        // mapperService.insertTimeOfCall(emailSendTime);
-        // mapperService.getALL();
-
+        mapperService.insertEmailRecords((ArbitrageEmailAction) arbitrageActionSelection2);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
         //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
 

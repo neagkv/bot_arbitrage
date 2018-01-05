@@ -19,7 +19,7 @@ import java.util.Date;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EmailAction extends ArbitrageActionSelection {
+public class ArbitrageEmailAction extends ArbitrageActionSelection {
 
     // This address must be verified with Amazon SES.
     String FROM = "cryptoarbitragebot25@gmail.com";
@@ -42,12 +42,12 @@ public class EmailAction extends ArbitrageActionSelection {
 
     String timeEmailSent = sdf.format(dt);
 
-    public EmailAction(double arbitrageMargin) {
+    public ArbitrageEmailAction(double arbitrageMargin) {
         super(arbitrageMargin);
     }
 
 
-    public EmailAction(double arbitrageMargin, String FROM, String TO, String SUBJECT, String HTMLBODY, String TEXTBODY, String timeEmailSent) {
+    public ArbitrageEmailAction(double arbitrageMargin, String FROM, String TO, String SUBJECT, String HTMLBODY, String TEXTBODY, String timeEmailSent) {
         super(arbitrageMargin);
         this.FROM = FROM;
         this.TO = TO;
@@ -59,7 +59,7 @@ public class EmailAction extends ArbitrageActionSelection {
         this.timeEmailSent = timeEmailSent;
     }
 
-    public EmailAction(double arbitrageMargin, String TO) {
+    public ArbitrageEmailAction(double arbitrageMargin, String TO) {
         super(arbitrageMargin);
         this.TO = TO;
     }

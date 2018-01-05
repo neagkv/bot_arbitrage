@@ -4,7 +4,7 @@ import co.codingnomads.bot.arbitrage.model.*;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
@@ -49,7 +49,7 @@ public class Arbitrage {
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
-        Boolean emailMode = arbitrageActionSelection instanceof EmailAction;
+        Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
         double tradeValueBase = -1;
@@ -111,8 +111,8 @@ public class Arbitrage {
                 arbitrageAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
             }
             if (emailMode) {
-                EmailAction emailAction = (EmailAction) arbitrageActionSelection;
-                arbitrageAction.email(emailAction, lowAsk, highBid, difference);
+                ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
+                arbitrageAction.email(arbitrageEmailAction, lowAsk, highBid, difference);
 
            }
             if (tradingMode) {

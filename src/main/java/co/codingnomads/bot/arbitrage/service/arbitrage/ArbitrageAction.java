@@ -2,7 +2,7 @@ package co.codingnomads.bot.arbitrage.service.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.EmailAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TickerDataTrading;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TradingData;
@@ -77,7 +77,7 @@ public class ArbitrageAction {
      * @param
      * @throws EmailLimitException
      */
-    public void email (EmailAction email,
+    public void email (ArbitrageEmailAction email,
                        TickerData lowAsk, TickerData highBid, BigDecimal difference) throws EmailLimitException {
 
 
