@@ -1,9 +1,10 @@
 package co.codingnomads.bot.arbitrage;
 
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
 import co.codingnomads.bot.arbitrage.service.EmailService;
@@ -46,11 +47,11 @@ public class Controller {
 
         ExchangeList.add(new KrakenSpecs()); // internal: good but slow
         ExchangeList.add(new GDAXSpecs()); // internal: good but waiting limit increase
-//        do not use anything else than Kraken or GDAX for Arbitrage up to now. Kraken min ETH is 0.02 and GDAX: 0.01
-//        ExchangeList.add(new BitfinexSpecs()); // internal: good but waiting limit increase
-//        ExchangeList.add(new BittrexSpecs()); // Need Pojo building (internal: all good)
-//        ExchangeList.add(new BitstampSpecs()); // need Pojo building but no key (internal: verif)// ExchangeList.add(new PoloniexSpecs()); // need Pojo building and CAPTCHA issue resolving (internal: verif)
 
+//      do not use anything else than Kraken or GDAX for Arbitrage up to now. Kraken min ETH is 0.02 and GDAX: 0.01
+//      ExchangeList.add(new BitfinexSpecs()); // internal: good but waiting limit increase
+//      ExchangeList.add(new BittrexSpecs()); // Need Pojo building (internal: all good)
+//      ExchangeList.add(new BitstampSpecs()); // need Pojo building but no key (internal: verif)// ExchangeList.add(new PoloniexSpecs()); // need Pojo building and CAPTCHA issue resolving (internal: verif)
 
 //        Example of a trade action
 //        arbitrageTradingAction.setArbitrageMargin(1.01);
@@ -68,15 +69,16 @@ public class Controller {
 //                ExchangeList,
 //                arbitragePrintAction);
 
+//        Example Of a email action
+//        arbitrageEmailAction.setArbitrageMargin(1.03);
+//        arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+//        arbitrage.run(
+//                CurrencyPair.ETH_EUR,
+//                ExchangeList,
+//                arbitrageEmailAction);
 
-        arbitrageEmailAction.setArbitrageMargin(1.03);
-        arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
-        arbitrage.run(
-                CurrencyPair.ETH_EUR,
-                ExchangeList,
-                arbitrageEmailAction);
 
-//        start for detection
+//      start for detection
 
         ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
         currencyPairList.add(CurrencyPair.BCH_EUR);
@@ -85,7 +87,7 @@ public class Controller {
 
         emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
 
-        // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+         DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
         //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
 
         // detection.run(currencyPairList, ExchangeList, detectionActionSelection);
