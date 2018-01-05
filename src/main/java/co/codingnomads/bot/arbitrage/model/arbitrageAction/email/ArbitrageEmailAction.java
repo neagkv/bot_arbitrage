@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
+
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.service.EmailService;
 import com.amazonaws.regions.Regions;
@@ -14,11 +14,7 @@ import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 /**
  * @author Kevin Neag
@@ -38,15 +34,24 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
 
     Email email = new Email();
 
-
-
-
-
+    /**
+     *
+     * @param arbitrageMargin
+     */
     public ArbitrageEmailAction(double arbitrageMargin) {
         super(arbitrageMargin);
     }
 
-
+    /**
+     *
+     * @param arbitrageMargin
+     * @param FROM
+     * @param TO
+     * @param SUBJECT
+     * @param HTMLBODY
+     * @param TEXTBODY
+     * @param timeEmailSent
+     */
     public ArbitrageEmailAction(double arbitrageMargin, String FROM, String TO, String SUBJECT, String HTMLBODY, String TEXTBODY, String timeEmailSent) {
         super(arbitrageMargin);
         email.setFROM(FROM);
@@ -58,13 +63,22 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
 
     }
 
+    /**
+     *
+     * @param arbitrageMargin
+     * @param TO
+     */
     public ArbitrageEmailAction(double arbitrageMargin, String TO) {
         super(arbitrageMargin);
         email.setTO(TO);
 
     }
 
+    /**
+     *
+     */
     public ArbitrageEmailAction() {
+
     }
 
     public Email getEmail() {
@@ -75,9 +89,15 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
         this.email = email;
     }
 
-
-
-
+    /**
+     *
+     * @param email
+     * @param lowAsk
+     * @param highBid
+     * @param difference
+     * @param margin
+     * @throws EmailLimitException
+     */
     public void email(Email email,
                       TickerData lowAsk, TickerData highBid, BigDecimal difference, double margin) throws EmailLimitException {
 

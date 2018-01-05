@@ -7,7 +7,6 @@ import co.codingnomads.bot.arbitrage.model.exchange.KrakenSpecs;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.Wallet;
-
 import java.io.IOException;
 import java.util.ArrayList;
 

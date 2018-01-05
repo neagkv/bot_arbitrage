@@ -30,8 +30,10 @@ public class Email {
 
     String timeEmailSent = sdf.format(dt);
 
+    /**
+     *
+     */
     public Email() {
-
 
     }
 

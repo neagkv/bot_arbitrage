@@ -26,7 +26,6 @@ import java.util.ArrayList;
 @Service
 public class Arbitrage {
 
-    // todo Email action (Kevin later)
     // todo make this method running every X minutes (Kevin)
     // todo fix the issue with autowired (ryan)
     // todo look more into the fee (Kevin, thom?)
@@ -102,10 +101,6 @@ public class Arbitrage {
 
 
             BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
-
-            // todo autowire it
-           //  arbitrageAction = new ArbitrageAction();
-
 
 
             if (printMode) {

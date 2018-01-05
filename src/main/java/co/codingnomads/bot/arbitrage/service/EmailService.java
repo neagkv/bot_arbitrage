@@ -18,15 +18,28 @@ public class EmailService {
     @Autowired
     EmailTimeMapper mapper;
 
+    /**
+     *
+     * @param email
+     */
     public void insertEmailRecords(Email email){
 
         mapper.insertEmailRecord(email.getTimeEmailSent(), email.getTO(), email.getSUBJECT());
     }
 
+    /**
+     *
+     * @param day
+     * @return
+     */
     public int getTotalCallsToday(String day){
         return mapper.getTotalCallsToday(day);
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean underEmailLimit(){
 
         java.util.Date dt = new java.util.Date();
