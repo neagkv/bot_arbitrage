@@ -1,8 +1,6 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.trading;
-
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.Wallet;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -36,7 +34,9 @@ public class TradingData {
     BigDecimal realDifferenceFormated;
     BigDecimal differenceTotalBase;
 
+
     public TradingData(TickerDataTrading lowAsk, TickerDataTrading highBid, Wallet walletBuy, Wallet walletSell) {
+
         this.base = lowAsk.getCurrencyPair().base;
         this.counter = lowAsk.getCurrencyPair().counter;
         this.oldBaseBuy = lowAsk.getBaseFund();

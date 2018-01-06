@@ -9,6 +9,7 @@ import org.knowm.xchange.dto.account.Wallet;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Thomas Leruth on 12/16/17
@@ -27,7 +28,7 @@ public class GetTickerDataThread implements Callable<TickerData> {
      * @return the TickerData for the particular exchanges
      */
     @Override
-    public TickerData call() {
+    public TickerData call() throws TimeoutException {
 
         BigDecimal baseFund = null;
         BigDecimal counterFund = null;
@@ -42,6 +43,7 @@ public class GetTickerDataThread implements Callable<TickerData> {
                 Wallet wallet = activatedExchange.getExchange().getAccountService().getAccountInfo().getWallet();
                 baseFund = wallet.getBalance(currencyPair.base).getTotal();
                 counterFund = wallet.getBalance(currencyPair.counter).getTotal();
+
             } catch (IOException e) { e.printStackTrace(); }
 
             baseNeed = tradeAmountBase;

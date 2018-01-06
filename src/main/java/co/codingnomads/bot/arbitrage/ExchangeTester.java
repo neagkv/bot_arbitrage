@@ -7,7 +7,6 @@ import co.codingnomads.bot.arbitrage.model.exchange.KrakenSpecs;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.Wallet;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,8 +14,8 @@ import java.util.ArrayList;
  * Created by Thomas Leruth on 12/16/17
  * Use this method for testing the exchange POJO (seeing if that some have special needed Auth elements)
  */
-//public class ExchangeTester {
-//
+public class ExchangeTester {
+
 //    public static void main(String[] args) throws IOException {
 //
 //        ExchangeSpecs krakenSpecs = new KrakenSpecs(
@@ -47,4 +46,5 @@ import java.util.ArrayList;
 //            }
 //        }
 //    }
-//}
+}
+

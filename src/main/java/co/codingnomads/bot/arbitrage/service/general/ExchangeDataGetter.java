@@ -18,6 +18,10 @@ import java.util.concurrent.*;
 @Service
 public class ExchangeDataGetter {
 
+    // protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private final static int TIMEOUT = 30;
+
     /**
      *
      * Get All the TickerData from the selected exchanged
@@ -27,6 +31,7 @@ public class ExchangeDataGetter {
      * @return A list of TickerData for all the exchanges
      */
     public ArrayList<TickerData> getAllTickerData(ArrayList<ActivatedExchange> activatedExchanges,
+
                                               CurrencyPair currencyPair,
                                               double tradeValueBase) {
 
@@ -59,14 +64,34 @@ public class ExchangeDataGetter {
         return list;
     }
 
-    // todo and an anti hang condition in there (if longer than X wait, return null)
-    public static TickerData getTickerData(Exchange exchange, CurrencyPair currencyPair) {
-        Ticker ticker;
+    /**
+     * Takes an exchange and currency pairs throws them in a thread and calls the corresponding api to the exchange and
+     * returns the bid and ask price for each currency pair. If the api call is longer than the timeout, the thread is terminated.
+     * @param exchange
+     * @param currencyPair
+     * @return TickerData object
+     * @throws TimeoutException if it takes longer than 30 seconds for the api to be called
+     */
+    public static TickerData getTickerData(Exchange exchange, CurrencyPair currencyPair) throws TimeoutException {
+
+        final ExecutorService service = Executors.newSingleThreadExecutor();
+
         try {
-            ticker = exchange.getMarketDataService().getTicker(currencyPair);
-        } catch (Exception e)  { //todo need to refine that exception handling
-            return null;
+            final Future<TickerData> f = service.submit(() -> {
+                Ticker ticker = exchange.getMarketDataService().getTicker(currencyPair);
+                return new TickerData(currencyPair, exchange, ticker.getBid(), ticker.getAsk());
+            });
+
+            return f.get(TIMEOUT, TimeUnit.SECONDS);
+        } catch (final TimeoutException e) {
+            throw e;
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            service.shutdown();
         }
-        return new TickerData(currencyPair, exchange, ticker.getBid(), ticker.getAsk());
     }
 }
+
+
+

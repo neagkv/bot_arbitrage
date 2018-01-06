@@ -1,5 +1,4 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage.trading;
-
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
 import org.knowm.xchange.dto.trade.MarketOrder;

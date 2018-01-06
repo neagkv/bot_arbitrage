@@ -9,10 +9,11 @@ import java.math.BigDecimal;
  *
  * POJO class to get the bid/ask and the exchangeName as well as the currency pair
  */
+
 public class TickerData {
 
     private CurrencyPair currencyPair;
-    private Exchange exchange;
+    Exchange exchange;
     private BigDecimal bid;
     private BigDecimal ask;
 

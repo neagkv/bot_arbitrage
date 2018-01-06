@@ -1,45 +1,39 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import co.codingnomads.bot.arbitrage.model.TickerData;
+import java.math.BigDecimal;
 
 /**
  * @author Kevin Neag
  */
-public class Email extends EmailBody{
+public class Email {
 
-
-    // Replace sender@example.com with your "From" address.
     // This address must be verified with Amazon SES.
     String FROM = "cryptoarbitragebot25@gmail.com";
 
-    // The configuration set to use for this email. If you do not want to use a
-    // configuration set, comment the following variable and the
-    // .withConfigurationSetName(CONFIGSET); argument below.
-    // static final String CONFIGSET = "ConfigSet";
+    String TO;
 
     // The subject line for the email.
     String SUBJECT;
 
     // The HTML body for the email.
-   String HTMLBODY;
+    String HTMLBODY;
 
     // The email body for recipients with non-HTML email clients.
-    //TODO print action
-    static  String TEXTBODY;
+    String TEXTBODY;
 
+    java.util.Date dt = new java.util.Date();
 
-    public Email(double arbitrageMargin) {
-        super(arbitrageMargin);
-    }
+    java.text.SimpleDateFormat sdf =
+            new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public Email(double arbitrageMargin, String FROM, String SUBJECT, String HTMLBODY) {
-        super(arbitrageMargin);
-        this.FROM = FROM;
-        this.SUBJECT = SUBJECT;
-        this.HTMLBODY = HTMLBODY;
+    String timeEmailSent = sdf.format(dt);
+
+    /**
+     *
+     */
+    public Email() {
+
     }
 
     public String getFROM() {
@@ -50,6 +44,13 @@ public class Email extends EmailBody{
         this.FROM = FROM;
     }
 
+    public String getTO() {
+        return TO;
+    }
+
+    public void setTO(String TO) {
+        this.TO = TO;
+    }
 
     public String getSUBJECT() {
         return SUBJECT;
@@ -67,13 +68,70 @@ public class Email extends EmailBody{
         this.HTMLBODY = HTMLBODY;
     }
 
-    public static String getTEXTBODY() {
+    public String getTEXTBODY() {
         return TEXTBODY;
     }
 
-    public static void setTEXTBODY(String TEXTBODY) {
-        Email.TEXTBODY = TEXTBODY;
+    public void setTEXTBODY(String TEXTBODY) {
+        this.TEXTBODY = TEXTBODY;
     }
 
+    public String getTimeEmailSent() {
+        return timeEmailSent;
+    }
 
+    public void setTimeEmailSent(String timeEmailSent) {
+        this.timeEmailSent = timeEmailSent;
+    }
+
+    /**
+     * Converts the email body into HTML format
+     * @param lowAsk
+     * @param highBid
+     * @param difference
+     * @param arbitrageMargin
+     * @return
+     */
+    public void buildHTMLBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
+        if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
+            setHTMLBODY("<h1>ARBITRAGE DETECTED!!!<h1>"
+                    + " <p>buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
+                    + " for " + lowAsk.getAsk()
+                    + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
+                    + " for " + highBid.getBid()
+                    + " and make a return (before fees) of "
+                    + (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100))
+                    + "%<p>");
+        } else {
+            setHTMLBODY("No arbitrage found");
+        }
+
+    }
+
+    /**
+     * Prints the low asking price and high selling price as well as the difference in the body of each email.
+     * @param lowAsk
+     * @param highBid
+     * @param difference
+     * @param arbitrageMargin
+     * @return
+     */
+    public void buildTextBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
+        if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
+
+            setTEXTBODY("ARBITRAGE DETECTED!!!"
+                    + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
+                    + " for " + lowAsk.getAsk()
+                    + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
+                    + " for " + highBid.getBid()
+                    + " and make a return (before fees) of "
+                    + (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100))
+                    + "%");
+
+        } else {
+
+            setTEXTBODY("No arbitrage found");
+        }
+
+    }
 }

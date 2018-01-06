@@ -53,6 +53,7 @@ public class Detection {
             for (CurrencyPair currencyPair : currencyPairList) {
 
                 ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
+
                         activatedExchanges,
                         currencyPair,
                         tradeValueBase);
@@ -64,6 +65,7 @@ public class Detection {
 
                 TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
                 TickerData highBid = dataUtil.highBidFinder(listTickerData);
+
 
                 BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
                 BigDecimal differenceFormatted = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));

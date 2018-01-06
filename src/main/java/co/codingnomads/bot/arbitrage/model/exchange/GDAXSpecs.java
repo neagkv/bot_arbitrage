@@ -2,7 +2,6 @@ package co.codingnomads.bot.arbitrage.model.exchange;
 
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.gdax.GDAXExchange;
-
 import java.util.HashMap;
 import java.util.Map;
 

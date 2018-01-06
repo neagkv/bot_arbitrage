@@ -2,18 +2,17 @@ package co.codingnomads.bot.arbitrage.service.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.*;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 @Service
 public class Arbitrage {
 
-    // todo Email action (Kevin later)
     // todo make this method running every X minutes (Kevin)
     // todo fix the issue with autowired (ryan)
     // todo look more into the fee (Kevin, thom?)
@@ -47,7 +45,7 @@ public class Arbitrage {
         // todo autowire them
         ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
         DataUtil dataUtil = new DataUtil();
-        ArbitrageAction arbitrageAction = new ArbitrageAction();
+       // ArbitrageAction arbitrageAction = new ArbitrageAction();
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
@@ -64,7 +62,9 @@ public class Arbitrage {
         int loop = 1;
         while (i < loop) {
 
+
             ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
+
                     activatedExchanges,
                     currencyPair,
                     tradeValueBase);
@@ -79,13 +79,17 @@ public class Arbitrage {
             // temporary
             System.out.println();
             System.out.println("Pulled Data");
+
             for (TickerData tickerData : listTickerData) {
+
                 System.out.println(tickerData.toString());
             }
             System.out.println();
 
+
             TickerData highBid = dataUtil.highBidFinder(listTickerData); // highBid is the best sell
             TickerData lowAsk = dataUtil.lowAskFinder(listTickerData); // lowAsk is the best buy
+
 
             // temporary
             System.out.println("Sorted result");
@@ -97,18 +101,19 @@ public class Arbitrage {
 
             BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
-            // todo autowire it
-            ArbitrageAction arbitrageAction = new ArbitrageAction();
-            Email email = new Email(arbitrageActionSelection.getArbitrageMargin());
 
             if (printMode) {
-                arbitrageAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
+                ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
+                arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
             }
             if (emailMode) {
-                arbitrageAction.email((ArbitrageEmailAction) arbitrageActionSelection, email, email, lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
-            }
+                ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
+                arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
+
+           }
             if (tradingMode) {
-                if (!(arbitrageAction.trade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection))) return;
+                ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
+                if (!(arbitrageTradingAction.trade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection))) return;
             }
             i++;
             if (loop != 1) Thread.sleep(5000);
