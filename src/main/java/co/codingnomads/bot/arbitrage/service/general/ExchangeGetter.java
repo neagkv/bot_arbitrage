@@ -3,16 +3,13 @@ package co.codingnomads.bot.arbitrage.service.general;
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.thread.GetExchangeThread;
-
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
 
 /**
  * Created by Thomas Leruth on 12/13/17
- */
-
-/**
+ *
  * A class with a method to get the exchanges correctly set up
  */
 public class ExchangeGetter {
@@ -23,6 +20,7 @@ public class ExchangeGetter {
     /**
      * Turn a list of exchange with correct security parameters into a list of exchanges with enabled service
      * @param selectedExchanges a list of exchanges with their needed authentification set
+     * @param tradingMode whether or not the action behavior is trading
      * @return list of exchange with all services loaded up
      */
     public ArrayList<ActivatedExchange> getAllSelectedExchangeServices(
@@ -50,7 +48,6 @@ public class ExchangeGetter {
 
         if (tradingMode) {
             for (ActivatedExchange activatedExchange : list) {
-                // Arbitrage mode is set to true if all the Auth parameters were given
                 activatedExchange.setActivated(activatedExchange.isTradingMode());
             }
         }

@@ -4,14 +4,11 @@ import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
-
 import java.util.concurrent.Callable;
 
 /**
  * Created by Thomas Leruth on 12/16/17
- */
-
-/**
+ *
  * Runnable class getting Exchange (set-up) and putting into Activated Exchange which has 2 more boolean
  */
 public class GetExchangeThread implements Callable<ActivatedExchange> {

@@ -1,8 +1,8 @@
 package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 
+import co.codingnomads.bot.arbitrage.model.TickerData;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -55,7 +55,7 @@ public class EmailBody extends ArbitragePrintAction {
         this.timeOfFirstSend = timeOfFirstSend;
     }
 
-    public String printTextBody(BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin) {
+    public String printTextBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
             setTextBody("ARBITRAGE DETECTED!!!"
                     + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
@@ -71,7 +71,7 @@ public class EmailBody extends ArbitragePrintAction {
         return textBody;
     }
 
-    public String printHTMLBody(BidAsk lowAsk, BidAsk highBid, BigDecimal difference, double arbitrageMargin) {
+    public String printHTMLBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
             setHTMLBody("<h1>ARBITRAGE DETECTED!!!<h1>"
                     + " <p>buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()

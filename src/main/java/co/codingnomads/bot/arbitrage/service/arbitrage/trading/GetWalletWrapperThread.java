@@ -1,25 +1,26 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage.trading;
 
-import co.codingnomads.bot.arbitrage.model.BidAsk;
+import co.codingnomads.bot.arbitrage.model.TickerData;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
 import org.knowm.xchange.dto.account.Wallet;
-
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
 /**
  * Created by Thomas Leruth on 12/17/17
+ *
+ * Callable class to get the wallet wrapper
  */
 
 public class GetWalletWrapperThread implements Callable<WalletWrapper> {
 
-    BidAsk bidAsk;
+    TickerData tickerData;
 
     @Override
     public WalletWrapper call() {
         try {
-            String exchangeName = bidAsk.getExchange().getDefaultExchangeSpecification().getExchangeName();
-            Wallet wallet = bidAsk.getExchange().getAccountService().getAccountInfo().getWallet();
+            String exchangeName = tickerData.getExchange().getDefaultExchangeSpecification().getExchangeName();
+            Wallet wallet = tickerData.getExchange().getAccountService().getAccountInfo().getWallet();
             return new WalletWrapper(wallet, exchangeName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -27,7 +28,7 @@ public class GetWalletWrapperThread implements Callable<WalletWrapper> {
         }
     }
 
-    public GetWalletWrapperThread(BidAsk bidAsk) {
-        this.bidAsk = bidAsk;
+    public GetWalletWrapperThread(TickerData tickerData) {
+        this.tickerData = tickerData;
     }
 }

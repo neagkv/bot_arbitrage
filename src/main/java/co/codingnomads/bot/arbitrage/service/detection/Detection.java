@@ -1,17 +1,16 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.BidAsk;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionLogAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DetectionPrintAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.detection.DifferenceWrapper;
+import co.codingnomads.bot.arbitrage.model.TickerData;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionLogAction;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionPrintAction;
+import co.codingnomads.bot.arbitrage.model.detectionAction.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,6 +18,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/18/17
+ *
+ * Detection bot class
  */
 
 public class Detection {
@@ -51,18 +52,18 @@ public class Detection {
 
             for (CurrencyPair currencyPair : currencyPairList) {
 
-                ArrayList<BidAsk> listBidAsk = exchangeDataGetter.getAllBidAsk(
+                ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
                         activatedExchanges,
                         currencyPair,
                         tradeValueBase);
 
-                if (listBidAsk.size() == 0) {
+                if (listTickerData.size() == 0) {
                     differenceWrapperList.add(new DifferenceWrapper(currencyPair));
                     continue;
                 }
 
-                BidAsk lowAsk = dataUtil.lowAskFinder(listBidAsk);
-                BidAsk highBid = dataUtil.highBidFinder(listBidAsk);
+                TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
+                TickerData highBid = dataUtil.highBidFinder(listTickerData);
 
                 BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
                 BigDecimal differenceFormatted = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
