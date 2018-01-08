@@ -1,7 +1,7 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction.service;
+package co.codingnomads.bot.arbitrage.service.email;
 
 import co.codingnomads.bot.arbitrage.mapper.EmailTimeMapper;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
+import co.codingnomads.bot.arbitrage.email.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

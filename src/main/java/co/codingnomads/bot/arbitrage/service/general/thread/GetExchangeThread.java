@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.service.general.thread;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
+import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import java.util.concurrent.Callable;

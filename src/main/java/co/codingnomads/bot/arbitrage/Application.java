@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
  * @author Kevin Neag
  */
 
-
 /**
  * Application Class for starting the entire application
  */

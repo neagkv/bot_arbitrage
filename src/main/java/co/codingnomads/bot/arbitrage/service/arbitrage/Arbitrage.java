@@ -1,12 +1,13 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
-import co.codingnomads.bot.arbitrage.model.*;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
-import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
-import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
+import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
+import co.codingnomads.bot.arbitrage.model.TickerData;
+import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageActionSelection;
+import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitragePrintAction;
+import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageTradingAction;
+import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.exceptions.EmailLimitException;
+import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;

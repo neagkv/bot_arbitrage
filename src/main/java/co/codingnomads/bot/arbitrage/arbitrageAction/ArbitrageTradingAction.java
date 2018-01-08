@@ -1,10 +1,10 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction;
+package co.codingnomads.bot.arbitrage.arbitrageAction;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.OrderIDWrapper;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TickerDataTrading;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TradingData;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
+import co.codingnomads.bot.arbitrage.arbitrageAction.trading.OrderIDWrapper;
+import co.codingnomads.bot.arbitrage.arbitrageAction.trading.TickerDataTrading;
+import co.codingnomads.bot.arbitrage.arbitrageAction.trading.TradingData;
+import co.codingnomads.bot.arbitrage.arbitrageAction.trading.WalletWrapper;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.GetWalletWrapperThread;
 import co.codingnomads.bot.arbitrage.service.arbitrage.trading.MakeOrderThread;
 import org.knowm.xchange.currency.CurrencyPair;

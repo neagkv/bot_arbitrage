@@ -2,11 +2,11 @@ package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionLogAction;
-import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionPrintAction;
-import co.codingnomads.bot.arbitrage.model.detectionAction.DifferenceWrapper;
-import co.codingnomads.bot.arbitrage.model.exchange.ExchangeSpecs;
+import co.codingnomads.bot.arbitrage.detectionAction.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.detectionAction.DetectionLogAction;
+import co.codingnomads.bot.arbitrage.detectionAction.DetectionPrintAction;
+import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
+import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;

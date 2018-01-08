@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.model.exceptions;
+package co.codingnomads.bot.arbitrage.exceptions;
 
 /**
  * @author Kevin Neag

@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.model.exchange;
+package co.codingnomads.bot.arbitrage.exchange;
 
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.gdax.GDAXExchange;

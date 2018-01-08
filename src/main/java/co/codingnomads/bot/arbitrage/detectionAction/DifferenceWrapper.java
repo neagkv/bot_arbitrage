@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.model.detectionAction;
+package co.codingnomads.bot.arbitrage.detectionAction;
 
 import org.knowm.xchange.currency.CurrencyPair;
 import java.math.BigDecimal;

@@ -1,9 +1,9 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction;
+package co.codingnomads.bot.arbitrage.arbitrageAction;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
-import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.service.EmailService;
+import co.codingnomads.bot.arbitrage.email.Email;
+import co.codingnomads.bot.arbitrage.exceptions.EmailLimitException;
+import co.codingnomads.bot.arbitrage.service.email.EmailService;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;

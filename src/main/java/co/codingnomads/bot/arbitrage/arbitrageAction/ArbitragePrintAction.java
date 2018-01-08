@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction;
+package co.codingnomads.bot.arbitrage.arbitrageAction;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage.trading;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.WalletWrapper;
+import co.codingnomads.bot.arbitrage.arbitrageAction.trading.WalletWrapper;
 import org.knowm.xchange.dto.account.Wallet;
 import java.io.IOException;
 import java.util.concurrent.Callable;

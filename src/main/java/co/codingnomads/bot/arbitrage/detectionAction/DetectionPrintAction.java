@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.model.detectionAction;
+package co.codingnomads.bot.arbitrage.detectionAction;
 
 /**
  * Created by Thomas Leruth on 12/18/17

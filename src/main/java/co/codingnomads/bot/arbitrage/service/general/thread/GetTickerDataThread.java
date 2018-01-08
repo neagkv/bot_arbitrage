@@ -2,7 +2,7 @@ package co.codingnomads.bot.arbitrage.service.general.thread;
 
 import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.trading.TickerDataTrading;
+import co.codingnomads.bot.arbitrage.arbitrageAction.trading.TickerDataTrading;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.account.Wallet;

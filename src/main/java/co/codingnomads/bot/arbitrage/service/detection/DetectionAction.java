@@ -1,6 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
-import co.codingnomads.bot.arbitrage.model.detectionAction.DifferenceWrapper;
+import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
 import java.util.ArrayList;
 
 /**

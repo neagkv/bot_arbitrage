@@ -1,4 +1,4 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction.trading;
+package co.codingnomads.bot.arbitrage.arbitrageAction.trading;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
 import java.math.BigDecimal;
