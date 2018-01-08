@@ -62,27 +62,20 @@ public class Controller {
 
 
 //        Example of a print action that finds the best trading pair every hour
-//        arbitragePrintAction.setArbitrageMargin(1.01);
-//        try {
-//            while (true) {
-//                arbitrage.run(
-//                        CurrencyPair.ETH_EUR,
-//                        ExchangeList,
-//                        arbitragePrintAction);
-//                Thread.sleep(3600 * 1000);
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-//        Example Of a email action
-        arbitrageEmailAction.setArbitrageMargin(1.03);
-        arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+        arbitragePrintAction.setArbitrageMargin(1.01);
         arbitrage.run(
                 CurrencyPair.ETH_EUR,
                 ExchangeList,
-                arbitrageEmailAction);
+                arbitragePrintAction);
 
+//        Example Of a email action
+//        arbitrageEmailAction.setArbitrageMargin(1.03);
+//        arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+//        emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
+//        arbitrage.run(
+//                CurrencyPair.ETH_EUR,
+//                ExchangeList,
+//                arbitrageEmailAction);
 
 //      start for detection
 
@@ -91,7 +84,7 @@ public class Controller {
         currencyPairList.add(CurrencyPair.ETH_EUR);
         currencyPairList.add(CurrencyPair.BTC_EUR);
 
-        emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
+
 
          DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
         //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
