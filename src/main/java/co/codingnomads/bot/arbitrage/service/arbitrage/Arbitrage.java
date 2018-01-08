@@ -37,6 +37,7 @@ public class Arbitrage {
      * @param arbitrageActionSelection A Pojo for selecting which action to be taken after an arbitrage detection
      * @throws IOException
      */
+
     public void run(CurrencyPair currencyPair,
                     ArrayList<ExchangeSpecs> selectedExchanges,
                     ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException {
