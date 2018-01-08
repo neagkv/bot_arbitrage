@@ -10,7 +10,11 @@ import org.springframework.context.annotation.Bean;
  * @author Kevin Neag
  */
 
-    @SpringBootApplication
+
+/**
+ * Application Class for starting the entire application
+ */
+@SpringBootApplication
     public class Application {
 
         @Autowired
@@ -20,7 +24,11 @@ import org.springframework.context.annotation.Bean;
             SpringApplication.run(Application.class);
         }
 
-        @Bean
+    /**
+     * CommandLineRunner method that starts the controller runBot method from the command line
+     * @throws Exception
+     */
+    @Bean
         public CommandLineRunner run() throws Exception {
             return args -> {
                 controller.runBot();

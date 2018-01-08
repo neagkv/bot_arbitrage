@@ -17,10 +17,10 @@ public class Email {
     String SUBJECT;
 
     // The HTML body for the email.
-    String HTMLBODY;
+    public String HTMLBODY;
 
     // The email body for recipients with non-HTML email clients.
-    String TEXTBODY;
+    public String TEXTBODY;
 
     java.util.Date dt = new java.util.Date();
 
@@ -30,7 +30,7 @@ public class Email {
     String timeEmailSent = sdf.format(dt);
 
     /**
-     *
+     *  Empty Constructor
      */
     public Email() {
 
@@ -86,11 +86,10 @@ public class Email {
 
     /**
      * Converts the email body into HTML format
-     * @param lowAsk
-     * @param highBid
-     * @param difference
-     * @param arbitrageMargin
-     * @return
+     * @param lowAsk    the lowest ask found (buy)
+     * @param highBid   the highest bid found (sell)
+     * @param difference    price difference between the lowest ask and highest bid
+     * @param arbitrageMargin the margin difference accepted (not a valid arbitrage if below that value)
      */
     public void buildHTMLBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
@@ -110,11 +109,10 @@ public class Email {
 
     /**
      * Prints the low asking price and high selling price as well as the difference in the body of each email.
-     * @param lowAsk
-     * @param highBid
-     * @param difference
-     * @param arbitrageMargin
-     * @return
+     * @param lowAsk    the lowest ask found (buy)
+     * @param highBid   the highest bid found (sell)
+     * @param difference  price difference between the lowest ask and highest bid
+     * @param arbitrageMargin the margin difference accepted (not a valid arbitrage if below that value)
      */
     public void buildTextBody(TickerData lowAsk, TickerData highBid, BigDecimal difference, double arbitrageMargin) {
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {

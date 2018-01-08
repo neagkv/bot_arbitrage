@@ -2,12 +2,12 @@ package co.codingnomads.bot.arbitrage;
 
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.model.detectionAction.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.model.exchange.*;
-import co.codingnomads.bot.arbitrage.service.EmailService;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.service.EmailService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;

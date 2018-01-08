@@ -1,9 +1,9 @@
-package co.codingnomads.bot.arbitrage.model.arbitrageAction.email;
+package co.codingnomads.bot.arbitrage.model.arbitrageAction;
 
 import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.model.arbitrageAction.ArbitrageActionSelection;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.email.Email;
 import co.codingnomads.bot.arbitrage.model.exceptions.EmailLimitException;
-import co.codingnomads.bot.arbitrage.service.EmailService;
+import co.codingnomads.bot.arbitrage.model.arbitrageAction.service.EmailService;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
@@ -21,8 +21,12 @@ import java.math.BigDecimal;
  */
 
 /**
- * Email pojo class than extends the EmailBody class
- * Provides the From email address to a pre-verified email address that is allowed to send 200 emails per day
+ * Email pojo class than extends ArbitrageActionSelection class
+ * Class contains and autowired EmailService objects and a new Email object
+ * Class also has an email method witch uses the Amazon AWS SES API, in order to use
+ * this api you must create an aws account at aws.amazon.com, very your email address
+ * at SES services, and also obtain credentials to be saved in a .aws directory.
+ *
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -34,23 +38,20 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
 
     Email email = new Email();
 
-    /**
-     *
-     * @param arbitrageMargin
-     */
+
     public ArbitrageEmailAction(double arbitrageMargin) {
         super(arbitrageMargin);
     }
 
     /**
-     *
-     * @param arbitrageMargin
-     * @param FROM
-     * @param TO
-     * @param SUBJECT
-     * @param HTMLBODY
-     * @param TEXTBODY
-     * @param timeEmailSent
+     * Fully qualified constructor
+     * @param arbitrageMargin the margin difference accepted (not a valid arbitrage if below that value)
+     * @param FROM  the email address that will send email (set at default to cryptoarbitragebot25@gmail.com
+     * @param TO    the email address where email alerts will be sent
+     * @param SUBJECT   the subject of the email
+     * @param HTMLBODY  the email message body in HTML format
+     * @param TEXTBODY  the email message body
+     * @param timeEmailSent the time that the email is sent
      */
     public ArbitrageEmailAction(double arbitrageMargin, String FROM, String TO, String SUBJECT, String HTMLBODY, String TEXTBODY, String timeEmailSent) {
         super(arbitrageMargin);
@@ -64,9 +65,9 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
     }
 
     /**
-     *
-     * @param arbitrageMargin
-     * @param TO
+     * Constructor with the arbitrageMargin and TO email address to be set by the user
+     * @param arbitrageMargin the margin difference accepted (not a valid arbitrage if below that value)
+     * @param TO    the email address where email alerts will be sent
      */
     public ArbitrageEmailAction(double arbitrageMargin, String TO) {
         super(arbitrageMargin);
@@ -75,7 +76,7 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
     }
 
     /**
-     *
+     *Empty constructor
      */
     public ArbitrageEmailAction() {
 
@@ -90,12 +91,14 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
     }
 
     /**
-     *
-     * @param email
-     * @param lowAsk
-     * @param highBid
-     * @param difference
-     * @param margin
+     * Email method that checks to see if the email is under the email rate limit before sending.
+     * the method uses an email being taken in to call the methods buildHTMLBody, buildTEXTBody and setSubject method to
+     * set custom messages based on the highbid, lowask and difference. Then sends the email using the Amazon SES api.
+     * @param email     object from Email Class
+     * @param lowAsk    the lowest ask found (buy)
+     * @param highBid   the highest bid found (sell)
+     * @param difference    price difference between the lowest ask and highest bid
+     * @param margin    the margin difference accepted (not a valid arbitrage if below that value)
      * @throws EmailLimitException
      */
     public void email(Email email,
@@ -105,7 +108,7 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
         if (!emailService.underEmailLimit()) {
 
 
-            throw new EmailLimitException("Email limit reached for the Day, please try again tomorrow");
+            throw new EmailLimitException("Email limit reached for the day, please try again tomorrow");
         }
         email.buildHTMLBody(lowAsk,highBid,difference,margin);
         email.buildTextBody(lowAsk,highBid,difference,margin);
