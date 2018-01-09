@@ -37,7 +37,6 @@ public class Controller {
     @Autowired
     EmailService emailService;
 
-    @Autowired
     DetectionService detectionService;
 
     @Autowired

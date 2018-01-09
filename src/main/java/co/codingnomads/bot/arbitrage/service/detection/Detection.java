@@ -26,13 +26,12 @@ import java.util.ArrayList;
 
 public class Detection {
 
-    // todo autowire it
     @Autowired
     ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
-    // todo autowire it
+
     @Autowired
     DetectionAction detectionAction = new DetectionAction();
-    // todo autowire it
+
     @Autowired
     DataUtil dataUtil = new DataUtil();
 
