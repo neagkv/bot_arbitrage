@@ -30,6 +30,14 @@ public class DifferenceWrapper {
         this.highBidExchange = highBidExchange;
     }
 
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public CurrencyPair getCurrencyPair() {
         return currencyPair;
     }

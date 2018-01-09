@@ -4,9 +4,12 @@ import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.detectionAction.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.detectionAction.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.detectionAction.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exchange.*;
+import co.codingnomads.bot.arbitrage.service.detection.Detection;
+import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -33,6 +36,9 @@ public class Controller {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    DetectionService detectionService;
 
     @Autowired
     ArbitrageEmailAction arbitrageEmailAction;
@@ -77,22 +83,9 @@ public class Controller {
 //                ExchangeList,
 //                arbitrageEmailAction);
 
-//      start for detection
-        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-        currencyPairList.add(CurrencyPair.BCH_EUR);
-        currencyPairList.add(CurrencyPair.ETH_EUR);
-        currencyPairList.add(CurrencyPair.BTC_EUR);
-        currencyPairList.add(CurrencyPair.BCC_USD);
-        currencyPairList.add(CurrencyPair.BTC_USD);
-
-        DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-        //DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
-
-         // detection.run(currencyPairList, ExchangeList, detectionActionSelection);
-//        end for detection
-
-        ExchangeList.add(new GDAXSpecs("qqq", "", "")); // internal: good but waiting limit increase
-        ExchangeList.add(new KrakenSpecs("bbbb", "dadad")); // internal: good but slow
+//
+//        ExchangeList.add(new GDAXSpecs("qqq", "", "")); // internal: good but waiting limit increase
+//        ExchangeList.add(new KrakenSpecs("bbbb", "dadad")); // internal: good but slow
 //        ExchangeList.add(new BitfinexSpecs()); // internal: good but waiting limit increase
 //        ExchangeList.add(new BittrexSpecs()); // Need Pojo building (internal: all good)
 //        ExchangeList.add(new BitstampSpecs()); // need Pojo building but no key (internal: verif)
@@ -100,17 +93,18 @@ public class Controller {
 
 
 //        start for detection
-        //  Detection detection = new Detection();
+          Detection detection = new Detection();
 
-        // ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-//        currencyPairList.add(CurrencyPair.BCH_EUR);
-        //currencyPairList.add(CurrencyPair.ETH_EUR);
-//        currencyPairList.add(CurrencyPair.BTC_EUR);
+         ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+         currencyPairList.add(CurrencyPair.BCH_EUR);
+         currencyPairList.add(CurrencyPair.ETH_EUR);
+         currencyPairList.add(CurrencyPair.BTC_EUR);
+         currencyPairList.add(CurrencyPair.BTC_USD);
+         currencyPairList.add(CurrencyPair.XRP_EUR);
 
-        //DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-//        DetectionActionSelection detectionActionSelection = new DetectionLogAction(4000);
-//
-//        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+       // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+        DetectionActionSelection detectionActionSelection = new DetectionLogAction();
+        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 //        end for detection
 
     }

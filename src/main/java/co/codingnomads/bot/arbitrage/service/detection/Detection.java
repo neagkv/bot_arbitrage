@@ -11,6 +11,8 @@ import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,10 +27,13 @@ import java.util.ArrayList;
 public class Detection {
 
     // todo autowire it
+    @Autowired
     ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
     // todo autowire it
+    @Autowired
     DetectionAction detectionAction = new DetectionAction();
     // todo autowire it
+    @Autowired
     DataUtil dataUtil = new DataUtil();
 
     public void run(ArrayList<CurrencyPair> currencyPairList,
@@ -78,7 +83,7 @@ public class Detection {
                         highBid.getBid(),
                         highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()));
 
-                Thread.sleep(1000); // to avoid API rate limit issue
+                //Thread.sleep(1000); // to avoid API rate limit issue
             }
             if (printMode) {
                 detectionAction.print(differenceWrapperList);
@@ -86,8 +91,8 @@ public class Detection {
             if (logMode) {
                 detectionAction.log(differenceWrapperList);
             }
-            Thread.sleep(waitInterval);
-        } while (logMode); // make it infinite loop if log mode and 1 time if print
+            //Thread.sleep(waitInterval);
+        } while (printMode); // make it infinite loop if log mode and 1 time if print
 
     }
 }

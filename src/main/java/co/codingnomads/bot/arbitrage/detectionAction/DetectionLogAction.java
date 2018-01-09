@@ -21,4 +21,7 @@ public class DetectionLogAction extends DetectionActionSelection {
     public DetectionLogAction(int waitInterval) {
         this.waitInterval = waitInterval;
     }
+
+    public DetectionLogAction() {
+    }
 }
