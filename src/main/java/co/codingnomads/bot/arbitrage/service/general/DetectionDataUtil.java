@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Kevin Neag
  */
 @Service
-public class DectionDataUtil {
+public class DetectionDataUtil {
 
 //    Add a new method in the print that run to the object
 //    generated for each pairs and find the one with the best difference and only
@@ -28,17 +28,5 @@ public class DectionDataUtil {
             }
             return differenceWrapperlist.get(lowIndex);
         }
-
-//        public TickerData highBidFinder(ArrayList<TickerData> list) {
-//            int highIndex = 0;
-//            if (list.size() > 1) {
-//                for (int i = 1; i < list.size(); i++) {
-//                    if (list.get(highIndex).getBid().compareTo(list.get(i).getBid()) < 0) {
-//                        highIndex = i;
-//                    }
-//                }
-//            }
-//            return list.get(highIndex);
-//        }
     }
 

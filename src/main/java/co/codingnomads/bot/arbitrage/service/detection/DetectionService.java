@@ -15,8 +15,6 @@ public class DetectionService {
     @Autowired
     DetectionWrapperMapper mapper;
 
-    DifferenceWrapper differenceWrapper;
-
     public void insertDetectionRecords(DifferenceWrapper differenceWrapper) {
         System.out.println(differenceWrapper.getTimestamp());
             mapper.insert_DifferenceWrapper(differenceWrapper.getTimestamp(), differenceWrapper.getCurrencyPair(), differenceWrapper.getDifference(),

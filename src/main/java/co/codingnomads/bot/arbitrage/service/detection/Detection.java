@@ -8,7 +8,7 @@ import co.codingnomads.bot.arbitrage.detectionAction.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
-import co.codingnomads.bot.arbitrage.service.general.DectionDataUtil;
+import co.codingnomads.bot.arbitrage.service.general.DetectionDataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -37,7 +37,7 @@ public class Detection {
     DataUtil dataUtil = new DataUtil();
 
     @Autowired
-    DectionDataUtil dectionDataUtil = new DectionDataUtil();
+    DetectionDataUtil dectionDataUtil = new DetectionDataUtil();
 
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
@@ -92,14 +92,14 @@ public class Detection {
                 detectionAction.print(differenceWrapperList);
                 DifferenceWrapper differenceWrapper = dectionDataUtil.lowestDifferenceFinder(differenceWrapperList);
                 System.out.println(differenceWrapper);
-                System.out.println("Yes");
+                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
             }
             if (logMode) {
                 detectionAction.log(differenceWrapperList);
             }
             //Thread.sleep(waitInterval);
-        } while (logMode); // make it infinite loop if log mode and 1 time if print
+        } while (printMode); // make it infinite loop if log mode and 1 time if print
 
     }
 }

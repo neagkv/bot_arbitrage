@@ -1,7 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
-import co.codingnomads.bot.arbitrage.service.general.DectionDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 public class DetectionAction {
 
     @Autowired
-    DetectionService detectionService;
+    DetectionService detectionService = new DetectionService();
 
     ArrayList<DifferenceWrapper> myList;
 
@@ -26,7 +25,7 @@ public class DetectionAction {
 
     public ArrayList<DifferenceWrapper> print(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
-//            System.out.println(dectionDataUtil.lowestDifferenceFinder(differenceWrapperList));
+//      System.out.println(dectionDataUtil.lowestDifferenceFinder(differenceWrapperList));
             myList = differenceWrapperList;
         }
         System.out.println(myList.toString());
@@ -34,13 +33,11 @@ public class DetectionAction {
     }
 
 
-
-
     //todo implement a proper logger to database
     public void log(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
             detectionService.insertDetectionRecords(differenceWrapper);
-            //System.out.println(differenceWrapper.toString());
+            System.out.println(differenceWrapper.toString());
         }
     }
 }
