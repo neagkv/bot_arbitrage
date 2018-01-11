@@ -13,6 +13,7 @@ import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
  *
  * Detection bot class
  */
-
 
 public class Detection {
 
@@ -37,9 +37,7 @@ public class Detection {
     DataUtil dataUtil = new DataUtil();
 
     @Autowired
-    DectionDataUtil detectionDataUtil = new DectionDataUtil();
-
-    DifferenceWrapper differenceWrapper = new DifferenceWrapper();
+    DectionDataUtil dectionDataUtil = new DectionDataUtil();
 
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
@@ -88,21 +86,17 @@ public class Detection {
                         highBid.getBid(),
                         highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()));
 
-                Thread.sleep(100); // to avoid API rate limit issue
+                //Thread.sleep(1000); // to avoid API rate limit issue
             }
             if (printMode) {
-                public ArrayList<DifferenceWrapper> print(ArrayList<DifferenceWrapper> differenceWrapperList) {
-                    for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
-//            System.out.println(dectionDataUtil.lowestDifferenceFinder(differenceWrapperList));
-//            System.out.println("********************************************");
-                        System.out.println(differenceWrapper.toString());
-                        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-                    }
+                detectionAction.print(differenceWrapperList);
+                DifferenceWrapper differenceWrapper = dectionDataUtil.lowestDifferenceFinder(differenceWrapperList);
+                System.out.println(differenceWrapper);
+                System.out.println("Yes");
+
             }
             if (logMode) {
-
-
-                //detectionAction.log(differenceWrapperList);
+                detectionAction.log(differenceWrapperList);
             }
             //Thread.sleep(waitInterval);
         } while (logMode); // make it infinite loop if log mode and 1 time if print

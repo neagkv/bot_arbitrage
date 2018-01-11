@@ -99,6 +99,7 @@ public class Controller {
          currencyPairList.add(CurrencyPair.ETH_USD);
          currencyPairList.add(CurrencyPair.BTC_EUR);
          currencyPairList.add(CurrencyPair.BTC_USD);
+         currencyPairList.add(CurrencyPair.OMG_USD);
 
           DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
        // DetectionActionSelection detectionActionSelection = new DetectionLogAction();

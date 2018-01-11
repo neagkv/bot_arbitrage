@@ -12,9 +12,11 @@ import java.util.ArrayList;
  *
  * Class to define the potential acting behaviors of the detection bot
  */
-
+@Service
 public class DetectionAction {
 
+    @Autowired
+    DetectionService detectionService;
 
     ArrayList<DifferenceWrapper> myList;
 
@@ -25,11 +27,8 @@ public class DetectionAction {
     public ArrayList<DifferenceWrapper> print(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
 //            System.out.println(dectionDataUtil.lowestDifferenceFinder(differenceWrapperList));
-//            System.out.println("********************************************");
-            System.out.println(differenceWrapper.toString());
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            myList = differenceWrapperList;
         }
-        System.out.println("jghjgjhgjgjgjgjg");
         System.out.println(myList.toString());
         return myList;
     }
