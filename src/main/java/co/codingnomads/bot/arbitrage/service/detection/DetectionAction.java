@@ -2,6 +2,7 @@ package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
+import co.codingnomads.bot.arbitrage.service.general.DectionDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +19,38 @@ public class DetectionAction {
     @Autowired
     DetectionService detectionService;
 
-    public void print(ArrayList<DifferenceWrapper> differenceWrapperList) {
-        for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
-            System.out.println(differenceWrapper.toString());
-        }
+    @Autowired
+    DectionDataUtil dectionDataUtil;
+
+    ArrayList<DifferenceWrapper> myList;
+
+    public ArrayList<DifferenceWrapper> getMyList() {
+        return myList;
     }
+
+    public void setMyList(ArrayList<DifferenceWrapper> myList) {
+        this.myList = myList;
+    }
+
+    public DifferenceWrapper print(ArrayList<DifferenceWrapper> differenceWrapperList) {
+        for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
+//            System.out.println(dectionDataUtil.lowestDifferenceFinder(differenceWrapperList));
+//            System.out.println("********************************************");
+            System.out.println(differenceWrapper.toString());
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        }
+        System.out.println("jghjgjhgjgjgjgjg");
+        System.out.println(myList);
+        return myList;
+    }
+
+
 
     //todo implement a proper logger to database
     public void log(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
             detectionService.insertDetectionRecords(differenceWrapper);
+            //System.out.println(differenceWrapper.toString());
         }
     }
 }

@@ -1,5 +1,7 @@
 package co.codingnomads.bot.arbitrage.detectionAction;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Created by Thomas Leruth on 12/18/17
  *

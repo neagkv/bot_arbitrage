@@ -4,7 +4,6 @@ import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.detectionAction.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.detectionAction.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.detectionAction.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.exceptions.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exchange.*;
@@ -37,6 +36,7 @@ public class Controller {
     @Autowired
     EmailService emailService;
 
+    @Autowired
     DetectionService detectionService;
 
     @Autowired
@@ -95,15 +95,14 @@ public class Controller {
           Detection detection = new Detection();
 
          ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-         currencyPairList.add(CurrencyPair.BCH_EUR);
-         currencyPairList.add(CurrencyPair.ETH_EUR);
+         //currencyPairList.add(CurrencyPair.BCH_EUR);
+         currencyPairList.add(CurrencyPair.ETH_USD);
          currencyPairList.add(CurrencyPair.BTC_EUR);
          currencyPairList.add(CurrencyPair.BTC_USD);
-         currencyPairList.add(CurrencyPair.XRP_EUR);
 
-       // DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-        DetectionActionSelection detectionActionSelection = new DetectionLogAction();
-        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+          DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+       // DetectionActionSelection detectionActionSelection = new DetectionLogAction();
+          detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 //        end for detection
 
     }

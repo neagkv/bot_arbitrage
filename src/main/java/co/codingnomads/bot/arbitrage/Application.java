@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Bean;
      * CommandLineRunner method that starts the controller runBot method from the command line
      * @throws Exception
      */
-    @Bean
+        @Bean
         public CommandLineRunner run() throws Exception {
             return args -> {
                 controller.runBot();
