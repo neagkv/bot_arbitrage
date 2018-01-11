@@ -8,6 +8,7 @@ import co.codingnomads.bot.arbitrage.detectionAction.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
+import co.codingnomads.bot.arbitrage.service.general.DectionDataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -34,6 +35,11 @@ public class Detection {
 
     @Autowired
     DataUtil dataUtil = new DataUtil();
+
+    @Autowired
+    DectionDataUtil detectionDataUtil = new DectionDataUtil();
+
+    DifferenceWrapper differenceWrapper = new DifferenceWrapper();
 
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
@@ -85,10 +91,18 @@ public class Detection {
                 Thread.sleep(100); // to avoid API rate limit issue
             }
             if (printMode) {
-                detectionAction.print(differenceWrapperList);
+                public ArrayList<DifferenceWrapper> print(ArrayList<DifferenceWrapper> differenceWrapperList) {
+                    for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
+//            System.out.println(dectionDataUtil.lowestDifferenceFinder(differenceWrapperList));
+//            System.out.println("********************************************");
+                        System.out.println(differenceWrapper.toString());
+                        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                    }
             }
             if (logMode) {
-                detectionAction.log(differenceWrapperList);
+
+
+                //detectionAction.log(differenceWrapperList);
             }
             //Thread.sleep(waitInterval);
         } while (logMode); // make it infinite loop if log mode and 1 time if print

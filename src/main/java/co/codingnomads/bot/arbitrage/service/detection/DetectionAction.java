@@ -1,7 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
-import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
 import co.codingnomads.bot.arbitrage.service.general.DectionDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,26 +12,17 @@ import java.util.ArrayList;
  *
  * Class to define the potential acting behaviors of the detection bot
  */
-@Service
+
 public class DetectionAction {
 
-    @Autowired
-    DetectionService detectionService;
-
-    @Autowired
-    DectionDataUtil dectionDataUtil;
 
     ArrayList<DifferenceWrapper> myList;
-
-    public ArrayList<DifferenceWrapper> getMyList() {
-        return myList;
-    }
 
     public void setMyList(ArrayList<DifferenceWrapper> myList) {
         this.myList = myList;
     }
 
-    public DifferenceWrapper print(ArrayList<DifferenceWrapper> differenceWrapperList) {
+    public ArrayList<DifferenceWrapper> print(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
 //            System.out.println(dectionDataUtil.lowestDifferenceFinder(differenceWrapperList));
 //            System.out.println("********************************************");
@@ -40,9 +30,10 @@ public class DetectionAction {
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
         System.out.println("jghjgjhgjgjgjgjg");
-        System.out.println(myList);
+        System.out.println(myList.toString());
         return myList;
     }
+
 
 
 
