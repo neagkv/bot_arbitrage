@@ -1,8 +1,8 @@
 package co.codingnomads.bot.arbitrage.service.general;
 
-import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.service.general.thread.GetTickerDataThread;
+import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
+import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
+import co.codingnomads.bot.arbitrage.service.thread.GetTickerDataThread;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;

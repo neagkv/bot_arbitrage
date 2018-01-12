@@ -1,8 +1,8 @@
 package co.codingnomads.bot.arbitrage.service.general;
 
-import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
+import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
-import co.codingnomads.bot.arbitrage.service.general.thread.GetExchangeThread;
+import co.codingnomads.bot.arbitrage.service.thread.GetExchangeThread;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
