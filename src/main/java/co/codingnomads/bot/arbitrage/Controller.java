@@ -3,6 +3,7 @@ package co.codingnomads.bot.arbitrage;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitragePrintAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.action.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
@@ -105,9 +106,9 @@ public class Controller {
          currencyPairList.add(CurrencyPair.BTC_EUR);
          currencyPairList.add(CurrencyPair.BTC_USD);
 
-        //DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-        //DetectionActionSelection detectionActionSelection = new DetectionLogAction();
-        //detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+        DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+        //DetectionActionSelection detectionActionSelection1 = new DetectionLogAction();
+        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 //        end for detection
 
     }

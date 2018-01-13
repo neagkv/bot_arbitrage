@@ -12,7 +12,6 @@ import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,32 +26,20 @@ import java.util.ArrayList;
 public class Detection {
 
     @Autowired
-    ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
+    ExchangeDataGetter exchangeDataGetter;
 
     @Autowired
-    DetectionAction detectionAction = new DetectionAction();
+    DataUtil dataUtil;
 
     @Autowired
-    DataUtil dataUtil = new DataUtil();
+    DetectionDataUtil dectionDataUtil;
 
-    @Autowired
-    DetectionDataUtil dectionDataUtil = new DetectionDataUtil();
-
-
-    // Ryan: you can autowire this now.
-    // todo autowire it
-    ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
 
     // Ryan: this doesn't need to be autowired, nor does it need to be a class variable. It can be defined once in the run method
     // and assigned in the if statement where it is used below. I think autowiring might break it. See Arbitrage.java
     // for example on line ~107
     // todo autowire it
-    DetectionAction detectionAction = new DetectionAction();
-
-    // Ryan: you can autowire this now.
-    // todo autowire it
-    DataUtil dataUtil = new DataUtil();
-
+    //DetectionAction detectionAction = new DetectionAction();
 
     // Ryan: missing comments - a method like this should have a nice comment explaining what it does
     // a little in-line commenting in the method is also very nice to have

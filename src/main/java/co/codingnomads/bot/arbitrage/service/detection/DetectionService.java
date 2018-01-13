@@ -1,7 +1,7 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
-import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
+import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

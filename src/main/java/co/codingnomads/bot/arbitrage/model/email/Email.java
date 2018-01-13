@@ -1,7 +1,6 @@
 package co.codingnomads.bot.arbitrage.model.email;
 
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
-
 import java.math.BigDecimal;
 
 /**

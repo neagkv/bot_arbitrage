@@ -1,7 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.general;
 
-import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
-import co.codingnomads.bot.arbitrage.model.TickerData;
+import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
