@@ -1,12 +1,12 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
-import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageActionSelection;
-import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageEmailAction;
-import co.codingnomads.bot.arbitrage.exceptions.EmailLimitException;
+import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
+import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
+import co.codingnomads.bot.arbitrage.action.arbitrage.selection.ArbitrageActionSelection;
+import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitragePrintAction;
+import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
+import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
@@ -28,7 +28,8 @@ import java.util.ArrayList;
 public class Arbitrage {
 
     // todo make this method running every X minutes (Kevin)
-    // todo fix the issue with autowired (ryan)
+    // todo fix the issue with autowired (ryan) Ryan: fixed with Spring Boot - used Spring Boot because it's fixed several
+    // issues with MyBatis and autowiring
     // todo look more into the fee (Kevin, thom?)
 
     /**
@@ -39,15 +40,18 @@ public class Arbitrage {
      * @param arbitrageActionSelection A Pojo for selecting which action to be taken after an arbitrage detection
      * @throws IOException
      */
-
     public void run(CurrencyPair currencyPair,
                     ArrayList<ExchangeSpecs> selectedExchanges,
                     ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException {
 
+        // Ryan: general note - a little more in-line commenting through the more involved methods such as this run() are
+        // always encouraged - there's quite a bit going on in this method - a year from now you'll thank yourself for commenting
+        // all over the place. In the meantime, anyone else who's looking at the code will highly appreciate it as well
+
         // todo autowire them
         ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
         DataUtil dataUtil = new DataUtil();
-       // ArbitrageAction arbitrageAction = new ArbitrageAction();
+       // ArbitrageAction arbitrage = new ArbitrageAction();
         ExchangeGetter exchangeGetter = new ExchangeGetter();
 
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;

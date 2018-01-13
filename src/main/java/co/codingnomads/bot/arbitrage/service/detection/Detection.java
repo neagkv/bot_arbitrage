@@ -1,11 +1,10 @@
 package co.codingnomads.bot.arbitrage.service.detection;
 
-import co.codingnomads.bot.arbitrage.model.ActivatedExchange;
-import co.codingnomads.bot.arbitrage.model.TickerData;
-import co.codingnomads.bot.arbitrage.detectionAction.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.detectionAction.DetectionLogAction;
-import co.codingnomads.bot.arbitrage.detectionAction.DetectionPrintAction;
-import co.codingnomads.bot.arbitrage.detectionAction.DifferenceWrapper;
+import co.codingnomads.bot.arbitrage.action.detection.*;
+import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
+import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
+import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.DetectionDataUtil;
@@ -39,6 +38,25 @@ public class Detection {
     @Autowired
     DetectionDataUtil dectionDataUtil = new DetectionDataUtil();
 
+
+    // Ryan: you can autowire this now.
+    // todo autowire it
+    ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
+
+    // Ryan: this doesn't need to be autowired, nor does it need to be a class variable. It can be defined once in the run method
+    // and assigned in the if statement where it is used below. I think autowiring might break it. See Arbitrage.java
+    // for example on line ~107
+    // todo autowire it
+    DetectionAction detectionAction = new DetectionAction();
+
+    // Ryan: you can autowire this now.
+    // todo autowire it
+    DataUtil dataUtil = new DataUtil();
+
+
+    // Ryan: missing comments - a method like this should have a nice comment explaining what it does
+    // a little in-line commenting in the method is also very nice to have
+
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
                     DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException {
@@ -61,7 +79,6 @@ public class Detection {
             for (CurrencyPair currencyPair : currencyPairList) {
 
                 ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
-
                         activatedExchanges,
                         currencyPair,
                         tradeValueBase);
@@ -89,6 +106,10 @@ public class Detection {
                 //Thread.sleep(1000); // to avoid API rate limit issue
             }
             if (printMode) {
+                // Ryan: you might want to do the following in a very similar way as to line ~111 in Arbitrage.java
+                // this speaks to the same notes I made in DetectionAction.java and DetectionPrintAction
+                // The arbitrage actions and the detection actions are being handled slwightly differently.
+                // I think the way the arbitrage actions are working is the better way.
                 detectionAction.print(differenceWrapperList);
                 DifferenceWrapper differenceWrapper = dectionDataUtil.lowestDifferenceFinder(differenceWrapperList);
                 System.out.println(differenceWrapper);
@@ -96,10 +117,13 @@ public class Detection {
 
             }
             if (logMode) {
+                // Ryan: see above
                 detectionAction.log(differenceWrapperList);
             }
+
             //Thread.sleep(waitInterval);
         } while (printMode); // make it infinite loop if log mode and 1 time if print
+
 
     }
 }

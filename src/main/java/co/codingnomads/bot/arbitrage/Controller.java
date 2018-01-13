@@ -1,12 +1,11 @@
 package co.codingnomads.bot.arbitrage;
 
-import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitragePrintAction;
-import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageTradingAction;
-import co.codingnomads.bot.arbitrage.arbitrageAction.ArbitrageEmailAction;
-import co.codingnomads.bot.arbitrage.detectionAction.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.detectionAction.DetectionLogAction;
-import co.codingnomads.bot.arbitrage.detectionAction.DetectionPrintAction;
-import co.codingnomads.bot.arbitrage.exceptions.EmailLimitException;
+import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitragePrintAction;
+import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
+import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
+import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
+import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exchange.*;
 import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
@@ -28,6 +27,8 @@ import java.util.ArrayList;
 @Service
 public class Controller {
 
+    // Ryan - general note - I'm sure you're already on the same page, but this file is a bit of a mess
+
     @Autowired
     Arbitrage arbitrage;
 
@@ -46,6 +47,9 @@ public class Controller {
     @Autowired
     ArbitragePrintAction arbitragePrintAction;
 
+    // Ryan: the general manner in which this app is called, and whether or not it is called dynamically with various
+    // currency pairs and exchanges etc needs to be ironed out. I'm sure you guys are on that. But as of yet, it appears
+    // unfinished in this regard.
     public void runBot() throws IOException, InterruptedException, EmailLimitException {
 
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
@@ -102,8 +106,8 @@ public class Controller {
          currencyPairList.add(CurrencyPair.BTC_USD);
 
         //DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-        DetectionActionSelection detectionActionSelection = new DetectionLogAction();
-        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+        //DetectionActionSelection detectionActionSelection = new DetectionLogAction();
+        //detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 //        end for detection
 
     }
