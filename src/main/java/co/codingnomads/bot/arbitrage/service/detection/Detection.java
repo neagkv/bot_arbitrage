@@ -12,6 +12,8 @@ import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -22,14 +24,17 @@ import java.util.ArrayList;
  *
  * Detection bot class
  */
-
+@Service
 public class Detection {
+
+    @Autowired
+    DetectionService detectionService;
 
     ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
 
-    DataUtil dataUtil = new DataUtil();
+    ExchangeGetter exchangeGetter = new ExchangeGetter();
 
-    DetectionDataUtil detectionDataUtil = new DetectionDataUtil();
+    DataUtil dataUtil = new DataUtil();
 
     // Ryan: this doesn't need to be autowired, nor does it need to be a class variable. It can be defined once in the run method
     // and assigned in the if statement where it is used below. I think autowiring might break it. See Arbitrage.java
@@ -48,7 +53,7 @@ public class Detection {
         int waitInterval = 0;
         if (logMode) waitInterval = ((DetectionLogAction) detectionActionSelection).getWaitInterval();
 
-        ExchangeGetter exchangeGetter = new ExchangeGetter();
+        //ExchangeGetter exchangeGetter = new ExchangeGetter();
 
         ArrayList<ActivatedExchange> activatedExchanges =
                 exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, false);
@@ -90,12 +95,6 @@ public class Detection {
                 // this speaks to the same notes I made in DetectionAction.java and DetectionPrintAction
                 // The arbitrage actions and the detection actions are being handled slwightly differently.
                 // I think the way the arbitrage actions are working is the better way.
-//                detectionAction.print(differenceWrapperList);
-//                DifferenceWrapper differenceWrapper = dectionDataUtil.lowestDifferenceFinder(differenceWrapperList);
-//                System.out.println(differenceWrapper);
-//                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
-
                 DetectionPrintAction detectionPrintAction = (DetectionPrintAction) detectionActionSelection;
                 detectionPrintAction.print(differenceWrapperList);
 
@@ -103,10 +102,13 @@ public class Detection {
             if (logMode) {
                 // Ryan: see above
 //                detectionAction.log(differenceWrapperList);
+
+                DetectionLogAction detectionLogAction = (DetectionLogAction) detectionActionSelection;
+                detectionLogAction.log(differenceWrapperList);
             }
 
             //Thread.sleep(waitInterval);
-        } while (logMode); // make it infinite loop if log mode and 1 time if print
+        } while (printMode); // make it infinite loop if log mode and 1 time if print
 
 
     }

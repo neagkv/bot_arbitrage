@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author Kevin Neag
  */
+
 @Service
 public class DetectionService {
 

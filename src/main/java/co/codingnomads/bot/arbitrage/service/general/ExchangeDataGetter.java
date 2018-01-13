@@ -6,7 +6,6 @@ import co.codingnomads.bot.arbitrage.service.thread.GetTickerDataThread;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.concurrent.*;
@@ -18,8 +17,6 @@ import java.util.concurrent.*;
  */
 @Service
 public class ExchangeDataGetter {
-
-    // protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final static int TIMEOUT = 30;
 

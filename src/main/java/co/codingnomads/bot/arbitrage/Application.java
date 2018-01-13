@@ -1,6 +1,5 @@
 package co.codingnomads.bot.arbitrage;
 
-import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

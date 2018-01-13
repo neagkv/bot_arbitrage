@@ -12,11 +12,12 @@ import java.util.ArrayList;
 @Service
 public class DetectionDataUtil {
 
-//    Add a new method in the print that run to the object
-//    generated for each pairs and find the one with the best difference and only
-//    print that one. Check the method find the best bid and best Ask, it is very similar
-
-
+    /**
+     * A method to find the greatest price difference between the selected currency pairs on the selected exchanges for the best
+     * arbitrage opportunity.
+     * @param differenceWrapperList a list of differenceWrapper information based on the exchanges and currency pairs selected
+     * @return The difference wrapper object with the greatest price difference.
+     */
     public DifferenceWrapper bestDifferenceFinder(ArrayList<DifferenceWrapper> differenceWrapperList) {
         int highIndex = 0;
         if (differenceWrapperList.size() > 1) {

@@ -3,6 +3,8 @@ package co.codingnomads.bot.arbitrage.service.general;
 import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.thread.GetExchangeThread;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
