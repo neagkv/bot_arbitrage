@@ -16,6 +16,9 @@ import java.util.ArrayList;
 @Service
 public class DetectionLogAction extends DetectionActionSelection {
 
+    @Autowired
+    DetectionService detectionService;
+
 
     int waitInterval;
 
@@ -37,7 +40,7 @@ public class DetectionLogAction extends DetectionActionSelection {
 
     public void log(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
-            //detectionService.insertDetectionRecords(differenceWrapper);
+            detectionService.insertDetectionRecords(differenceWrapper);
             System.out.println(differenceWrapper.toString());
         }
     }
