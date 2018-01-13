@@ -25,22 +25,15 @@ import java.util.ArrayList;
 
 public class Detection {
 
-    @Autowired
-    ExchangeDataGetter exchangeDataGetter;
+    ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
 
-    @Autowired
-    DataUtil dataUtil;
+    DataUtil dataUtil = new DataUtil();
 
-    @Autowired
-    DetectionDataUtil dectionDataUtil;
-
+    DetectionDataUtil detectionDataUtil = new DetectionDataUtil();
 
     // Ryan: this doesn't need to be autowired, nor does it need to be a class variable. It can be defined once in the run method
     // and assigned in the if statement where it is used below. I think autowiring might break it. See Arbitrage.java
     // for example on line ~107
-    // todo autowire it
-    //DetectionAction detectionAction = new DetectionAction();
-
     // Ryan: missing comments - a method like this should have a nice comment explaining what it does
     // a little in-line commenting in the method is also very nice to have
 
@@ -97,19 +90,23 @@ public class Detection {
                 // this speaks to the same notes I made in DetectionAction.java and DetectionPrintAction
                 // The arbitrage actions and the detection actions are being handled slwightly differently.
                 // I think the way the arbitrage actions are working is the better way.
-                detectionAction.print(differenceWrapperList);
-                DifferenceWrapper differenceWrapper = dectionDataUtil.lowestDifferenceFinder(differenceWrapperList);
-                System.out.println(differenceWrapper);
-                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                detectionAction.print(differenceWrapperList);
+//                DifferenceWrapper differenceWrapper = dectionDataUtil.lowestDifferenceFinder(differenceWrapperList);
+//                System.out.println(differenceWrapper);
+//                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+
+                DetectionPrintAction detectionPrintAction = (DetectionPrintAction) detectionActionSelection;
+                detectionPrintAction.print(differenceWrapperList);
 
             }
             if (logMode) {
                 // Ryan: see above
-                detectionAction.log(differenceWrapperList);
+//                detectionAction.log(differenceWrapperList);
             }
 
             //Thread.sleep(waitInterval);
-        } while (printMode); // make it infinite loop if log mode and 1 time if print
+        } while (logMode); // make it infinite loop if log mode and 1 time if print
 
 
     }

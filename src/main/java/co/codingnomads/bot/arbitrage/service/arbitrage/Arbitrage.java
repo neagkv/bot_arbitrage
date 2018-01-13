@@ -32,6 +32,13 @@ public class Arbitrage {
     // issues with MyBatis and autowiring
     // todo look more into the fee (Kevin, thom?)
 
+
+    ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
+
+    DataUtil dataUtil = new DataUtil();
+
+    ExchangeGetter exchangeGetter = new ExchangeGetter();
+
     /**
      * Arbitrage bot with multiple arbitrage action
      *
@@ -49,10 +56,8 @@ public class Arbitrage {
         // all over the place. In the meantime, anyone else who's looking at the code will highly appreciate it as well
 
         // todo autowire them
-        ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
-        DataUtil dataUtil = new DataUtil();
-       // ArbitrageAction arbitrage = new ArbitrageAction();
-        ExchangeGetter exchangeGetter = new ExchangeGetter();
+
+
 
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
