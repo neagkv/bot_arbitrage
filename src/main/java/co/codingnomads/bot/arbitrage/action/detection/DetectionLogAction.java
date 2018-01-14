@@ -1,6 +1,7 @@
 package co.codingnomads.bot.arbitrage.action.detection;
 
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
 import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,7 +19,8 @@ import java.util.ArrayList;
 public class DetectionLogAction extends DetectionActionSelection {
 
     @Autowired
-    DetectionService detectionService;
+    DetectionWrapperMapper mapper;
+
 
     int waitInterval;
 
@@ -38,10 +40,10 @@ public class DetectionLogAction extends DetectionActionSelection {
     }
 
 
-    public void log(ArrayList<DifferenceWrapper> differenceWrapperList) {
-        for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
-            detectionService.insertDetectionRecords(differenceWrapper);
-            System.out.println(differenceWrapper.toString());
-        }
-    }
+//    public void logToDataBase(ArrayList<DifferenceWrapper> differenceWrapperList) {
+//        for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
+//            mapper.insert_DifferenceWrapper(differenceWrapper.getTimestamp(), differenceWrapper.getCurrencyPair(), differenceWrapper.getDifference(),
+//                    differenceWrapper.getLowAsk(), differenceWrapper.getLowAskExchange(), differenceWrapper.getHighBid(), differenceWrapper.getHighBidExchange());
+//        }
+//    }
 }

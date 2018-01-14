@@ -8,6 +8,7 @@ import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exchange.*;
+import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
@@ -110,9 +111,9 @@ public class Controller {
 //        DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
 //        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
-//        Detection log action not working yet
-//        DetectionActionSelection detectionActionSelection = new DetectionLogAction();
-//        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+//      Detection log action not working yet
+        DetectionActionSelection detectionActionSelection1 = new DetectionLogAction();
+        detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
 
 
     }

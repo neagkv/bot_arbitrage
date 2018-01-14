@@ -2,6 +2,7 @@ package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.action.detection.*;
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
 import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
@@ -12,7 +13,6 @@ import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -100,10 +100,11 @@ public class Detection {
             }
             if (logMode) {
                 // Ryan: see above
-//                detectionAction.log(differenceWrapperList);
-
+//
                 DetectionLogAction detectionLogAction = (DetectionLogAction) detectionActionSelection;
-                detectionLogAction.log(differenceWrapperList);
+                detectionService.insertDetectionRecords(differenceWrapperList);
+
+
             }
 
             //Thread.sleep(waitInterval);

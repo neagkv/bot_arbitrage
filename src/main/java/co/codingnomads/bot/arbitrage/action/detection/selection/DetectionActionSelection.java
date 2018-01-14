@@ -8,7 +8,4 @@ package co.codingnomads.bot.arbitrage.action.detection.selection;
 
 public abstract class DetectionActionSelection {
 
-    // Ryan: see notes in DetectionAction and DetectionPrintAction classes
-    // may or may not apply here
-
 }
