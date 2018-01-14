@@ -10,13 +10,11 @@ Other features will be eventually implemented to improve the functionality and s
 This is a bot that utilizes the XChange Java library <url>http://knowm.org/open-source/xchange/)</url> to interact with the apis
 of over 60 leading cryptocurrency exchanges. The bot has two primary functions, arbitrage and detection. For the the detection function,
 the user must enter the exchanges and currency pairs they would like to check as well as an action selection. The detection action selections
-are print and log. The bot will then either print the currency pair and
-and exchanges with the greatest difference in price to the console or log the highest ask price, lowest ask price and price difference for each request to a
+are print and log. The bot will then either print the currency pair and exchanges with the greatest difference in price to the console or log the highest ask price, lowest ask price and price difference for each request to a
 database repeatedly at a desired time interval, depending on the action request from the user. For the arbitrage function there are three actions,
 print, email and trading. For each of the actions the user must enter a currency pair a list of exchanges a desired arbitrage margin and an action.
 The print action will print the best arbitrage opportunity found for the given pair and exchanges to the console. The email action will additionally
-require an email address that is verified by amazon aws <url>https://aws.amazon.com/ses/?sc_channel=PS&sc_campaign=acquisition_US&sc_publisher=google&sc_medium=ses_b&sc_content=ses_bmm&sc_detail=%2Bamazon%20%2Bses&sc_category=ses&sc_segment=73823393442&sc_matchtype=b&sc_country=US&s_kwcid=AL!4422!3!73823393442!b!!g!!%2Bamazon%20%2Bses&ef_id=Wk_UgwAAAKX34Ax7:20180114014255:s</url>
-in the call. The email address will send an arbitrage update with the best arbitrage opportunity to the given email address.
+require an email address that is verified by amazon aws in the call. The email address will send an arbitrage update with the best arbitrage opportunity to the given email address.
 For the final arbitrage action (trading) the user must give a trade value base (a trade value in the base currency selected) along with the call.
 The bot will then trade on the exchange with the lowest ask and highest bid to capitalize on the arbitrage.
 
@@ -26,8 +24,7 @@ The bot will then trade on the exchange with the lowest ask and highest bid to c
 requires a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  to be
 installed on the machine you are going to use to run the program.
 
-you must have an active account on [amazon aws] (https://aws.amazon.com/free/?sc_channel=PS&sc_campaign=acquisition_US&sc_publisher=google&sc_medium=cloud_computing_b&sc_content=aws_core_p_control_q32016&sc_detail=amazon%20aws&sc_category=cloud_computing&sc_segment=188908164616&sc_matchtype=p&sc_country=US&s_kwcid=AL!4422!3!188908164616!p!!g!!amazon%20aws&ef_id=Wk_UgwAAAKX34Ax7:20180114015857:s)
-and the required credentials (https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
+you must have an active account on amazon aws and the required credentials (https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
 
 
 Required:
@@ -142,6 +139,6 @@ WIP
 
 
 ## Acknowledgements
-* [KrakenXchange](https://github.com/timmolter/XChange) by Tim Molter.
+*
 
 

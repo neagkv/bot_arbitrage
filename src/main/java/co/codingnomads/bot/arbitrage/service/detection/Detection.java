@@ -7,7 +7,6 @@ import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
-import co.codingnomads.bot.arbitrage.service.general.DetectionDataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
