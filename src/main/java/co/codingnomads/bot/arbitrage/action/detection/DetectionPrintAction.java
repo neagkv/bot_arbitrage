@@ -22,11 +22,12 @@ public class DetectionPrintAction extends DetectionActionSelection {
 
     public void print(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
+
         }
             DifferenceWrapper bestDiff = detectionDataUtil.bestDifferenceFinder(differenceWrapperList);
             System.out.println("***************************************************************************************");
             System.out.println("***************************************************************************************");
-            System.out.println("The Pairs with the Best Difference is " + bestDiff);
+            System.out.println("The Pair/s with the Best Difference/s is " + bestDiff);
             System.out.println("****************************************************************************************");
             System.out.println("****************************************************************************************");
     }
