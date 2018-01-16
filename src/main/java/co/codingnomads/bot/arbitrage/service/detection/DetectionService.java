@@ -17,8 +17,7 @@ public class DetectionService {
     DetectionWrapperMapper mapper;
 
     public void insertDetectionRecords(DifferenceWrapper differenceWrapper) {
-
-            mapper.insert_DifferenceWrapper(differenceWrapper.getTimestamp(), differenceWrapper.getCurrencyPair(), differenceWrapper.getDifference(),
+        mapper.insert_DifferenceWrapper(differenceWrapper.getTimestamp(), differenceWrapper.getCurrencyPair(), differenceWrapper.getDifference(),
                     differenceWrapper.getLowAsk(), differenceWrapper.getLowAskExchange(), differenceWrapper.getHighBid(), differenceWrapper.getHighBidExchange());
 
         }
