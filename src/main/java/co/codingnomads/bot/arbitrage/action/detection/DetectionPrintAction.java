@@ -20,13 +20,6 @@ public class DetectionPrintAction extends DetectionActionSelection {
 
     DetectionDataUtil detectionDataUtil = new DetectionDataUtil();
 
-    // Ryan: seeing that this may need not exist due to DetectionAction.print()
-    // however, for the arbitrage actions you have a class for each action and that convention is a bit broken
-    // in this package - it appears that these two action types (arbitrage and detection) are being handled in
-    // two slightly separate ways - ideally I think the conventions in the action.arbitrage and action.detection packages
-    // should align as closely as possible
-
-
     public void print(ArrayList<DifferenceWrapper> differenceWrapperList) {
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
         }

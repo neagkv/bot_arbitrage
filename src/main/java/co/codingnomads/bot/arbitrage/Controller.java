@@ -7,6 +7,7 @@ import co.codingnomads.bot.arbitrage.action.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
+import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
 import co.codingnomads.bot.arbitrage.exchange.*;
 import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.service.detection.Detection;
@@ -64,7 +65,7 @@ public class Controller {
     // currency pairs and exchanges etc needs to be ironed out. I'm sure you guys are on that. But as of yet, it appears
     // unfinished in this regard.
 
-    public void runBot() throws IOException, InterruptedException, EmailLimitException {
+    public void runBot() throws IOException, InterruptedException, EmailLimitException, WaitTimeException {
 
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
         ExchangeList.add(new KrakenSpecs()); // internal: good but slow
@@ -111,8 +112,8 @@ public class Controller {
 //        DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
 //        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
-//      Detection log action not working yet
-        DetectionActionSelection detectionActionSelection1 = new DetectionLogAction();
+//      Example of a Detection log action
+        DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(1000);
         detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
 
 

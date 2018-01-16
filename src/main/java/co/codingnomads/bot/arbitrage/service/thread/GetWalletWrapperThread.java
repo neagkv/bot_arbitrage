@@ -16,6 +16,10 @@ public class GetWalletWrapperThread implements Callable<WalletWrapper> {
 
     TickerData tickerData;
 
+    /**
+     *
+     * @return
+     */
     @Override
     public WalletWrapper call() {
         try {
@@ -28,6 +32,10 @@ public class GetWalletWrapperThread implements Callable<WalletWrapper> {
         }
     }
 
+    /**
+     *
+     * @param tickerData
+     */
     public GetWalletWrapperThread(TickerData tickerData) {
         this.tickerData = tickerData;
     }

@@ -24,6 +24,13 @@ public class DetectionLogAction extends DetectionActionSelection {
 
     int waitInterval;
 
+    public DetectionLogAction() {
+    }
+
+    public DetectionLogAction(int waitInterval) {
+        this.waitInterval = waitInterval;
+    }
+
     public int getWaitInterval() {
         return waitInterval;
     }
@@ -31,19 +38,4 @@ public class DetectionLogAction extends DetectionActionSelection {
     public void setWaitInterval(int waitInterval) {
         this.waitInterval = waitInterval;
     }
-
-    public DetectionLogAction(int waitInterval) {
-        this.waitInterval = waitInterval;
-    }
-
-    public DetectionLogAction() {
-    }
-
-
-//    public void logToDataBase(ArrayList<DifferenceWrapper> differenceWrapperList) {
-//        for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
-//            mapper.insert_DifferenceWrapper(differenceWrapper.getTimestamp(), differenceWrapper.getCurrencyPair(), differenceWrapper.getDifference(),
-//                    differenceWrapper.getLowAsk(), differenceWrapper.getLowAskExchange(), differenceWrapper.getHighBid(), differenceWrapper.getHighBidExchange());
-//        }
-//    }
 }

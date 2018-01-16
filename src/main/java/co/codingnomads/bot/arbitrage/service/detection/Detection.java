@@ -2,6 +2,7 @@ package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.action.detection.*;
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
 import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
 import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
@@ -35,24 +36,17 @@ public class Detection {
 
     DataUtil dataUtil = new DataUtil();
 
-    // Ryan: this doesn't need to be autowired, nor does it need to be a class variable. It can be defined once in the run method
-    // and assigned in the if statement where it is used below. I think autowiring might break it. See Arbitrage.java
-    // for example on line ~107
-    // Ryan: missing comments - a method like this should have a nice comment explaining what it does
-    // a little in-line commenting in the method is also very nice to have
 
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
-                    DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException {
+                    DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException, WaitTimeException {
 
         Boolean logMode = detectionActionSelection instanceof DetectionLogAction;
         Boolean printMode = detectionActionSelection instanceof DetectionPrintAction;
 
         double tradeValueBase = -1;
-        int waitInterval = 0;
-        if (logMode) waitInterval = ((DetectionLogAction) detectionActionSelection).getWaitInterval();
-
-        //ExchangeGetter exchangeGetter = new ExchangeGetter();
+        int waitInterval;
+        //if (logMode) waitInterval = ((DetectionLogAction) detectionActionSelection).getWaitInterval();
 
         ArrayList<ActivatedExchange> activatedExchanges =
                 exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, false);
@@ -87,28 +81,25 @@ public class Detection {
                         highBid.getBid(),
                         highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()));
 
-                //Thread.sleep(1000); // to avoid API rate limit issue
+                Thread.sleep(1000); // to avoid API rate limit issue
             }
             if (printMode) {
-                // Ryan: you might want to do the following in a very similar way as to line ~111 in Arbitrage.java
-                // this speaks to the same notes I made in DetectionAction.java and DetectionPrintAction
-                // The arbitrage actions and the detection actions are being handled slwightly differently.
-                // I think the way the arbitrage actions are working is the better way.
+
                 DetectionPrintAction detectionPrintAction = (DetectionPrintAction) detectionActionSelection;
                 detectionPrintAction.print(differenceWrapperList);
 
             }
             if (logMode) {
-                // Ryan: see above
-//
+
                 DetectionLogAction detectionLogAction = (DetectionLogAction) detectionActionSelection;
                 detectionService.insertDetectionRecords(differenceWrapperList);
+                System.out.println("Inserted difference wrapper into the database");
+                Thread.sleep(detectionLogAction.getWaitInterval());
 
 
             }
 
-            //Thread.sleep(waitInterval);
-        } while (printMode); // make it infinite loop if log mode and 1 time if print
+        } while (logMode); // make it infinite loop if log mode and 1 time if print
 
 
     }
