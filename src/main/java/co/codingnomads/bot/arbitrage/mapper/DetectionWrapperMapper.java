@@ -17,7 +17,7 @@ public interface DetectionWrapperMapper {
             "(#{arg0}, #{arg1}, #{arg2}, #{arg3}, #{arg4}, #{arg5}, #{arg6})";
 
     @Insert(INSERT_DifferenceWrapper)
-    public void insert_DifferenceWrapper(Timestamp timestamp, CurrencyPair currencyPair, BigDecimal difference, BigDecimal lowAsk,
+    public void insert_DifferenceWrapper(Timestamp timestamp, String currencyPairReformated, BigDecimal difference, BigDecimal lowAsk,
     String lowAskExchange, BigDecimal highBid, String highBidExchange);
 
 }
