@@ -113,7 +113,7 @@ public class Controller {
 //        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
 //      Example of a Detection log action
-        DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(1000);
+        DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
         detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
 
 

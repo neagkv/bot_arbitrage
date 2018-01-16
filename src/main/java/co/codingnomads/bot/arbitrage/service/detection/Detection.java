@@ -45,8 +45,7 @@ public class Detection {
         Boolean printMode = detectionActionSelection instanceof DetectionPrintAction;
 
         double tradeValueBase = -1;
-        int waitInterval;
-        //if (logMode) waitInterval = ((DetectionLogAction) detectionActionSelection).getWaitInterval();
+        int logCounter = 1;
 
         ArrayList<ActivatedExchange> activatedExchanges =
                 exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, false);
@@ -92,9 +91,16 @@ public class Detection {
             if (logMode) {
 
                 DetectionLogAction detectionLogAction = (DetectionLogAction) detectionActionSelection;
-                detectionService.insertDetectionRecords(differenceWrapperList);
-                System.out.println("Inserted difference wrapper into the database");
-                Thread.sleep(detectionLogAction.getWaitInterval());
+
+                int dbInsertWaitTime = detectionLogAction.getWaitInterval();
+                if (dbInsertWaitTime >= 60000) {
+                    detectionService.insertDetectionRecords(differenceWrapperList);
+
+                    System.out.println("Inserted difference wrapper into the database: Round " + logCounter);
+                    Thread.sleep(detectionLogAction.getWaitInterval());
+                    logCounter++;
+                }
+                else throw  new WaitTimeException ("Please enter a wait time of over 1 minute, to prevent overloading the database");
 
 
             }

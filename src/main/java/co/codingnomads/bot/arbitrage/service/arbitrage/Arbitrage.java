@@ -27,8 +27,6 @@ import java.util.ArrayList;
 public class Arbitrage {
 
     // todo make this method running every X minutes (Kevin)
-    // todo fix the issue with autowired (ryan) Ryan: fixed with Spring Boot - used Spring Boot because it's fixed several
-    // issues with MyBatis and autowiring
     // todo look more into the fee (Kevin, thom?)
 
     ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
@@ -52,9 +50,6 @@ public class Arbitrage {
         // Ryan: general note - a little more in-line commenting through the more involved methods such as this run() are
         // always encouraged - there's quite a bit going on in this method - a year from now you'll thank yourself for commenting
         // all over the place. In the meantime, anyone else who's looking at the code will highly appreciate it as well
-
-        // todo autowire them
-
 
 
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
