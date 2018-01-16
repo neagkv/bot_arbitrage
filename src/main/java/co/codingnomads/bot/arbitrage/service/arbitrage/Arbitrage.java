@@ -1,5 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
+import co.codingnomads.bot.arbitrage.exception.CurrencyPairException;
 import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
 import co.codingnomads.bot.arbitrage.action.arbitrage.selection.ArbitrageActionSelection;
@@ -45,7 +46,7 @@ public class Arbitrage {
      */
     public void run(CurrencyPair currencyPair,
                     ArrayList<ExchangeSpecs> selectedExchanges,
-                    ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException {
+                    ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException, CurrencyPairException {
 
         // Ryan: general note - a little more in-line commenting through the more involved methods such as this run() are
         // always encouraged - there's quite a bit going on in this method - a year from now you'll thank yourself for commenting
@@ -73,11 +74,11 @@ public class Arbitrage {
                     currencyPair,
                     tradeValueBase);
 
-            // todo handle with a custom exception on the getAllBidAsk
+
+
             if (listTickerData.size() == 0) {
-                System.out.println("This pair is not traded on the exchanged selected");
-                // System.out.println("This pair is not traded on the exchange selected");
-                return;
+
+                throw  new CurrencyPairException("The pair " + currencyPair + " is not supported on the exchange/s selected");
             }
 
             // temporary

@@ -2,6 +2,7 @@ package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.action.detection.*;
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
+import co.codingnomads.bot.arbitrage.exception.CurrencyPairException;
 import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
 import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
 import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
@@ -39,7 +40,7 @@ public class Detection {
 
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
-                    DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException, WaitTimeException {
+                    DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException, WaitTimeException, CurrencyPairException {
 
         Boolean logMode = detectionActionSelection instanceof DetectionLogAction;
         Boolean printMode = detectionActionSelection instanceof DetectionPrintAction;
@@ -54,6 +55,8 @@ public class Detection {
             ArrayList<DifferenceWrapper> differenceWrapperList = new ArrayList<>();
 
             for (CurrencyPair currencyPair : currencyPairList) {
+
+               //String currencyPairReformated = currencyPair.toString().replace("/","_");
 
                 ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
                         activatedExchanges,
@@ -72,6 +75,8 @@ public class Detection {
                 BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
                 BigDecimal differenceFormatted = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
 
+                //String currencyPairFormatted = currencyPair.toString().replace("/","_");
+
                 differenceWrapperList.add(new DifferenceWrapper(
                         currencyPair,
                         differenceFormatted,
@@ -82,6 +87,7 @@ public class Detection {
 
                 Thread.sleep(1000); // to avoid API rate limit issue
             }
+
             if (printMode) {
 
                 DetectionPrintAction detectionPrintAction = (DetectionPrintAction) detectionActionSelection;

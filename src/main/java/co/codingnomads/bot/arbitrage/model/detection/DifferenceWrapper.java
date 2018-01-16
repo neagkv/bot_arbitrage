@@ -19,6 +19,7 @@ public class DifferenceWrapper {
     private String lowAskExchange;
     private BigDecimal highBid;
     private String highBidExchange;
+    private String currencyPairFormated;
 
     public DifferenceWrapper(CurrencyPair currencyPair, BigDecimal difference, BigDecimal lowAsk, String lowAskExchange, BigDecimal highBid, String highBidExchange) {
         timestamp = new Timestamp(System.currentTimeMillis());
@@ -29,6 +30,17 @@ public class DifferenceWrapper {
         this.highBid = highBid;
         this.highBidExchange = highBidExchange;
     }
+
+    public DifferenceWrapper(String currencyPairFormated, BigDecimal difference, BigDecimal lowAsk, String lowAskExchange, BigDecimal highBid, String highBidExchange) {
+        timestamp = new Timestamp(System.currentTimeMillis());
+        this.currencyPairFormated = currencyPairFormated;
+        this.difference = difference;
+        this.lowAsk = lowAsk;
+        this.lowAskExchange = lowAskExchange;
+        this.highBid = highBid;
+        this.highBidExchange = highBidExchange;
+    }
+
 
     public Timestamp getTimestamp() {
         return timestamp;
@@ -90,16 +102,24 @@ public class DifferenceWrapper {
         this.currencyPair = currencyPair;
     }
 
+    public String getCurrencyPairFormated() {
+        return currencyPairFormated;
+    }
+
+    public void setCurrencyPairFormated(String currencyPairFormated) {
+        this.currencyPairFormated = currencyPairFormated;
+    }
+
     @Override
     public String toString() {
-        return "DifferenceWrapper{" +
-                "timestamp=" + timestamp +
-                ", currencyPair=" + currencyPair +
+        return
+                "currencyPair=" + currencyPair +
+                ", timestamp=" + timestamp +
                 ", difference=" + difference +
                 ", lowAsk=" + lowAsk +
                 ", lowAskExchange='" + lowAskExchange + '\'' +
                 ", highBid=" + highBid +
                 ", highBidExchange='" + highBidExchange + '\'' +
-                '}';
+                "";
     }
 }
