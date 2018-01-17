@@ -56,8 +56,6 @@ public class Detection {
 
             for (CurrencyPair currencyPair : currencyPairList) {
 
-               //String currencyPairReformated = currencyPair.toString().replace("/","_");
-
                 ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
                         activatedExchanges,
                         currencyPair,
@@ -75,7 +73,6 @@ public class Detection {
                 BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
                 BigDecimal differenceFormatted = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
 
-                //String currencyPairFormatted = currencyPair.toString().replace("/","_");
 
                 differenceWrapperList.add(new DifferenceWrapper(
                         currencyPair,

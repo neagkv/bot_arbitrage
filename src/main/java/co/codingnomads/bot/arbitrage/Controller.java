@@ -112,12 +112,12 @@ public class Controller {
 
 
 //      Example of a Detection print action
-        DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+//        DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+//        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
 //      Example of a Detection log action
-//      DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
-//      git detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
+      DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
+      detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
 
 
     }
