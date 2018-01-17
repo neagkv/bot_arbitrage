@@ -19,21 +19,11 @@ public class DifferenceWrapper {
     private String lowAskExchange;
     private BigDecimal highBid;
     private String highBidExchange;
-    private String currencyPairFormated;
+
 
     public DifferenceWrapper(CurrencyPair currencyPair, BigDecimal difference, BigDecimal lowAsk, String lowAskExchange, BigDecimal highBid, String highBidExchange) {
         timestamp = new Timestamp(System.currentTimeMillis());
         this.currencyPair = currencyPair;
-        this.difference = difference;
-        this.lowAsk = lowAsk;
-        this.lowAskExchange = lowAskExchange;
-        this.highBid = highBid;
-        this.highBidExchange = highBidExchange;
-    }
-
-    public DifferenceWrapper(String currencyPairFormated, BigDecimal difference, BigDecimal lowAsk, String lowAskExchange, BigDecimal highBid, String highBidExchange) {
-        timestamp = new Timestamp(System.currentTimeMillis());
-        this.currencyPairFormated = currencyPairFormated;
         this.difference = difference;
         this.lowAsk = lowAsk;
         this.lowAskExchange = lowAskExchange;
@@ -102,13 +92,6 @@ public class DifferenceWrapper {
         this.currencyPair = currencyPair;
     }
 
-    public String getCurrencyPairFormated() {
-        return currencyPairFormated;
-    }
-
-    public void setCurrencyPairFormated(String currencyPairFormated) {
-        this.currencyPairFormated = currencyPairFormated;
-    }
 
     @Override
     public String toString() {

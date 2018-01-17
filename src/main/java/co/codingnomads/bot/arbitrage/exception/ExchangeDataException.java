@@ -3,7 +3,7 @@ package co.codingnomads.bot.arbitrage.exception;
 /**
  * @author Kevin Neag
  */
-public class CurrencyPairException extends Exception{
+public class ExchangeDataException extends Exception{
 
 
     String errorMsg;
@@ -12,14 +12,14 @@ public class CurrencyPairException extends Exception{
      * An exception if the currency pair the user selected is not supported by the exchange/s given
      * @param message
      */
-    public CurrencyPairException(String message) {
+    public ExchangeDataException(String message) {
         super(message);
         this.errorMsg = errorMsg;
     }
 
     @Override
     public String toString() {
-        return "CurrencyPairException{" +
+        return "ExchangeDataException{" +
                 "errorMsg='" + errorMsg + '\'' +
                 '}';
     }

@@ -1,6 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.arbitrage;
 
-import co.codingnomads.bot.arbitrage.exception.CurrencyPairException;
+import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
 import co.codingnomads.bot.arbitrage.action.arbitrage.selection.ArbitrageActionSelection;
@@ -46,7 +46,7 @@ public class Arbitrage {
      */
     public void run(CurrencyPair currencyPair,
                     ArrayList<ExchangeSpecs> selectedExchanges,
-                    ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException, CurrencyPairException {
+                    ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException, ExchangeDataException {
 
         // Ryan: general note - a little more in-line commenting through the more involved methods such as this run() are
         // always encouraged - there's quite a bit going on in this method - a year from now you'll thank yourself for commenting
@@ -78,7 +78,7 @@ public class Arbitrage {
 
             if (listTickerData.size() == 0) {
 
-                throw  new CurrencyPairException("The pair " + currencyPair + " is not supported on the exchange/s selected");
+                throw  new ExchangeDataException("The pair " + currencyPair + " is not supported on the exchange/s selected");
             }
 
             // temporary

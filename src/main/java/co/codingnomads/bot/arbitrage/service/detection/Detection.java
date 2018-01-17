@@ -2,9 +2,8 @@ package co.codingnomads.bot.arbitrage.service.detection;
 
 import co.codingnomads.bot.arbitrage.action.detection.*;
 import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.exception.CurrencyPairException;
+import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
-import co.codingnomads.bot.arbitrage.mapper.DetectionWrapperMapper;
 import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
@@ -40,7 +39,7 @@ public class Detection {
 
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
-                    DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException, WaitTimeException, CurrencyPairException {
+                    DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException, WaitTimeException, ExchangeDataException {
 
         Boolean logMode = detectionActionSelection instanceof DetectionLogAction;
         Boolean printMode = detectionActionSelection instanceof DetectionPrintAction;
@@ -99,7 +98,7 @@ public class Detection {
                 if (dbInsertWaitTime >= 60000) {
                     detectionService.insertDetectionRecords(differenceWrapperList);
 
-                    System.out.println("Inserted difference wrapper into the database: Round " + logCounter);
+                    System.out.println("Inserted difference wrapper into database: Round " + logCounter);
                     Thread.sleep(detectionLogAction.getWaitInterval());
                     logCounter++;
                 }

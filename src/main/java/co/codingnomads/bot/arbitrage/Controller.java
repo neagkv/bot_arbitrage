@@ -5,18 +5,14 @@ import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
-import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
-import co.codingnomads.bot.arbitrage.exception.CurrencyPairException;
+import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
 import co.codingnomads.bot.arbitrage.exchange.*;
-import co.codingnomads.bot.arbitrage.model.detection.DifferenceWrapper;
 import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
-import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
-import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +22,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/11/17
- * <p>
+ *
  * Controller for running the arbitrage or detection bot
  */
 
@@ -66,7 +62,7 @@ public class Controller {
     // currency pairs and exchanges etc needs to be ironed out. I'm sure you guys are on that. But as of yet, it appears
     // unfinished in this regard.
 
-    public void runBot() throws IOException, InterruptedException, EmailLimitException, WaitTimeException, CurrencyPairException {
+    public void runBot() throws IOException, InterruptedException, EmailLimitException, WaitTimeException, ExchangeDataException {
 
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
         ExchangeList.add(new KrakenSpecs()); // internal: good but slow
@@ -82,26 +78,25 @@ public class Controller {
         currencyPairList.add(CurrencyPair.ETH_USD);
         currencyPairList.add(CurrencyPair.BTC_EUR);
         currencyPairList.add(CurrencyPair.BTC_USD);
-        //currencyPairList.add(CurrencyPair.BTC_SEK);
 
 
 //        Example of an Arbitrage trade action
 //        arbitrageTradingAction.setArbitrageMargin(1.01);
 //        arbitrageTradingAction.setTradeValueBase(0.02);
 //        arbitrage.run(
-//                CurrencyPair.ETH_EUR,
+//                CurrencyPair.ETH_USD,
 //                ExchangeList,
 //                arbitrageTradingAction);
 
 
 //        Example of an Arbitrage print action that finds the best trading pair every hour
-//          arbitragePrintAction.setArbitrageMargin(1.01);
-//          arbitrage.run(
+//        arbitragePrintAction.setArbitrageMargin(1.01);
+//        arbitrage.run(
 //                CurrencyPair.ETH_USD,
 //                ExchangeList,
 //                arbitragePrintAction);
 
-//        Example Of an Arbitrage email action
+//        Example of an Arbitrage email action
 //        arbitrageEmailAction.setArbitrageMargin(1.03);
 //        arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
 //        emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
@@ -112,12 +107,12 @@ public class Controller {
 
 
 //      Example of a Detection print action
-//        DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-//        detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+//      DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+//      detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
 //      Example of a Detection log action
-      DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
-      detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
+//      DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
+//      detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
 
 
     }
