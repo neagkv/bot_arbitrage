@@ -12,7 +12,14 @@ import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
+import co.codingnomads.bot.arbitrage.service.schedule.ScheduledArbitrageTask;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.Schedules;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -24,6 +31,8 @@ import java.util.ArrayList;
  *
  * the arbitrage bot class
  */
+
+
 @Service
 public class Arbitrage {
 
@@ -35,6 +44,8 @@ public class Arbitrage {
     DataUtil dataUtil = new DataUtil();
 
     ExchangeGetter exchangeGetter = new ExchangeGetter();
+
+
 
     /**
      * Arbitrage bot with multiple arbitrage action
@@ -110,7 +121,10 @@ public class Arbitrage {
             if (printMode) {
                 ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
                 arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
+
+
             }
+
             if (emailMode) {
                 ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
                 arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());

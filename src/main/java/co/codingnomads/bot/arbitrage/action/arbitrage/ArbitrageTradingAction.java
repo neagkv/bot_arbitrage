@@ -20,8 +20,7 @@ import java.util.concurrent.*;
 /**
  * Created by Thomas Leruth on 12/17/17
  *
- * Ryan: I'd say this isn't necessarily a POJO just FYI - due to the trade() method
- * POJO class for the information needed to use the trading action as behavior action
+ * class for the information needed to use the trading action as behavior action
  */
 @Service
 public class ArbitrageTradingAction extends ArbitrageActionSelection {

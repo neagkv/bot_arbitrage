@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author Kevin Neag
@@ -14,7 +15,8 @@ import org.springframework.context.annotation.Bean;
  * Application Class for starting the entire application
  */
 @SpringBootApplication
-    public class Application {
+@EnableScheduling
+public class Application {
 
     @Autowired
     Controller controller;

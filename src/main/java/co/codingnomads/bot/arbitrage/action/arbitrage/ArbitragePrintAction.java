@@ -8,8 +8,7 @@ import java.math.RoundingMode;
 
 /**
  * Created by Thomas Leruth on 12/17/17
- * Ryan: I'd say this isn't necessarily a POJO just FYI - due to the print() method
- * POJO class for the information to use the print method as acting behavior
+ * class for the information to use the print method as acting behavior
  */
 @Service
 public class ArbitragePrintAction extends ArbitrageActionSelection {

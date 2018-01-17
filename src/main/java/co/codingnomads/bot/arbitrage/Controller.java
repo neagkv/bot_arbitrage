@@ -5,6 +5,7 @@ import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
+import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
@@ -13,8 +14,11 @@ import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
+import co.codingnomads.bot.arbitrage.service.schedule.ScheduledArbitrageTask;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,9 +62,11 @@ public class Controller {
     @Autowired
     DetectionPrintAction detectionPrintAction;
 
+
     // Ryan: the general manner in which this app is called, and whether or not it is called dynamically with various
     // currency pairs and exchanges etc needs to be ironed out. I'm sure you guys are on that. But as of yet, it appears
     // unfinished in this regard.
+
 
     public void runBot() throws IOException, InterruptedException, EmailLimitException, WaitTimeException, ExchangeDataException {
 
@@ -82,25 +88,26 @@ public class Controller {
 
 //        Example of an Arbitrage trade action
 //        arbitrageTradingAction.setArbitrageMargin(1.01);
-//        arbitrageTradingAction.setTradeValueBase(0.02);
-//        arbitrage.run(
+//          arbitrageTradingAction.setTradeValueBase(0.02);
+//          arbitrage.run(
 //                CurrencyPair.ETH_USD,
 //                ExchangeList,
 //                arbitrageTradingAction);
 
 
-//        Example of an Arbitrage print action that finds the best trading pair every hour
-//        arbitragePrintAction.setArbitrageMargin(1.01);
-//        arbitrage.run(
-//                CurrencyPair.ETH_USD,
-//                ExchangeList,
-//                arbitragePrintAction);
+//      Example of an Arbitrage print action that finds the best trading pair every hour
+        arbitragePrintAction.setArbitrageMargin(1.01);
+        arbitrage.run(
+                CurrencyPair.ETH_USD,
+                ExchangeList,
+                arbitragePrintAction);
 
-//        Example of an Arbitrage email action
-//        arbitrageEmailAction.setArbitrageMargin(1.03);
-//        arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
-//        emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
-//        arbitrage.run(
+
+//      Example of an Arbitrage email action
+//      arbitrageEmailAction.setArbitrageMargin(1.03);
+//      arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+//      emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
+//      arbitrage.run(
 //                CurrencyPair.ETH_EUR,
 //                ExchangeList,
 //                arbitrageEmailAction);

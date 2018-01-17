@@ -18,10 +18,7 @@ public class MakeOrderThread implements Callable<OrderIDWrapper> {
 
     // Ryan: general note some in-line commenting could be nice in here
 
-    /**
-     *
-     * @return
-     */
+
     @Override
     public OrderIDWrapper call() {
         try {
@@ -32,14 +29,9 @@ public class MakeOrderThread implements Callable<OrderIDWrapper> {
             e.printStackTrace();
             return null;
         }
-
     }
 
-    /**
-     *
-     * @param marketOrder
-     * @param tickerData
-     */
+
     public MakeOrderThread(MarketOrder marketOrder, TickerData tickerData) {
         this.marketOrder = marketOrder;
         this.tickerData = tickerData;
