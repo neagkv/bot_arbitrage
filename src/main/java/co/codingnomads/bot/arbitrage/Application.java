@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * Application Class for starting the entire application
  */
 @SpringBootApplication
-@EnableScheduling
 public class Application {
 
     @Autowired

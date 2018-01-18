@@ -30,10 +30,14 @@ public class ArbitragePrintAction extends ArbitrageActionSelection {
      */
     public void print(TickerData lowAsk, TickerData highBid, double arbitrageMargin) {
 
+        //
         BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
         if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
             BigDecimal differenceFormated = (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100));
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
+            System.out.println();
             System.out.println("ARBITRAGE DETECTED!!!"
                     + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
                     + " for " + lowAsk.getAsk()
@@ -42,8 +46,19 @@ public class ArbitragePrintAction extends ArbitrageActionSelection {
                     + " and make a return (before fees) of "
                     + differenceFormated
                     + "%");
+            System.out.println();
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
+
         } else {
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
+            System.out.println();
             System.out.println("No arbitrage found");
+            System.out.println();
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
+
         }
     }
 

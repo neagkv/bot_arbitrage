@@ -39,5 +39,6 @@ public class GDAXSpecs extends ExchangeSpecs {
         return exSpec;
     }
 
+
 }
 

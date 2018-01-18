@@ -25,11 +25,14 @@ public class DetectionPrintAction extends DetectionActionSelection {
 
         }
             DifferenceWrapper bestDiff = detectionDataUtil.bestDifferenceFinder(differenceWrapperList);
-            System.out.println("***************************************************************************************");
-            System.out.println("***************************************************************************************");
+            System.out.println("========================================================================================");
+            System.out.println("========================================================================================");
+            System.out.println();
             System.out.println("The Pair/s with the Best Difference/s is " + bestDiff);
-            System.out.println("****************************************************************************************");
-            System.out.println("****************************************************************************************");
+            System.out.println();
+            System.out.println("========================================================================================");
+            System.out.println("========================================================================================");
+
     }
 
 }

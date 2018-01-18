@@ -61,7 +61,13 @@ public class GetTickerDataThread implements Callable<TickerData> {
             }
             // bad design that I pull tickerData then turn it null but I need it to figure baseNeed
             if (counterFund.compareTo(counterNeed) < 0 && baseFund.compareTo(baseNeed) < 0) {
-                System.out.println("No necessary fund to trade");
+                System.out.println("=======================================================================================");
+                System.out.println("=======================================================================================");
+                System.out.println();
+                System.out.println("You do not have the funds to complete this trade");
+                System.out.println();
+                System.out.println("=======================================================================================");
+                System.out.println("=======================================================================================");
                 activatedExchange.setActivated(false);
                 return null;
             }

@@ -30,4 +30,5 @@ public class KrakenSpecs extends ExchangeSpecs {
         }
         return exSpec;
     }
+
 }

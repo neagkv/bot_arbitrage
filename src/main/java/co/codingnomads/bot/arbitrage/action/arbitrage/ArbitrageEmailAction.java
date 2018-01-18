@@ -134,10 +134,22 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
                                     .withCharset("UTF-8").withData(email.getSUBJECT())))
                     .withSource(email.getFROM());
             client.sendEmail(request);
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
+            System.out.println();
             System.out.println("Email sent!");
+            System.out.println();
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
         } catch (Exception ex) {
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
+            System.out.println();
             System.out.println("The email was not sent. Error message: "
                     + ex.getMessage());
+            System.out.println("=======================================================================================");
+            System.out.println("=======================================================================================");
+            System.out.println();
         }
     }
 

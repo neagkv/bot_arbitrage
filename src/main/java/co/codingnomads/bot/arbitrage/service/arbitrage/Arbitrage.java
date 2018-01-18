@@ -12,14 +12,7 @@ import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
-import co.codingnomads.bot.arbitrage.service.schedule.ScheduledArbitrageTask;
 import org.knowm.xchange.currency.CurrencyPair;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.annotation.Schedules;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -45,8 +38,6 @@ public class Arbitrage {
 
     ExchangeGetter exchangeGetter = new ExchangeGetter();
 
-
-
     /**
      * Arbitrage bot with multiple arbitrage action
      *
@@ -59,83 +50,69 @@ public class Arbitrage {
                     ArrayList<ExchangeSpecs> selectedExchanges,
                     ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException, ExchangeDataException {
 
-        // Ryan: general note - a little more in-line commenting through the more involved methods such as this run() are
-        // always encouraged - there's quite a bit going on in this method - a year from now you'll thank yourself for commenting
-        // all over the place. In the meantime, anyone else who's looking at the code will highly appreciate it as well
-
-
+        //Determines the arbitrage action being called
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
+        //sets the tradeValueBase as -1, as a precaution to prevent trading, when it is not suppose too, or will lose money.
         double tradeValueBase = -1;
+
+        //sets the tradeValueBase given in the controller for arbitrageTradingAction
         if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
 
+        //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
         ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
 
-        // temporary
-        int i = 0;
-        int loop = 1;
-        while (i < loop) {
+        //makes while loop continuously run so all the exchanges are added
+//        int i = 0;
+//        int loop = 1;
+        while (true) {
 
-
+            //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
             ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
 
                     activatedExchanges,
                     currencyPair,
                     tradeValueBase);
 
-
-
+            //if the list of ticker data is empty the currencypair is not supported on the exchange
             if (listTickerData.size() == 0) {
 
-                throw  new ExchangeDataException("The pair " + currencyPair + " is not supported on the exchange/s selected");
+                throw new ExchangeDataException("The pair " + currencyPair + " is not supported on the exchange/s selected");
             }
 
-            // temporary
-            System.out.println();
-            System.out.println("Pulled Data");
-
-            for (TickerData tickerData : listTickerData) {
-
-                System.out.println(tickerData.toString());
-            }
-            System.out.println();
+            //find the best sell price
+            TickerData highBid = dataUtil.highBidFinder(listTickerData);
+            //find the best buy price
+            TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
 
 
-            TickerData highBid = dataUtil.highBidFinder(listTickerData); // highBid is the best sell
-            TickerData lowAsk = dataUtil.lowAskFinder(listTickerData); // lowAsk is the best buy
-
-
-            // temporary
-            System.out.println("Sorted result");
-            System.out.println("the lowest ask is on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName() +
-                    " at " + lowAsk.getAsk());
-            System.out.println("the highest bid is on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName() +
-                    " at " + highBid.getBid());
-            System.out.println();
-
+            //new BigDecimal set to the difference of the best sell price and the best buy price
             BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
-
+            //if the call is an instance of print action, run the print method form arbitrage print action
             if (printMode) {
                 ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
                 arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
-
-
             }
-
+            //if the call is an instance of email action, run the email method from the arbitrage email action
             if (emailMode) {
                 ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
                 arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
 
-           }
+            }
+            //if the call is an instance of trading action, run the trade method from the arbitrage trading action
             if (tradingMode) {
                 ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
-                if (!(arbitrageTradingAction.trade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection))) return;
+                arbitrageTradingAction.trade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
+
             }
-            i++;
-            if (loop != 1) Thread.sleep(5000);
+            //increase i, so that the method only runs once
+            //i++;
+            //if successful sleep the thread for 5 seconds to prevent api call issues
+            //if (loop != 1)
+                Thread.sleep(5000);
         }
     }
 }
