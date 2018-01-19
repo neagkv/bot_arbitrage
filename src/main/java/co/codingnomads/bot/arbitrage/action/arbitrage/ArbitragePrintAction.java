@@ -59,6 +59,7 @@ public class ArbitragePrintAction extends ArbitrageActionSelection {
             System.out.println();
             System.out.println("=======================================================================================");
             System.out.println("=======================================================================================");
+            System.out.println();
 
         } else {
             System.out.println("=======================================================================================");
@@ -68,6 +69,7 @@ public class ArbitragePrintAction extends ArbitrageActionSelection {
             System.out.println();
             System.out.println("=======================================================================================");
             System.out.println("=======================================================================================");
+            System.out.println();
 
         }
     }

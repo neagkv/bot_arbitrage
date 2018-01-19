@@ -27,7 +27,7 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
     private double tradeValueBase;
 
-    public ArbitrageTradingAction(){
+    public ArbitrageTradingAction() {
 
     }
 
@@ -56,126 +56,141 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
      * @param arbitrageTradingAction Some instance variables needed to trade
      * @return true if no arbitrage found or trading worked as expected
      */
-    public boolean trade(TickerData lowAsk,
-                         TickerData highBid,
-                         ArbitrageTradingAction arbitrageTradingAction) {
+    public void trade(TickerData lowAsk,
+                      TickerData highBid,
+                      ArbitrageTradingAction arbitrageTradingAction) {
 
         //find the difference between the higest bid and lowest ask
         BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
-        //if the best price difference is  greater than the value of the arbitrage margin you want
-        if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) > 0) {
+        //if the best price difference is greater than the value of the arbitrage margin you want
+        //TODO make > 0
+        if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) < 0) {
 
-
+            //amount chosen to trade
             BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
+            //currency pair of the lowest ask
             CurrencyPair tradedPair = lowAsk.getCurrencyPair();
+            //expected difference from trade
             BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
 
-            // temp
+            //print the expected trade
+            System.out.println();
             System.out.println("initiating trade of " + tradeAmount + tradedPair.base.toString() + " you should make a return (before fees) of "
                     + expectedDifferenceFormated + "%");
+            System.out.println();
 
-            // temp
+//          temp
             boolean live = true; // just a security right now
             if (live) {
                 MarketOrder marketOrderBuy = new MarketOrder(Order.OrderType.BID, tradeAmount, tradedPair);
                 MarketOrder marketOrderSell = new MarketOrder(Order.OrderType.ASK, tradeAmount, tradedPair);
 
-                //todo make into action trade?
-                // Ryan: not sure about action trade. But I do think some in-line commenting is due here just so it's
-                // 100% clear what's happening line by line
+                System.out.println();
+                System.out.println(marketOrderBuy.toString());
+                System.out.println(marketOrderSell.toString());
+                System.out.println();
+
+//                //todo make into action trade?
+//                // Ryan: not sure about action trade. But I do think some in-line commenting is due here just so it's
+//                // 100% clear what's happening line by line
+
                 String marketOrderBuyId = "failed";
                 String marketOrderSellId = "failed";
+
+                //make a fixed thread pool
                 ExecutorService executorMakeOrder = Executors.newFixedThreadPool(2);
                 CompletionService<OrderIDWrapper> poolMakeOrder = new ExecutorCompletionService<>(executorMakeOrder);
                 poolMakeOrder.submit(new MakeOrderThread(marketOrderBuy, lowAsk));
                 poolMakeOrder.submit(new MakeOrderThread(marketOrderSell, highBid));
-
-
-                // Ryan: Does this always work? It appears as though you submit the tasks above and then immediate use the
-                // return values below, but outside the task thread. Is there anything that guarantees the lines below will not
-                // execute before the tasks above are complete?
-                for (int i = 0; i < 2; i++) {
-                    try {
-                        OrderIDWrapper temp = poolMakeOrder.take().get();
-                        if (temp.getExchangeName().equals(lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
-                            marketOrderBuyId = temp.getOrderID();
-                        }
-                        if (temp.getExchangeName().equals(highBid.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
-                            marketOrderSellId = temp.getOrderID();
-                        }
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                }
-                executorMakeOrder.shutdown();
-
-                // todo better handling of error (maybe while re-run it til we get an number OR checking if number is valid
-                // with another API call, I'd say return number is better but we need to try to see what happens if order fail
-                // I am expecting a null pointer for temp we need to handle that with better exception handing in make order ?
-                // I do not think "failed" will ever stay (either replace by ID or exception before)
-                // Ryan: I'd need to be able to run this to test how it's all working. See previous note.
-                if (marketOrderBuyId.equals("failed")) System.out.println("marketOrderBuy failed");
-                if (marketOrderSellId.equals("failed")) System.out.println("marketOrderSell failed");
-                if (!marketOrderBuyId.equals("failed") && !marketOrderSellId.equals("failed")) {
-                    System.out.println("buy order " + marketOrderBuyId);
-                    System.out.println("sell order " + marketOrderSellId);
-                    System.out.println("trades successful");
-                }
-            }
-
-            // todo trade get wallet?
-            Wallet walletBuy = null;
-            Wallet walletSell = null;
-            ExecutorService executorWalletWrapper = Executors.newFixedThreadPool(2);
-            CompletionService<WalletWrapper> poolWalletWrapper = new ExecutorCompletionService<>(executorWalletWrapper);
-
-            poolWalletWrapper.submit(new GetWalletWrapperThread(lowAsk));
-            poolWalletWrapper.submit(new GetWalletWrapperThread(highBid));
-
-            //Ryan: same comment as above
-            for (int i = 0; i < 2; i++) {
-                try {
-                    WalletWrapper temp = poolWalletWrapper.take().get();
-                    if (temp.getExchangeName().equals(lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
-                        walletBuy = temp.getWallet();
-                    }
-                    if (temp.getExchangeName().equals(highBid.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
-                        walletSell = temp.getWallet();
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-            executorWalletWrapper.shutdown();
-
-            // calculate a bunch of data
-            TradingData tradingData =
-                    new TradingData(
-                            (TickerDataTrading) lowAsk,
-                            (TickerDataTrading) highBid,
-                            walletBuy,
-                            walletSell);
-
-            // this need to be tested
-            System.out.println();
-            System.out.println("your base moved by (should be 0%) " + tradingData.getDifferenceCounterSell() + "%");
-            System.out.println("real bid was " + tradingData.getRealBid()
-                    + " and real ask was " + tradingData.getRealAsk()
-                    + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
-                    + "% vs an expected of " + expectedDifferenceFormated + " %");
-        } else {
-//            System.out.println("==============================================");
-//            System.out.println("==============================================");
+//
+//
+//                // Ryan: Does this always work? It appears as though you submit the tasks above and then immediate use the
+//                // return values below, but outside the task thread. Is there anything that guarantees the lines below will not
+//                // execute before the tasks above are complete?
+//                for (int i = 0; i < 2; i++) {
+//                    try {
+//                        OrderIDWrapper temp = poolMakeOrder.take().get();
+//                        if (temp.getExchangeName().equals(lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
+//                            marketOrderBuyId = temp.getOrderID();
+//                        }
+//                        if (temp.getExchangeName().equals(highBid.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
+//                            marketOrderSellId = temp.getOrderID();
+//                        }
+//                    } catch (InterruptedException | ExecutionException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                executorMakeOrder.shutdown();
+//
+//                // todo better handling of error (maybe while re-run it til we get an number OR checking if number is valid
+//                // with another API call, I'd say return number is better but we need to try to see what happens if order fail
+//                // I am expecting a null pointer for temp we need to handle that with better exception handing in make order ?
+//                // I do not think "failed" will ever stay (either replace by ID or exception before)
+//                // Ryan: I'd need to be able to run this to test how it's all working. See previous note.
+//                if (marketOrderBuyId.equals("failed")) System.out.println("marketOrderBuy failed");
+//                if (marketOrderSellId.equals("failed")) System.out.println("marketOrderSell failed");
+//                if (!marketOrderBuyId.equals("failed") && !marketOrderSellId.equals("failed")) {
+//                    System.out.println("buy order " + marketOrderBuyId);
+//                    System.out.println("sell order " + marketOrderSellId);
+//                    System.out.println("trades successful");
+//                }
+//            }
+//
+//            // todo trade get wallet?
+//            Wallet walletBuy = null;
+//            Wallet walletSell = null;
+//            ExecutorService executorWalletWrapper = Executors.newFixedThreadPool(2);
+//            CompletionService<WalletWrapper> poolWalletWrapper = new ExecutorCompletionService<>(executorWalletWrapper);
+//
+//            poolWalletWrapper.submit(new GetWalletWrapperThread(lowAsk));
+//            poolWalletWrapper.submit(new GetWalletWrapperThread(highBid));
+//
+//            //Ryan: same comment as above
+//            for (int i = 0; i < 2; i++) {
+//                try {
+//                    WalletWrapper temp = poolWalletWrapper.take().get();
+//                    if (temp.getExchangeName().equals(lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
+//                        walletBuy = temp.getWallet();
+//                    }
+//                    if (temp.getExchangeName().equals(highBid.getExchange().getDefaultExchangeSpecification().getExchangeName())) {
+//                        walletSell = temp.getWallet();
+//                    }
+//                } catch (InterruptedException | ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            executorWalletWrapper.shutdown();
+//
+//            // calculate a bunch of data
+//            TradingData tradingData =
+//                    new TradingData(
+//                            (TickerDataTrading) lowAsk,
+//                            (TickerDataTrading) highBid,
+//                            walletBuy,
+//                            walletSell);
+//
+//            // this need to be tested
 //            System.out.println();
-            System.out.println("No arbitrage found");
-//            System.out.println();
-//            System.out.println("==============================================");
-//            System.out.println("==============================================");
-            return true;
+//            System.out.println("your base moved by (should be 0%) " + tradingData.getDifferenceCounterSell() + "%");
+//            System.out.println("real bid was " + tradingData.getRealBid()
+//                    + " and real ask was " + tradingData.getRealAsk()
+//                    + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
+//                    + "% vs an expected of " + expectedDifferenceFormated + " %");
+//        } else {
+////            System.out.println("==============================================");
+////            System.out.println("==============================================");
+////            System.out.println();
+//            System.out.println("No arbitrage found");
+////            System.out.println();
+////            System.out.println("==============================================");
+////            System.out.println("==============================================");
+//            return true;
+//        }
+//        return false;
+//        // todo return flag true to continue as long as realDifference is positive and differenceTotalBase did not move
+            }
         }
-        return false;
-        // todo return flag true to continue as long as realDifference is positive and differenceTotalBase did not move
     }
-
 }
+

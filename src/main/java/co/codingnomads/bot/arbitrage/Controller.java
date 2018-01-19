@@ -33,7 +33,6 @@ import java.util.ArrayList;
 @Service
 public class Controller {
 
-    // Ryan - general note - I'm sure you're already on the same page, but this file is a bit of a mess
 
     @Autowired
     Arbitrage arbitrage;
@@ -63,21 +62,58 @@ public class Controller {
     DetectionPrintAction detectionPrintAction;
 
 
-
-    // Ryan: the general manner in which this app is called, and whether or not it is called dynamically with various
-    // currency pairs and exchanges etc needs to be ironed out. I'm sure you guys are on that. But as of yet, it appears
-    // unfinished in this regard.
-
     public void runBot() throws IOException, InterruptedException, EmailLimitException, WaitTimeException, ExchangeDataException{
 
+//set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
-        ExchangeList.add(new KrakenSpecs()); // internal: good but slow
-        ExchangeList.add(new GDAXSpecs()); // internal: good but waiting limit increase
+        ExchangeList.add(new KrakenSpecs());//enter api key and secret for arbitrage trade action
+        ExchangeList.add(new GDAXSpecs());//enter api key secret and passphrase for arbitrage trade action
 
-//      do not use anything else than Kraken or GDAX for Arbitrage up to now. Kraken min ETH is 0.02 and GDAX: 0.01
-      //ExchangeList.add(new BitfinexSpecs()); // internal: good but waiting limit increase
-      //ExchangeList.add(new BittrexSpecs()); // Need Pojo building (internal: all good)
-      //ExchangeList.add(new BitstampSpecs()); // need Pojo building but no key (internal: verif)// ExchangeList.add(new PoloniexSpecs()); // need Pojo building and CAPTCHA issue resolving (internal: verif)
+        //choose one and only one of the following Arbitrage or Detection trade actions
+
+//Arbitrage
+
+        //optional set how many times you would like the arbitrage action to run, if null will run once
+        //arbitrage.setLoopIterations(5);
+
+        //optional set to the time interval you would like the arbitrage action to rerun in milliseconds
+        //if not set, the action will run every 5 seconds untill the loopIteration is complete
+        //arbitrage.setTimeIntervalRepeater(5000);
+
+
+//        Example of an Arbitrage trade action
+          arbitrageTradingAction.setArbitrageMargin(0.70);
+          arbitrageTradingAction.setTradeValueBase(0.02);
+          arbitrage.run(
+                CurrencyPair.ETH_USD,
+                ExchangeList,
+                arbitrageTradingAction);
+
+
+//      Example of an Arbitrage print action that finds the best trading pair every hour
+//        set arbitragemargin and optionally set loopIterations, and time interval repeater
+//        arbitragePrintAction.setArbitrageMargin(1.00);
+
+//        arbitrage.run(
+//                    CurrencyPair.ETH_USD,
+//                    ExchangeList,
+//                    arbitragePrintAction);
+
+
+
+//    Example of an Arbitrage email action
+//    arbitrageEmailAction.setArbitrageMargin(1.00);
+//    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+//    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
+//    arbitrage.run(
+//                CurrencyPair.BTC_USD,
+//                ExchangeList,
+//                arbitrageEmailAction);
+
+
+
+//Detection
+
 
         //List of currencyPairs you would like to check, for Detection only
         ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
@@ -85,45 +121,13 @@ public class Controller {
         currencyPairList.add(CurrencyPair.BTC_USD);
         currencyPairList.add(CurrencyPair.BTC_USD);
 
-
-//        Example of an Arbitrage trade action
-//          arbitrageTradingAction.setArbitrageMargin(1.00);
-//          arbitrageTradingAction.setTradeValueBase(0.02);
-//          arbitrage.run(
-//                CurrencyPair.ETH_USD,
-//                ExchangeList,
-//                arbitrageTradingAction);
-
-
-//      Example of an Arbitrage print action that finds the best trading pair every hour
-        //set arbitragemargin and optionally set loopIterations, and time interval repeater
-        arbitragePrintAction.setArbitrageMargin(1.00);
-//        arbitrage.setLoopIterations(5);
-//        arbitrage.setTimeIntervalRepeater(5000);
-        arbitrage.run(
-                    CurrencyPair.ETH_USD,
-                    ExchangeList,
-                    arbitragePrintAction);
-
-
-
-//    Example of an Arbitrage email action
-//      arbitrageEmailAction.setArbitrageMargin(1.00);
-//      arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
-//      emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
-//      arbitrage.run(
-//                CurrencyPair.BTC_USD,
-//                ExchangeList,
-//                arbitrageEmailAction);
-
-
 //    Example of a Detection print action
-//      DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-//      detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+//    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+//    detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
-//      Example of a Detection log action
-//      DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
-//      detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
+//    Example of a Detection log action
+//    DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
+//    detection.run(currencyPairList, ExchangeList, detectionActionSelection1);
 
 
     }

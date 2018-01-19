@@ -9,10 +9,7 @@ import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
-import co.codingnomads.bot.arbitrage.service.general.BalanceCalc;
-import co.codingnomads.bot.arbitrage.service.general.DataUtil;
-import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
-import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
+import co.codingnomads.bot.arbitrage.service.general.*;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
@@ -30,8 +27,6 @@ import java.util.ArrayList;
 @Service
 public class Arbitrage {
 
-    // todo look more into the fee (Kevin, thom?)
-
     BalanceCalc balanceCalc = new BalanceCalc();
 
     ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
@@ -39,6 +34,7 @@ public class Arbitrage {
     DataUtil dataUtil = new DataUtil();
 
     ExchangeGetter exchangeGetter = new ExchangeGetter();
+
 
     int timeIntervalRepeater;
 
@@ -77,6 +73,7 @@ public class Arbitrage {
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
+
         //sets the tradeValueBase as -1, as a precaution to prevent trading, when it is not suppose too, or will lose money.
         double tradeValueBase = -1;
 
@@ -85,6 +82,9 @@ public class Arbitrage {
 
         //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
         ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
+
+        //prints your balance for the chosen currency pair for the activated exchanges(ones where exchange specs are set)
+        balanceCalc.Balance(selectedExchanges, currencyPair);
 
         //makes while loop run continuously, if loopIteration is set, and only once is not set
         while (loopIterations >= 0) {
@@ -107,13 +107,11 @@ public class Arbitrage {
             //find the best buy price
             TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
 
-
             //new BigDecimal set to the difference of the best sell price and the best buy price
             BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
             //if the call is an instance of print action, run the print method form arbitrage print action
             if (printMode) {
-                balanceCalc.Balance(selectedExchanges);
                 ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
                 arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
             }

@@ -15,6 +15,7 @@ public abstract class ExchangeSpecs {
     private String secretKey;
     private Boolean tradingMode = false;
 
+
     protected ExchangeSpecs(String apiKey, String secretKey) {
         this.apiKey = apiKey;
         this.secretKey = secretKey;
