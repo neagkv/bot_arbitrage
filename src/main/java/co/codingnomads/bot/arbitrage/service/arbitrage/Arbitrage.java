@@ -9,6 +9,7 @@ import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
+import co.codingnomads.bot.arbitrage.service.general.BalanceCalc;
 import co.codingnomads.bot.arbitrage.service.general.DataUtil;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeDataGetter;
 import co.codingnomads.bot.arbitrage.service.general.ExchangeGetter;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 public class Arbitrage {
 
     // todo look more into the fee (Kevin, thom?)
+
+    BalanceCalc balanceCalc = new BalanceCalc();
 
     ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
 
@@ -110,6 +113,7 @@ public class Arbitrage {
 
             //if the call is an instance of print action, run the print method form arbitrage print action
             if (printMode) {
+                balanceCalc.Balance(selectedExchanges);
                 ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
                 arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
             }

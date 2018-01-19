@@ -97,8 +97,13 @@ public class Detection {
                 int dbInsertWaitTime = detectionLogAction.getWaitInterval();
                 if (dbInsertWaitTime >= 60000) {
                     detectionService.insertDetectionRecords(differenceWrapperList);
-
-                    System.out.println("Inserted difference wrapper into database: Round " + logCounter);
+                    System.out.println("====================================================");
+                    System.out.println("====================================================");
+                    System.out.println();
+                    System.out.println("Inserted detection data into database: Round " + logCounter);
+                    System.out.println();
+                    System.out.println("====================================================");
+                    System.out.println("====================================================");
                     Thread.sleep(detectionLogAction.getWaitInterval());
                     logCounter++;
                 }

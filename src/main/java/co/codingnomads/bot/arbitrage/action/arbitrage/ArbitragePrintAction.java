@@ -1,7 +1,9 @@
 package co.codingnomads.bot.arbitrage.action.arbitrage;
 
 import co.codingnomads.bot.arbitrage.action.arbitrage.selection.ArbitrageActionSelection;
+import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
+import org.knowm.xchange.ExchangeSpecification;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,6 +23,13 @@ public class ArbitragePrintAction extends ArbitrageActionSelection {
     public ArbitragePrintAction(){
 
     }
+
+    ExchangeSpecs exchangeSpecs = new ExchangeSpecs() {
+        @Override
+        public ExchangeSpecification GetSetupedExchange() {
+            return null;
+        }
+    };
 
     /**
      * Method to print the arbitrage action to the console

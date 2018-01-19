@@ -14,6 +14,7 @@ import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
+import co.codingnomads.bot.arbitrage.service.general.BalanceCalc;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -61,6 +62,8 @@ public class Controller {
     @Autowired
     DetectionPrintAction detectionPrintAction;
 
+
+
     // Ryan: the general manner in which this app is called, and whether or not it is called dynamically with various
     // currency pairs and exchanges etc needs to be ironed out. I'm sure you guys are on that. But as of yet, it appears
     // unfinished in this regard.
@@ -93,6 +96,7 @@ public class Controller {
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
+        //set arbitragemargin and optionally set loopIterations, and time interval repeater
         arbitragePrintAction.setArbitrageMargin(1.00);
 //        arbitrage.setLoopIterations(5);
 //        arbitrage.setTimeIntervalRepeater(5000);
