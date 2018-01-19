@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 @Service
 public class ArbitragePrintAction extends ArbitrageActionSelection {
 
+
     public ArbitragePrintAction(double arbitrageMargin) {
         super(arbitrageMargin);
     }

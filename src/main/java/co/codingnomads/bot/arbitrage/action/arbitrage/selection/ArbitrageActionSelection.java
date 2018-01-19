@@ -10,6 +10,7 @@ public abstract class ArbitrageActionSelection {
 
     private double arbitrageMargin;
 
+
     public ArbitrageActionSelection() {
     }
 
@@ -24,6 +25,5 @@ public abstract class ArbitrageActionSelection {
     public ArbitrageActionSelection(double arbitrageMargin) {
         this.arbitrageMargin = arbitrageMargin;
     }
-
 
 }

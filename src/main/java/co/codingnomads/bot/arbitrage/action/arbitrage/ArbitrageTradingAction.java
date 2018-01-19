@@ -44,6 +44,9 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         this.tradeValueBase = tradeValueBase;
     }
 
+    // Ryan: general note - is there any way this method could be broken into 2 or 3 simpler, more single-focus methods?
+    // anytime you see a method getting near or over the 100+ lines mark it's definitely worth considering how to break into
+    // smaller, more concise methods
 
     /**
      * Method to enable trading
@@ -57,13 +60,12 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                          TickerData highBid,
                          ArbitrageTradingAction arbitrageTradingAction) {
 
-        // Ryan: general note - is there any way this method could be broken into 2 or 3 simpler, more single-focus methods?
-        // anytime you see a method getting near or over the 100+ lines mark it's definitely worth considering how to break into
-        // smaller, more concise methods
-
+        //find the difference between the higest bid and lowest ask
         BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
+        //if the best price difference is  greater than the value of the arbitrage margin you want
         if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) > 0) {
+
 
             BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
             CurrencyPair tradedPair = lowAsk.getCurrencyPair();
@@ -163,7 +165,13 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                     + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
                     + "% vs an expected of " + expectedDifferenceFormated + " %");
         } else {
+//            System.out.println("==============================================");
+//            System.out.println("==============================================");
+//            System.out.println();
             System.out.println("No arbitrage found");
+//            System.out.println();
+//            System.out.println("==============================================");
+//            System.out.println("==============================================");
             return true;
         }
         return false;

@@ -40,6 +40,7 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
     Email email = new Email();
 
 
+
     public ArbitrageEmailAction(double arbitrageMargin) {
         super(arbitrageMargin);
     }

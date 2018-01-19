@@ -29,7 +29,6 @@ import java.util.ArrayList;
 @Service
 public class Arbitrage {
 
-    // todo make this method running every X minutes (Kevin)
     // todo look more into the fee (Kevin, thom?)
 
     ExchangeDataGetter exchangeDataGetter = new ExchangeDataGetter();
@@ -37,6 +36,26 @@ public class Arbitrage {
     DataUtil dataUtil = new DataUtil();
 
     ExchangeGetter exchangeGetter = new ExchangeGetter();
+
+    int timeIntervalRepeater;
+
+    int loopIterations;
+
+    public int getTimeIntervalRepeater() {
+        return timeIntervalRepeater;
+    }
+
+    public void setTimeIntervalRepeater(int timeIntervalRepeater) {
+        this.timeIntervalRepeater = timeIntervalRepeater;
+    }
+
+    public int getLoopIterations() {
+        return loopIterations;
+    }
+
+    public void setLoopIterations(int loopIterations) {
+        this.loopIterations = loopIterations;
+    }
 
     /**
      * Arbitrage bot with multiple arbitrage action
@@ -64,10 +83,8 @@ public class Arbitrage {
         //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
         ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
 
-        //makes while loop continuously run so all the exchanges are added
-//        int i = 0;
-//        int loop = 1;
-        while (true) {
+        //makes while loop run continuously, if loopIteration is set, and only once is not set
+        while (loopIterations >= 0) {
 
             //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
             ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
@@ -108,11 +125,16 @@ public class Arbitrage {
                 arbitrageTradingAction.trade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
 
             }
-            //increase i, so that the method only runs once
-            //i++;
-            //if successful sleep the thread for 5 seconds to prevent api call issues
-            //if (loop != 1)
+            //if the timeIntervalRepeater is set and is greater than 5 seconds, sleeps the thread that time
+            if(timeIntervalRepeater >= 5000) {
+                Thread.sleep(timeIntervalRepeater);
+                loopIterations--;
+            }
+            //if the timeIntervalRepeater is  not set  or is set to lower than 5 seconds, sleep the thread 5 seconds
+            else {
                 Thread.sleep(5000);
+                loopIterations--;
+            }
         }
     }
 }
