@@ -15,7 +15,9 @@ import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
 import co.codingnomads.bot.arbitrage.service.general.BalanceCalc;
+import co.codingnomads.bot.arbitrage.service.tradehistory.TradeHistoryService;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.service.trade.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,9 @@ public class Controller {
 
     @Autowired
     Detection detection;
+
+    @Autowired
+    TradeHistoryService tradeHistoryService;
 
     @Autowired
     EmailService emailService;
@@ -69,6 +74,8 @@ public class Controller {
         ExchangeList.add(new KrakenSpecs());//enter api key and secret for arbitrage trade action
         ExchangeList.add(new GDAXSpecs());//enter api key secret and passphrase for arbitrage trade action
 
+
+
         //choose one and only one of the following Arbitrage or Detection trade actions
 
 //Arbitrage
@@ -82,33 +89,32 @@ public class Controller {
 
 
 //        Example of an Arbitrage trade action
-          arbitrageTradingAction.setArbitrageMargin(0.70);
-          arbitrageTradingAction.setTradeValueBase(0.02);
-          arbitrage.run(
-                CurrencyPair.ETH_USD,
-                ExchangeList,
-                arbitrageTradingAction);
+//          arbitrageTradingAction.setArbitrageMargin(1.01);
+//          arbitrageTradingAction.setTradeValueBase(0.02);
+//          arbitrage.run(
+//                CurrencyPair.ETH_USD,
+//                ExchangeList,
+//                arbitrageTradingAction);
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
-//        set arbitragemargin and optionally set loopIterations, and time interval repeater
+//        set arbitragemargin
 //        arbitragePrintAction.setArbitrageMargin(1.00);
-
-//        arbitrage.run(
-//                    CurrencyPair.ETH_USD,
+//          arbitrage.run(
+//                    CurrencyPair.ETH_BTC,
 //                    ExchangeList,
 //                    arbitragePrintAction);
 
 
 
 //    Example of an Arbitrage email action
-//    arbitrageEmailAction.setArbitrageMargin(1.00);
-//    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
-//    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
-//    arbitrage.run(
-//                CurrencyPair.BTC_USD,
-//                ExchangeList,
-//                arbitrageEmailAction);
+    arbitrageEmailAction.setArbitrageMargin(1.00);
+    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
+    arbitrage.run(
+                CurrencyPair.BTC_USD,
+                ExchangeList,
+                arbitrageEmailAction);
 
 
 
@@ -116,10 +122,11 @@ public class Controller {
 
 
         //List of currencyPairs you would like to check, for Detection only
-        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-        currencyPairList.add(CurrencyPair.ETH_USD);
-        currencyPairList.add(CurrencyPair.BTC_USD);
-        currencyPairList.add(CurrencyPair.BTC_USD);
+//        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+//        currencyPairList.add(CurrencyPair.ETH_USD);
+//        currencyPairList.add(CurrencyPair.BTC_USD);
+//        currencyPairList.add(CurrencyPair.BTC_USD);
+//        currencyPairList.add(CurrencyPair.ETC_BTC);
 
 //    Example of a Detection print action
 //    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
