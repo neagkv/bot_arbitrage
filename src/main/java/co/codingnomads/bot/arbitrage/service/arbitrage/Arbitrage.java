@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Thomas Leruth on 12/14/17
- *
+ * <p>
  * the arbitrage bot class
  */
 
@@ -74,6 +74,20 @@ public class Arbitrage {
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
 
+        //If trading mode and exchange specs are not set up, throw new ExchangeDataException
+        if (tradingMode) {
+
+            for (ExchangeSpecs exchange : selectedExchanges) {
+
+                if (exchange.GetSetupedExchange().getApiKey() == null || exchange.GetSetupedExchange().getSecretKey() == null) {
+
+                    throw new ExchangeDataException("You must enter correct exchange specs for " + exchange.GetSetupedExchange().getExchangeName());
+                }
+            }
+
+        }
+
+
         //sets the tradeValueBase as -1, as a precaution to prevent trading, when it is not suppose too, or will lose money.
         double tradeValueBase = -1;
 
@@ -82,6 +96,7 @@ public class Arbitrage {
 
         //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
         ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
+
 
         //prints your balance for the chosen currency pair for the activated exchanges(ones where exchange specs are set)
         balanceCalc.Balance(selectedExchanges, currencyPair);
@@ -124,11 +139,13 @@ public class Arbitrage {
             //if the call is an instance of trading action, run the trade method from the arbitrage trading action
             if (tradingMode) {
                 ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
-                arbitrageTradingAction.trade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
+                if (arbitrageTradingAction.canTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection) == true){
+                    arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
+                }
 
             }
             //if the timeIntervalRepeater is set and is greater than 5 seconds, sleeps the thread that time
-            if(timeIntervalRepeater >= 5000) {
+            if (timeIntervalRepeater >= 5000) {
                 Thread.sleep(timeIntervalRepeater);
                 loopIterations--;
             }

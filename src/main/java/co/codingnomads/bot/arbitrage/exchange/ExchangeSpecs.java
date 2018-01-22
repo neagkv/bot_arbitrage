@@ -42,12 +42,4 @@ public abstract class ExchangeSpecs {
 
     public abstract ExchangeSpecification GetSetupedExchange ();
 
-// should be implemented like that
-//    ExchangeSpecification exSpec = new -EXCHANGENAME-Exchange().getDefaultExchangeSpecification();
-//        if (apiKey != null || secretKey != null || username != null) {
-//        exSpec.setApiKey(apiKey);
-//        exSpec.setSecretKey(secretKey);
-//        exSpec.setUsername(username)
-//    }
-//        return exSpec;
 }
