@@ -1,6 +1,7 @@
 package co.codingnomads.bot.arbitrage.action.arbitrage;
 
 import co.codingnomads.bot.arbitrage.action.arbitrage.selection.ArbitrageActionSelection;
+import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
 import co.codingnomads.bot.arbitrage.model.trading.OrderIDWrapper;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerDataTrading;
@@ -33,6 +34,8 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
     private double tradeValueBase;
 
+    int round =0;
+
     public ArbitrageTradingAction() {
 
     }
@@ -51,55 +54,90 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
     }
 
 
-
     public boolean canTrade(TickerData lowAsk,
                             TickerData highBid,
                             ArbitrageTradingAction arbitrageTradingAction) {
 
-        //find the difference between the higest bid and lowest ask
-        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
-        //if the best price difference is greater than the value of the arbitrage margin you want
-        if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) > 0) {
+        if (highBid.getExchange().getExchangeSpecification().getExchangeName() == lowAsk.getExchange().getExchangeSpecification().getExchangeName()) {
+
+            System.out.println("###########################################################");
+            System.out.println("low ask exchange is the same as high bid exchange");
+            System.out.println("###########################################################");
+        }
+
+
+            //find the difference between the highest bid and lowest ask
+            BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+            System.out.println("difference" + difference);
+
+
+
+            //if the best price difference is greater than the value of the arbitrage margin you want
+            if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) < 0) {
+
+                System.out.println("congrats you made it inside this if statement");
+
+                System.out.println(lowAsk.getExchange().getExchangeSpecification().getExchangeName());
+
+                System.out.println("buy is  " + lowAsk.getAsk());
+
+                System.out.println("sell is  " + highBid.getBid());
+
+                System.out.println("differenc is " + difference);
+
+                System.out.println("big decimal arbitrage margin" + BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin()));
+            }
 
             //amount chosen to trade
             BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
+            System.out.println("trade amount" + tradeAmount);
+
             //currency pair of the lowest ask
             CurrencyPair tradedPair = lowAsk.getCurrencyPair();
+            System.out.println(tradedPair);
+
             //expected difference from trade
-            BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
+            BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(1)).multiply(BigDecimal.valueOf(100));
+            System.out.println("difference formatted " + expectedDifferenceFormated);
 
+            if (expectedDifferenceFormated.compareTo(BigDecimal.ZERO) > 100) {
 
-            //print the expected trade
-            System.out.println("==========================================================");
-            System.out.println();
-            System.out.println("ARBITRAGE DETECTED!!!"
-                    + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
-                    + " for " + lowAsk.getAsk()
-                    + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
-                    + " for " + highBid.getBid());
-            System.out.println("initiating trade of " + tradeAmount + " " + tradedPair.base.toString() + " you should make a return (before fees) of "
-                    + expectedDifferenceFormated + "%");
-            System.out.println();
-            System.out.println("==========================================================");
-            return true;
+                //print the expected trade
+                System.out.println("==========================================================");
+                System.out.println();
+                System.out.println("ARBITRAGE DETECTED!!!"
+                        + " buy on " + lowAsk.getExchange().getDefaultExchangeSpecification().getExchangeName()
+                        + " for " + lowAsk.getAsk()
+                        + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
+                        + " for " + highBid.getBid());
+                System.out.println("initiating trade of " + tradeAmount + " " + tradedPair.base.toString() + " you should make a return (before fees) of "
+                        + expectedDifferenceFormated + "%");
+                System.out.println();
+                System.out.println("==========================================================");
+                round++;
+                System.out.println("round:" + round);
+                return true;
 
-        } else {
-            //else not a good trade, return false
-            System.out.println("==========================================================");
-            System.out.println();
-            System.out.println("No profitable arbitrage found");
-            System.out.println("==========================================================");
+            } else {
+                //else not a good trade, return false
+                System.out.println("==========================================================");
+                System.out.println();
+                System.out.println("No profitable arbitrage found");
+                System.out.println("==========================================================");
+                round++;
+                System.out.println("round:" + round);
+            }
+            return false;
         }
-        return false;
-    }
+
 
 
     public void makeTrade(TickerData lowAsk,
                           TickerData highBid,
                           ArbitrageTradingAction arbitrageTradingAction) {
 
-        //difference between the higgest ask and lowest sell
+        //difference between the highest ask and lowest sell
         BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
         //
         BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
@@ -112,15 +150,11 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         MarketOrder marketOrderBuy = new MarketOrder(Order.OrderType.BID, tradeAmount, tradedPair);
         MarketOrder marketOrderSell = new MarketOrder(Order.OrderType.ASK, tradeAmount, tradedPair);
 
-        System.out.println();
-        System.out.println(marketOrderBuy.toString());
-        System.out.println(marketOrderSell.toString());
-        System.out.println();
+//        System.out.println();
+//        System.out.println(marketOrderBuy.toString());
+//        System.out.println(marketOrderSell.toString());
+//        System.out.println();
 
-
-        //todo make into action trade?
-        //Ryan: not sure about action trade. But I do think some in-line commenting is due here just so it's
-        //100% clear what's happening line by line
 
         //set marketOrderBuyId, and marketOrderSellId to failed
         String marketOrderBuyId = "failed";
@@ -132,6 +166,7 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         poolMakeOrder.submit(new
 
                 MakeOrderThread(marketOrderBuy, lowAsk));
+
         poolMakeOrder.submit(new
 
                 MakeOrderThread(marketOrderSell, highBid));
@@ -163,21 +198,22 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
             }
         }
         executorMakeOrder.shutdown();
-//
-//                // todo better handling of error (maybe while re-run it til we get an number OR checking if number is valid
-//                =// with another API call, I'd say return number is better but we need to try to see what happens if order fail
-//                // I am expecting a null pointer for temp we need to handle that with better exception handing in make order ?
-//                // I do not think "failed" will ever stay (either replace by ID or exception before)
-//                // Ryan: I'd need to be able to run this to test how it's all working. See previous note.
 
+        //if either the buy order or the sell order did not fail, continue. If they did fail print which order failed
         if (marketOrderBuyId.equals("failed")) System.out.println("marketOrderBuy failed");
+        System.out.println("===============================================================");
         if (marketOrderSellId.equals("failed")) System.out.println("marketOrderSell failed");
+        System.out.println("===============================================================");
         if (!marketOrderBuyId.equals("failed") && !marketOrderSellId.equals("failed"))
 
-        {
+        {   //print the order id for buyId and sellId
+            System.out.println("===============================================================");
             System.out.println("buy order " + marketOrderBuyId);
+            System.out.println("===============================================================");
             System.out.println("sell order " + marketOrderSellId);
+            System.out.println("===============================================================");
             System.out.println("trades successful");
+            System.out.println("===============================================================");
         }
         // todo trade get wallet?
         Wallet walletBuy = null;
@@ -214,21 +250,12 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
         // this need to be tested
         System.out.println();
-        System.out.println("your base moved by (should be 0%) " + tradingData.getDifferenceCounterSell() + "%");
         System.out.println("real bid was " + tradingData.getRealBid()
                 + " and real ask was " + tradingData.getRealAsk()
                 + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
                 + "% vs an expected of " + expectedDifferenceFormated + " %");
-//    } else
-//
-//    {
-//
-//        System.out.println("No arbitrage found");
+
     }
 }
-
-
-
-// todo return flag true to continue as long as realDifference is positive and differenceTotalBase did not move
 
 

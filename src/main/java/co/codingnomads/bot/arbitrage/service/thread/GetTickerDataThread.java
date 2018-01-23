@@ -1,5 +1,6 @@
 package co.codingnomads.bot.arbitrage.service.thread;
 
+import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.model.exchange.ActivatedExchange;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerDataTrading;
@@ -28,7 +29,7 @@ public class GetTickerDataThread implements Callable<TickerData> {
      * @return the TickerData for the particular exchanges
      */
     @Override
-    public TickerData call() throws TimeoutException {
+    public TickerData call() throws TimeoutException, ExchangeDataException {
 
         // Ryan: general note some in-line commenting could be nice in here
 
@@ -61,15 +62,10 @@ public class GetTickerDataThread implements Callable<TickerData> {
             }
             // bad design that I pull tickerData then turn it null but I need it to figure baseNeed
             if (counterFund.compareTo(counterNeed) < 0 && baseFund.compareTo(baseNeed) < 0) {
-                System.out.println("=======================================================================================");
-                System.out.println("=======================================================================================");
-                System.out.println();
-                System.out.println("You do not have the funds to complete this trade");
-                System.out.println();
-                System.out.println("=======================================================================================");
-                System.out.println("=======================================================================================");
-                activatedExchange.setActivated(false);
-                return null;
+
+                throw new ExchangeDataException("You do not have the funds to complete this trade");
+                //activatedExchange.setActivated(false);
+                //return null;
             }
             return tickerDataTrading;
         }

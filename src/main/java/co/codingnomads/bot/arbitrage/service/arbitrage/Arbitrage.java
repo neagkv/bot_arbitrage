@@ -68,6 +68,8 @@ public class Arbitrage {
                     ArrayList<ExchangeSpecs> selectedExchanges,
                     ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException, ExchangeDataException {
 
+
+
         //Determines the arbitrage action being called
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
@@ -140,7 +142,7 @@ public class Arbitrage {
             if (tradingMode) {
                 ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
                 if (arbitrageTradingAction.canTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection) == true){
-                    arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
+                    //arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
                 }
 
             }
