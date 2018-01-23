@@ -98,7 +98,7 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
             System.out.println(tradedPair);
 
             //expected difference from trade
-            BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(1)).multiply(BigDecimal.valueOf(100));
+            BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
             System.out.println("difference formatted " + expectedDifferenceFormated);
 
             if (expectedDifferenceFormated.compareTo(BigDecimal.ZERO) > 100) {

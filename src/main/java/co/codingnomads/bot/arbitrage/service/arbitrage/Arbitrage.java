@@ -69,7 +69,6 @@ public class Arbitrage {
                     ArbitrageActionSelection arbitrageActionSelection) throws IOException, InterruptedException, EmailLimitException, ExchangeDataException {
 
 
-
         //Determines the arbitrage action being called
         Boolean tradingMode = arbitrageActionSelection instanceof ArbitrageTradingAction;
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
@@ -96,15 +95,47 @@ public class Arbitrage {
         //sets the tradeValueBase given in the controller for arbitrageTradingAction
         if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
 
-        //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
-        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
+        //convert the double tradeValueBase to a big decimal
+        BigDecimal bigDecimalTradeValueBase = new BigDecimal(tradeValueBase);
 
+        BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
 
         //prints your balance for the chosen currency pair for the activated exchanges(ones where exchange specs are set)
         balanceCalc.Balance(selectedExchanges, currencyPair);
 
+        //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
+        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
+
+        //for each activatedExchange if available funds is less than trade value base you can not have the funds to complete the trade on that exchange
+        //and removes the exchanges without the founds from activated exchanges
+        for(ActivatedExchange activatedExchange : activatedExchanges) {
+
+            if(activatedExchange.getExchange().getMarketDataService().getTicker(currencyPair) == null){
+
+                System.out.println(activatedExchange.getExchange().getMarketDataService().getTicker(currencyPair));
+                activatedExchanges.remove(activatedExchange);
+
+
+            } else {
+
+                BigDecimal availableFunds = activatedExchange.getExchange().getAccountService().getAccountInfo().getWallet().getBalance(currencyPair.base).getAvailable();
+
+          if(availableFunds.compareTo(valueOfTradeValueBase) < 0) {
+
+              System.out.println("#####################################");
+              System.out.println("You do not have the base funds to execute this trade on " + activatedExchange.getExchange().getExchangeSpecification().getExchangeName());
+              System.out.println("#####################################");
+              activatedExchanges.remove(activatedExchange);
+              System.out.println("removed " + activatedExchange.getExchange().getExchangeSpecification().getExchangeName() + "from activated exchanges");
+          }
+          }
+        }
+
+
+
         //makes while loop run continuously, if loopIteration is set, and only once is not set
         while (loopIterations >= 0) {
+
 
             //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
             ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
@@ -116,7 +147,8 @@ public class Arbitrage {
             //if the list of ticker data is empty the currencypair is not supported on the exchange
             if (listTickerData.size() == 0) {
 
-                throw new ExchangeDataException("The pair " + currencyPair + " is not supported on the exchange/s selected");
+                throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
+                        " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);
             }
 
             //find the best sell price
