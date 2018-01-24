@@ -248,7 +248,8 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                         walletBuy,
                         walletSell);
 
-        // this need to be tested
+        //gitradeHistoryService.insertTradeHistoryRecords(tradingData);
+
         System.out.println();
         System.out.println("real bid was " + tradingData.getRealBid()
                 + " and real ask was " + tradingData.getRealAsk()

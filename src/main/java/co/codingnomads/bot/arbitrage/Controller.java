@@ -91,21 +91,21 @@ public class Controller {
 //        Example of an Arbitrage trade action
           //arbitrage.setLoopIterations(100);
           //arbitrage.setTimeIntervalRepeater(15000);
-          arbitrageTradingAction.setArbitrageMargin(1.01);
-          arbitrageTradingAction.setTradeValueBase(0.02);
-          arbitrage.run(
-                CurrencyPair.ETH_USD,
-                ExchangeList,
-                arbitrageTradingAction);
+//          arbitrageTradingAction.setArbitrageMargin(1.01);
+//          arbitrageTradingAction.setTradeValueBase(0.02);
+//          arbitrage.run(
+//                CurrencyPair.ETH_USD,
+//                ExchangeList,
+//                arbitrageTradingAction);
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
 //        set arbitragemargin
-//        arbitragePrintAction.setArbitrageMargin(1.00);
-//          arbitrage.run(
-//                    CurrencyPair.ETH_BTC,
-//                    ExchangeList,
-//                    arbitragePrintAction);
+        arbitragePrintAction.setArbitrageMargin(1.00);
+          arbitrage.run(
+                    CurrencyPair.ETH_BTC,
+                    ExchangeList,
+                    arbitragePrintAction);
 
 
 

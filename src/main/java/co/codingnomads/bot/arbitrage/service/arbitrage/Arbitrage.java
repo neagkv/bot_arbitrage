@@ -37,7 +37,7 @@ public class Arbitrage {
 
     ExchangeGetter exchangeGetter = new ExchangeGetter();
 
-    ExchangeTradeQualifier exchangeTradeQualifier = new ExchangeTradeQualifier();
+//    ExchangeTradeQualifier exchangeTradeQualifier = new ExchangeTradeQualifier();
 
 
     int timeIntervalRepeater;
@@ -78,95 +78,84 @@ public class Arbitrage {
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
+        //prints balance out for the selectedExchanges
         balanceCalc.Balance(selectedExchanges, currencyPair);
 
-        //If trading mode and exchange specs are not set up, throw new ExchangeDataException
-        if (tradingMode) {
-
-            for (ExchangeSpecs exchange : selectedExchanges) {
-
-                if (exchange.GetSetupedExchange().getApiKey() == null || exchange.GetSetupedExchange().getSecretKey() == null) {
-
-                    throw new ExchangeDataException("You must enter correct exchange specs for " + exchange.GetSetupedExchange().getExchangeName());
-
-                } else {
-
-                    //sets the tradeValueBase given in the controller for arbitrageTradingAction
-                    double tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
-
-                    //convert the double tradeValueBase to a big decimal
-                    BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
-
-                    //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
-                    ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
-                    System.out.println("9999999");
-                    System.out.println(activatedExchanges.size());
-                    System.out.println("999999999");
-
-                    //for each activatedExchange if available funds is less than trade value base you can not have the funds to complete the trade on that exchange
-                    //and removes the exchanges without the founds from activated exchanges
-                    exchangeTradeQualifier.exchangeQualifier(activatedExchanges, valueOfTradeValueBase, currencyPair);
-                    System.out.println(activatedExchanges.size());
-
-                    //makes while loop run continuously, if loopIteration is set, and only once is not set
-                    while (loopIterations >= 0) {
 
 
-                        //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
-                        ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
-
-                                activatedExchanges,
-                                currencyPair,
-                                tradeValueBase);
-
-                        //if the list of ticker data is empty the currencypair is not supported on the exchange
-                        if (listTickerData.size() == 0) {
-
-                            throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
-                                    " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);
-                        }
-
-                        //find the best sell price
-                        TickerData highBid = dataUtil.highBidFinder(listTickerData);
-                        //find the best buy price
-                        TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
-
-                        //new BigDecimal set to the difference of the best sell price and the best buy price
-                        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
 
-                        //if the call is an instance of print action, run the print method form arbitrage print action
-                        if (printMode) {
-                            ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
-                            arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
-                        }
-                        //if the call is an instance of email action, run the email method from the arbitrage email action
-                        if (emailMode) {
-                            ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
-                            arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
+            //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
+            ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
 
-                        }
-                        //if the call is an instance of trading action, run the trade method from the arbitrage trading action
-                        if (tradingMode) {
-                            ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
-                            if (arbitrageTradingAction.canTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection) == true) {
-                                //arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
-                            }
+            //sets the tradeValueBase given in the controller for arbitrageTradingAction
+            double tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
 
-                        }
-                        //if the timeIntervalRepeater is set and is greater than 5 seconds, sleeps the thread that time
-                        if (timeIntervalRepeater >= 5000) {
-                            Thread.sleep(timeIntervalRepeater);
-                            loopIterations--;
-                        }
-                        //if the timeIntervalRepeater is  not set  or is set to lower than 5 seconds, sleep the thread 5 seconds
-                        else {
-                            Thread.sleep(5000);
-                            loopIterations--;
-                        }
-                    }
+
+            //convert the double tradeValueBase to a big decimal
+            BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
+
+
+
+            //makes while loop run continuously, if loopIteration is set, and only once is not set
+            while (loopIterations >= 0) {
+
+
+                //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
+                ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
+
+                        activatedExchanges,
+                        currencyPair,
+                        tradeValueBase);
+
+                //if the list of ticker data is empty the currencypair is not supported on the exchange
+                if (listTickerData.size() == 0) {
+
+                    throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
+                            " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);
+
+
+                    //find the best sell price
+                    TickerData highBid = dataUtil.highBidFinder(listTickerData);
+                    //find the best buy price
+                    TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
+
+
+
+            //new BigDecimal set to the difference of the best sell price and the best buy price
+            BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+
+
+            //if the call is an instance of print action, run the print method form arbitrage print action
+            if (printMode) {
+                ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
+                arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
+            }
+            //if the call is an instance of email action, run the email method from the arbitrage email action
+            if (emailMode) {
+                ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
+                arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
+
+            }
+            //if the call is an instance of trading action, run the trade method from the arbitrage trading action
+            if (tradingMode) {
+                ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
+                if (arbitrageTradingAction.canTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection) == true) {
+                    //arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
                 }
+
+            }
+            //if the timeIntervalRepeater is set and is greater than 5 seconds, sleeps the thread that time
+            if (timeIntervalRepeater >= 5000) {
+                Thread.sleep(timeIntervalRepeater);
+                loopIterations--;
+            }
+            //if the timeIntervalRepeater is  not set  or is set to lower than 5 seconds, sleep the thread 5 seconds
+            else {
+                Thread.sleep(5000);
+                loopIterations--;
             }
         }
     }
 }
+
