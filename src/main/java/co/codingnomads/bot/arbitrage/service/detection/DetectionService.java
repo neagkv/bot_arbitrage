@@ -18,9 +18,13 @@ public class DetectionService {
     DetectionWrapperMapper mapper;
 
     public void insertDetectionRecords(ArrayList<DifferenceWrapper> differenceWrapperList) {
+
         for (DifferenceWrapper differenceWrapper : differenceWrapperList) {
+
             String currencyPairReformatted = differenceWrapper.getCurrencyPair().toString().replace("/", "");
+
             mapper.insert_DifferenceWrapper(differenceWrapper.getTimestamp(), currencyPairReformatted, differenceWrapper.getDifference(),
+
                     differenceWrapper.getLowAsk(), differenceWrapper.getLowAskExchange(), differenceWrapper.getHighBid(), differenceWrapper.getHighBidExchange());
 
         }

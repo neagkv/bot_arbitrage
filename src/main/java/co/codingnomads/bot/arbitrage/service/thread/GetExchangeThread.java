@@ -15,7 +15,6 @@ public class GetExchangeThread implements Callable<ActivatedExchange> {
 
     ExchangeSpecs exchangeSpecs;
 
-    // Ryan: a little comment or two in here could be nice
     @Override
     public ActivatedExchange call() {
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(exchangeSpecs.GetSetupedExchange());

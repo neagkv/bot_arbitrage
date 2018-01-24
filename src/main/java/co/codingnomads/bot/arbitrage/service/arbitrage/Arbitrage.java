@@ -12,10 +12,12 @@ import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.service.general.*;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.concurrent.*;
 
 /**
  * Created by Thomas Leruth on 12/14/17
@@ -34,6 +36,8 @@ public class Arbitrage {
     DataUtil dataUtil = new DataUtil();
 
     ExchangeGetter exchangeGetter = new ExchangeGetter();
+
+    ExchangeTradeQualifier exchangeTradeQualifier = new ExchangeTradeQualifier();
 
 
     int timeIntervalRepeater;
@@ -74,6 +78,7 @@ public class Arbitrage {
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
+        balanceCalc.Balance(selectedExchanges, currencyPair);
 
         //If trading mode and exchange specs are not set up, throw new ExchangeDataException
         if (tradingMode) {
@@ -83,110 +88,84 @@ public class Arbitrage {
                 if (exchange.GetSetupedExchange().getApiKey() == null || exchange.GetSetupedExchange().getSecretKey() == null) {
 
                     throw new ExchangeDataException("You must enter correct exchange specs for " + exchange.GetSetupedExchange().getExchangeName());
+
+                } else {
+
+                    //sets the tradeValueBase given in the controller for arbitrageTradingAction
+                    double tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
+
+                    //convert the double tradeValueBase to a big decimal
+                    BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
+
+                    //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
+                    ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
+                    System.out.println("9999999");
+                    System.out.println(activatedExchanges.size());
+                    System.out.println("999999999");
+
+                    //for each activatedExchange if available funds is less than trade value base you can not have the funds to complete the trade on that exchange
+                    //and removes the exchanges without the founds from activated exchanges
+                    exchangeTradeQualifier.exchangeQualifier(activatedExchanges, valueOfTradeValueBase, currencyPair);
+                    System.out.println(activatedExchanges.size());
+
+                    //makes while loop run continuously, if loopIteration is set, and only once is not set
+                    while (loopIterations >= 0) {
+
+
+                        //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
+                        ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
+
+                                activatedExchanges,
+                                currencyPair,
+                                tradeValueBase);
+
+                        //if the list of ticker data is empty the currencypair is not supported on the exchange
+                        if (listTickerData.size() == 0) {
+
+                            throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
+                                    " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);
+                        }
+
+                        //find the best sell price
+                        TickerData highBid = dataUtil.highBidFinder(listTickerData);
+                        //find the best buy price
+                        TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
+
+                        //new BigDecimal set to the difference of the best sell price and the best buy price
+                        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+
+
+                        //if the call is an instance of print action, run the print method form arbitrage print action
+                        if (printMode) {
+                            ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
+                            arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
+                        }
+                        //if the call is an instance of email action, run the email method from the arbitrage email action
+                        if (emailMode) {
+                            ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
+                            arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
+
+                        }
+                        //if the call is an instance of trading action, run the trade method from the arbitrage trading action
+                        if (tradingMode) {
+                            ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
+                            if (arbitrageTradingAction.canTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection) == true) {
+                                //arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
+                            }
+
+                        }
+                        //if the timeIntervalRepeater is set and is greater than 5 seconds, sleeps the thread that time
+                        if (timeIntervalRepeater >= 5000) {
+                            Thread.sleep(timeIntervalRepeater);
+                            loopIterations--;
+                        }
+                        //if the timeIntervalRepeater is  not set  or is set to lower than 5 seconds, sleep the thread 5 seconds
+                        else {
+                            Thread.sleep(5000);
+                            loopIterations--;
+                        }
+                    }
                 }
-            }
-
-        }
-
-
-        //sets the tradeValueBase as -1, as a precaution to prevent trading, when it is not suppose too, or will lose money.
-        double tradeValueBase = -1;
-
-        //sets the tradeValueBase given in the controller for arbitrageTradingAction
-        if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
-
-        //convert the double tradeValueBase to a big decimal
-        BigDecimal bigDecimalTradeValueBase = new BigDecimal(tradeValueBase);
-
-        BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
-
-        //prints your balance for the chosen currency pair for the activated exchanges(ones where exchange specs are set)
-        balanceCalc.Balance(selectedExchanges, currencyPair);
-
-        //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
-        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
-
-        //for each activatedExchange if available funds is less than trade value base you can not have the funds to complete the trade on that exchange
-        //and removes the exchanges without the founds from activated exchanges
-        for(ActivatedExchange activatedExchange : activatedExchanges) {
-
-            if(activatedExchange.getExchange().getMarketDataService().getTicker(currencyPair) == null){
-
-                System.out.println(activatedExchange.getExchange().getMarketDataService().getTicker(currencyPair));
-                activatedExchanges.remove(activatedExchange);
-
-
-            } else {
-
-                BigDecimal availableFunds = activatedExchange.getExchange().getAccountService().getAccountInfo().getWallet().getBalance(currencyPair.base).getAvailable();
-
-          if(availableFunds.compareTo(valueOfTradeValueBase) < 0) {
-
-              System.out.println("#####################################");
-              System.out.println("You do not have the base funds to execute this trade on " + activatedExchange.getExchange().getExchangeSpecification().getExchangeName());
-              System.out.println("#####################################");
-              activatedExchanges.remove(activatedExchange);
-              System.out.println("removed " + activatedExchange.getExchange().getExchangeSpecification().getExchangeName() + "from activated exchanges");
-          }
-          }
-        }
-
-
-
-        //makes while loop run continuously, if loopIteration is set, and only once is not set
-        while (loopIterations >= 0) {
-
-
-            //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
-            ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
-
-                    activatedExchanges,
-                    currencyPair,
-                    tradeValueBase);
-
-            //if the list of ticker data is empty the currencypair is not supported on the exchange
-            if (listTickerData.size() == 0) {
-
-                throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
-                        " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);
-            }
-
-            //find the best sell price
-            TickerData highBid = dataUtil.highBidFinder(listTickerData);
-            //find the best buy price
-            TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
-
-            //new BigDecimal set to the difference of the best sell price and the best buy price
-            BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
-
-            //if the call is an instance of print action, run the print method form arbitrage print action
-            if (printMode) {
-                ArbitragePrintAction arbitragePrintAction = (ArbitragePrintAction) arbitrageActionSelection;
-                arbitragePrintAction.print(lowAsk, highBid, arbitrageActionSelection.getArbitrageMargin());
-            }
-            //if the call is an instance of email action, run the email method from the arbitrage email action
-            if (emailMode) {
-                ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
-                arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
-
-            }
-            //if the call is an instance of trading action, run the trade method from the arbitrage trading action
-            if (tradingMode) {
-                ArbitrageTradingAction arbitrageTradingAction = (ArbitrageTradingAction) arbitrageActionSelection;
-                if (arbitrageTradingAction.canTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection) == true){
-                    //arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
-                }
-
-            }
-            //if the timeIntervalRepeater is set and is greater than 5 seconds, sleeps the thread that time
-            if (timeIntervalRepeater >= 5000) {
-                Thread.sleep(timeIntervalRepeater);
-                loopIterations--;
-            }
-            //if the timeIntervalRepeater is  not set  or is set to lower than 5 seconds, sleep the thread 5 seconds
-            else {
-                Thread.sleep(5000);
-                loopIterations--;
             }
         }
     }

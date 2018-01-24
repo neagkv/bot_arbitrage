@@ -74,7 +74,7 @@ public class Controller {
         ExchangeList.add(new KrakenSpecs());//enter api key and secret for arbitrage trade action
         ExchangeList.add(new GDAXSpecs());//enter api key secret and passphrase for arbitrage trade action
         ExchangeList.add(new PoloniexSpecs());
-
+        //ExchangeList.add(new GeminiSpecs());
 
         //choose one and only one of the following Arbitrage or Detection trade actions
 

@@ -2,6 +2,8 @@ package co.codingnomads.bot.arbitrage.model.exchange;
 
 import org.knowm.xchange.Exchange;
 
+import java.util.concurrent.Callable;
+
 /**
  * Created by Thomas Leruth on 12/14/17
  *
@@ -10,7 +12,7 @@ import org.knowm.xchange.Exchange;
  * - activated = If it is currently active or not (can be desactivated if trading and without enough funds)
  * - tradingMode = if the exchange is set up for trading [private action] (if the auth param were provided)
  */
-public class ActivatedExchange {
+public class ActivatedExchange implements Callable<ActivatedExchange> {
 
     private Exchange exchange;
     private boolean activated = true;
@@ -45,4 +47,8 @@ public class ActivatedExchange {
         this.tradingMode = tradingMode;
     }
 
+    @Override
+    public ActivatedExchange call() throws Exception {
+        return null;
+    }
 }

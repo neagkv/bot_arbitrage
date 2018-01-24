@@ -31,8 +31,6 @@ public class GetTickerDataThread implements Callable<TickerData> {
     @Override
     public TickerData call() throws TimeoutException, ExchangeDataException {
 
-        // Ryan: general note some in-line commenting could be nice in here
-
         BigDecimal baseFund = null;
         BigDecimal counterFund = null;
         BigDecimal baseNeed;
@@ -64,8 +62,6 @@ public class GetTickerDataThread implements Callable<TickerData> {
             if (counterFund.compareTo(counterNeed) < 0 && baseFund.compareTo(baseNeed) < 0) {
 
                 throw new ExchangeDataException("You do not have the funds to complete this trade");
-                //activatedExchange.setActivated(false);
-                //return null;
             }
             return tickerDataTrading;
         }

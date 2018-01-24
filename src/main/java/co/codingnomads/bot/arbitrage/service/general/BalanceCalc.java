@@ -30,14 +30,18 @@ public class BalanceCalc {
     public void Balance(ArrayList<ExchangeSpecs> selected, CurrencyPair currencyPair) throws IOException {
 
             String currency1 = currencyPair.base.toString();
+
             String currency2 = currencyPair.counter.toString();
 
             ExchangeGetter exchangeGetter = new ExchangeGetter();
-            ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selected, false);
+            ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selected, true);
 
             for (ActivatedExchange activatedExchange : activatedExchanges) {
+
                 if (activatedExchange.isActivated() && activatedExchange.isTradingMode()) {
+
                     Wallet wallet = activatedExchange.getExchange().getAccountService().getAccountInfo().getWallet();
+
                     System.out.println();
                     System.out.println("==========================================================");
                     System.out.println("==========================================================");
