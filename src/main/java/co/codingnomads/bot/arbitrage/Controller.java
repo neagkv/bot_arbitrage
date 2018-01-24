@@ -100,10 +100,10 @@ public class Controller {
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
-//        set arbitragemargin
+//      set arbitragemargin
         arbitragePrintAction.setArbitrageMargin(1.00);
           arbitrage.run(
-                    CurrencyPair.ETH_BTC,
+                    CurrencyPair.ETH_USD,
                     ExchangeList,
                     arbitragePrintAction);
 

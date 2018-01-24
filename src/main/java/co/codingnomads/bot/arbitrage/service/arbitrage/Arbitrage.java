@@ -37,8 +37,6 @@ public class Arbitrage {
 
     ExchangeGetter exchangeGetter = new ExchangeGetter();
 
-//    ExchangeTradeQualifier exchangeTradeQualifier = new ExchangeTradeQualifier();
-
 
     int timeIntervalRepeater;
 
@@ -78,48 +76,55 @@ public class Arbitrage {
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
+        if(tradingMode) {
+
+            for(ExchangeSpecs exchangeSpecs : selectedExchanges){
+
+                selectedExchanges.listIterator().
+            }
+        }
+
         //prints balance out for the selectedExchanges
         balanceCalc.Balance(selectedExchanges, currencyPair);
 
+        //precaution
+        double tradeValueBase = 1;
 
 
+        //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
+        ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
+
+        //sets the tradeValueBase given in the controller for arbitrageTradingAction
+        if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
 
 
-            //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
-            ArrayList<ActivatedExchange> activatedExchanges = exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, tradingMode);
-
-            //sets the tradeValueBase given in the controller for arbitrageTradingAction
-            double tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
+        //convert the double tradeValueBase to a big decimal
+        BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
 
 
-            //convert the double tradeValueBase to a big decimal
-            BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
+        //makes while loop run continuously, if loopIteration is set, and only once is not set
+        while (loopIterations >= 0) {
 
 
+            //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
+            ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
 
-            //makes while loop run continuously, if loopIteration is set, and only once is not set
-            while (loopIterations >= 0) {
+                    activatedExchanges,
+                    currencyPair,
+                    tradeValueBase);
 
+            //if the list of ticker data is empty the currencypair is not supported on the exchange
+            if (listTickerData.size() == 0) {
 
-                //Create an ArrrayList of TickerData and set it to the get all ticker data method from the exchange data getter class
-                ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
-
-                        activatedExchanges,
-                        currencyPair,
-                        tradeValueBase);
-
-                //if the list of ticker data is empty the currencypair is not supported on the exchange
-                if (listTickerData.size() == 0) {
-
-                    throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
-                            " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);
+                throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
+                        " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);
+            }
 
 
-                    //find the best sell price
-                    TickerData highBid = dataUtil.highBidFinder(listTickerData);
-                    //find the best buy price
-                    TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
-
+            //find the best sell price
+            TickerData highBid = dataUtil.highBidFinder(listTickerData);
+            //find the best buy price
+            TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
 
 
             //new BigDecimal set to the difference of the best sell price and the best buy price
@@ -158,4 +163,5 @@ public class Arbitrage {
         }
     }
 }
+
 
