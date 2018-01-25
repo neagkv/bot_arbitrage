@@ -76,16 +76,21 @@ public class Arbitrage {
         Boolean emailMode = arbitrageActionSelection instanceof ArbitrageEmailAction;
         Boolean printMode = arbitrageActionSelection instanceof ArbitragePrintAction;
 
-        if(tradingMode) {
+        //If trading mode and exchange specs are not set up, throw new ExchangeDataException
+        if (tradingMode) {
 
-            for(ExchangeSpecs exchangeSpecs : selectedExchanges){
+            for (ExchangeSpecs exchange : selectedExchanges) {
 
-                selectedExchanges.listIterator().
+                if (exchange.GetSetupedExchange().getApiKey() == null || exchange.GetSetupedExchange().getSecretKey() == null) {
+
+                    throw new ExchangeDataException("You must enter correct exchange specs for " + exchange.GetSetupedExchange().getExchangeName());
+                }
+
+                //prints balance out for the selectedExchanges
+                balanceCalc.Balance(selectedExchanges, currencyPair);
             }
-        }
 
-        //prints balance out for the selectedExchanges
-        balanceCalc.Balance(selectedExchanges, currencyPair);
+        }
 
         //precaution
         double tradeValueBase = 1;
@@ -111,10 +116,10 @@ public class Arbitrage {
 
                     activatedExchanges,
                     currencyPair,
-                    tradeValueBase);
+                    valueOfTradeValueBase);
 
             //if the list of ticker data is empty the currencypair is not supported on the exchange
-            if (listTickerData.size() == 0) {
+            if (tradingMode && listTickerData.size() == 0) {
 
                 throw new ExchangeDataException("Unable to pull exchange data, either the pair " + currencyPair + " is not supported on the exchange/s selected" +
                         " or you do not have a wallet with the needed trade base of " + tradeValueBase + currencyPair.base);

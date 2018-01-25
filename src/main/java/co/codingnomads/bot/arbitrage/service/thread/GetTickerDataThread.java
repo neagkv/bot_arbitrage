@@ -74,10 +74,10 @@ public class GetTickerDataThread implements Callable<TickerData> {
      * @param activatedExchange a pojo containing the exchange and some booleans
      * @param currencyPair      the pair investigated
      */
-    public GetTickerDataThread(ActivatedExchange activatedExchange, CurrencyPair currencyPair, double tradeAmountBase) {
+    public GetTickerDataThread(ActivatedExchange activatedExchange, CurrencyPair currencyPair, BigDecimal tradeAmountBase) {
         this.activatedExchange = activatedExchange;
         this.currencyPair = currencyPair;
-        this.tradeAmountBase = BigDecimal.valueOf(tradeAmountBase);
-        if (tradeAmountBase > 0) tradingEnvironment = true;
+        this.tradeAmountBase = tradeAmountBase;
+        if (tradeAmountBase.doubleValue() > 0) tradingEnvironment = true;
     }
 }

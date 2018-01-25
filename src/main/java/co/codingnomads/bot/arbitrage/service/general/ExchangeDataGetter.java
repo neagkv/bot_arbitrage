@@ -7,6 +7,8 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
@@ -30,8 +32,8 @@ public class ExchangeDataGetter {
      */
     public ArrayList<TickerData> getAllTickerData(ArrayList<ActivatedExchange> activatedExchanges,
 
-                                              CurrencyPair currencyPair,
-                                              double tradeValueBase) {
+                                                  CurrencyPair currencyPair,
+                                                  BigDecimal tradeValueBase) {
 
         ArrayList<TickerData> list = new ArrayList<>();
 

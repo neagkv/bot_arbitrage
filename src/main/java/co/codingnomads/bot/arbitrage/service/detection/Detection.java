@@ -45,6 +45,7 @@ public class Detection {
         Boolean printMode = detectionActionSelection instanceof DetectionPrintAction;
 
         double tradeValueBase = -1;
+        BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
         int logCounter = 1;
 
         ArrayList<ActivatedExchange> activatedExchanges =
@@ -58,7 +59,7 @@ public class Detection {
                 ArrayList<TickerData> listTickerData = exchangeDataGetter.getAllTickerData(
                         activatedExchanges,
                         currencyPair,
-                        tradeValueBase);
+                        valueOfTradeValueBase);
 
                 if (listTickerData.size() == 0) {
                     differenceWrapperList.add(new DifferenceWrapper(currencyPair));

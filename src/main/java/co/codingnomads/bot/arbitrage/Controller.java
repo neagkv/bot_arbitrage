@@ -72,9 +72,9 @@ public class Controller {
 //set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
         ExchangeList.add(new KrakenSpecs());//enter api key and secret for arbitrage trade action
-        ExchangeList.add(new GDAXSpecs());//enter api key secret and passphrase for arbitrage trade action
-        ExchangeList.add(new PoloniexSpecs());
-        //ExchangeList.add(new GeminiSpecs());
+        ExchangeList.add(new GDAXSpecs("","/",""));//enter api key secret and passphrase for arbitrage trade action
+        ExchangeList.add(new PoloniexSpecs("","git"));
+
 
         //choose one and only one of the following Arbitrage or Detection trade actions
 
@@ -91,8 +91,8 @@ public class Controller {
 //        Example of an Arbitrage trade action
           //arbitrage.setLoopIterations(100);
           //arbitrage.setTimeIntervalRepeater(15000);
-//          arbitrageTradingAction.setArbitrageMargin(1.01);
-//          arbitrageTradingAction.setTradeValueBase(0.02);
+//          arbitrageTradingAction.setArbitrageMargin(0.01);
+//          arbitrageTradingAction.setTradeValueBase(0.020);
 //          arbitrage.run(
 //                CurrencyPair.ETH_USD,
 //                ExchangeList,
@@ -100,7 +100,7 @@ public class Controller {
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
-//      set arbitragemargin
+//        set arbitragemargin
         arbitragePrintAction.setArbitrageMargin(1.00);
           arbitrage.run(
                     CurrencyPair.ETH_USD,
