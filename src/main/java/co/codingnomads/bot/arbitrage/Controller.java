@@ -103,7 +103,7 @@ public class Controller {
 //        set arbitragemargin
 //        arbitragePrintAction.setArbitrageMargin(1.00);
 //          arbitrage.run(
-//                    CurrencyPair.ETH_BTC,
+//                    CurrencyPair.ETH_USD,
 //                    ExchangeList,
 //                    arbitragePrintAction);
 
@@ -124,11 +124,11 @@ public class Controller {
 
 
         //List of currencyPairs you would like to check, for Detection only
-//        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-//        currencyPairList.add(CurrencyPair.ETH_USD);
-//        currencyPairList.add(CurrencyPair.BTC_USD);
-//        currencyPairList.add(CurrencyPair.BTC_USD);
-//        currencyPairList.add(CurrencyPair.ETC_BTC);
+        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+        currencyPairList.add(CurrencyPair.ETH_USD);
+        currencyPairList.add(CurrencyPair.BTC_USD);
+        currencyPairList.add(CurrencyPair.BTC_USD);
+        currencyPairList.add(CurrencyPair.ETC_BTC);
 
 //    Example of a Detection print action
 //    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();

@@ -76,4 +76,73 @@ public class TradingData {
     public BigDecimal getRealDifferenceFormated() {
         return realDifferenceFormated;
     }
+
+
+    public Currency getBase() {
+        return base;
+    }
+
+    public Currency getCounter() {
+        return counter;
+    }
+
+    public BigDecimal getOldBaseBuy() {
+        return oldBaseBuy;
+    }
+
+    public BigDecimal getOldCounterBuy() {
+        return oldCounterBuy;
+    }
+
+    public BigDecimal getOldBaseSell() {
+        return oldBaseSell;
+    }
+
+    public BigDecimal getOldCounterSell() {
+        return oldCounterSell;
+    }
+
+    public BigDecimal getNewBaseBuy() {
+        return newBaseBuy;
+    }
+
+    public BigDecimal getNewCounterBuy() {
+        return newCounterBuy;
+    }
+
+    public BigDecimal getNewBaseSell() {
+        return newBaseSell;
+    }
+
+    public BigDecimal getNewCounterSell() {
+        return newCounterSell;
+    }
+
+    public BigDecimal getOldTotalBase() {
+        return oldTotalBase;
+    }
+
+    public BigDecimal getNewTotalBase() {
+        return newTotalBase;
+    }
+
+    public BigDecimal getDifferenceBaseBuy() {
+        return differenceBaseBuy;
+    }
+
+    public BigDecimal getDifferenceCounterBuy() {
+        return differenceCounterBuy;
+    }
+
+    public BigDecimal getDifferenceBaseSell() {
+        return differenceBaseSell;
+    }
+
+    public BigDecimal getDifferenceBidAsk() {
+        return differenceBidAsk;
+    }
+
+    public BigDecimal getDifferenceTotalBase() {
+        return differenceTotalBase;
+    }
 }

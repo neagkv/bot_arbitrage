@@ -98,10 +98,10 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
             System.out.println(tradedPair);
 
             //expected difference from trade
-            BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(1)).multiply(BigDecimal.valueOf(100));
+            BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
             System.out.println("difference formatted " + expectedDifferenceFormated);
 
-            if (expectedDifferenceFormated.compareTo(BigDecimal.ZERO) > 100) {
+            if (expectedDifferenceFormated.compareTo(BigDecimal.ZERO) > 0) {
 
                 //print the expected trade
                 System.out.println("==========================================================");
@@ -150,10 +150,10 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         MarketOrder marketOrderBuy = new MarketOrder(Order.OrderType.BID, tradeAmount, tradedPair);
         MarketOrder marketOrderSell = new MarketOrder(Order.OrderType.ASK, tradeAmount, tradedPair);
 
-//        System.out.println();
-//        System.out.println(marketOrderBuy.toString());
-//        System.out.println(marketOrderSell.toString());
-//        System.out.println();
+        System.out.println();
+        System.out.println(marketOrderBuy.toString());
+        System.out.println(marketOrderSell.toString());
+        System.out.println();
 
 
         //set marketOrderBuyId, and marketOrderSellId to failed
@@ -171,10 +171,6 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
                 MakeOrderThread(marketOrderSell, highBid));
 
-
-//                 Ryan: Does this always work? It appears as though you submit the tasks above and then immediate use the
-//                 return values below, but outside the task thread. Is there anything that guarantees the lines below will not
-//                 execute before the tasks above are complete?
 
         //for two loops insert the thread
         for (
@@ -215,7 +211,7 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
             System.out.println("trades successful");
             System.out.println("===============================================================");
         }
-        // todo trade get wallet?
+
         Wallet walletBuy = null;
         Wallet walletSell = null;
         ExecutorService executorWalletWrapper = Executors.newFixedThreadPool(2);
@@ -224,7 +220,6 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         poolWalletWrapper.submit(new GetWalletWrapperThread(lowAsk));
         poolWalletWrapper.submit(new GetWalletWrapperThread(highBid));
 
-        //Ryan: same comment as above
         for (int i = 0; i < 2; i++) {
             try {
                 WalletWrapper temp = poolWalletWrapper.take().get();
@@ -248,7 +243,11 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                         walletBuy,
                         walletSell);
 
-        // this need to be tested
+
+        tradeHistoryService.insertBase(tradingData);
+
+
+
         System.out.println();
         System.out.println("real bid was " + tradingData.getRealBid()
                 + " and real ask was " + tradingData.getRealAsk()
