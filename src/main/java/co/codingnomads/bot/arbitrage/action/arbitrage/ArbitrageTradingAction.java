@@ -56,14 +56,18 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
     public boolean canTrade(TickerData lowAsk,
                             TickerData highBid,
-                            ArbitrageTradingAction arbitrageTradingAction) {
+                            ArbitrageTradingAction arbitrageTradingAction) throws ExchangeDataException {
 
 
         if (highBid.getExchange().getExchangeSpecification().getExchangeName() == lowAsk.getExchange().getExchangeSpecification().getExchangeName()) {
 
             System.out.println("###########################################################");
             System.out.println("low ask exchange is the same as high bid exchange");
+            System.out.println("You may want to make sure you have required funds to make the trade");
             System.out.println("###########################################################");
+
+            System.out.println("highBid" + highBid.getExchange().getExchangeSpecification().getExchangeName());
+            System.out.println("lowAsk" + lowAsk.getExchange().getExchangeSpecification().getExchangeName());
         }
 
 
@@ -75,6 +79,11 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
             //if the best price difference is greater than the value of the arbitrage margin you want
             if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) < 0) {
+
+                if(highBid.getBid().intValue() == -1){
+
+                    throw new ExchangeDataException("You do not have the required funds for this trade");
+                }
 
                 System.out.println("congrats you made it inside this if statement");
 
@@ -124,6 +133,7 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                 System.out.println("==========================================================");
                 System.out.println();
                 System.out.println("No profitable arbitrage found");
+                System.out.println("Please make sure you have the needed funds for the trade");
                 System.out.println("==========================================================");
                 round++;
                 System.out.println("round:" + round);
@@ -245,7 +255,12 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
 
 
-        tradeHistoryService.insertBase(tradingData);
+
+        tradeHistoryService.insertTrades(tradingData);
+
+       // tradeHistoryService.insertInfo(tradingData);
+
+        //tradeHistoryService.insertTradeHistory(tradingData);
 
 
 
@@ -255,6 +270,9 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                 + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
                 + "% vs an expected of " + expectedDifferenceFormated + " %");
 
+        BigDecimal estimatedFees = expectedDifferenceFormated.subtract(tradingData.getRealDifferenceFormated());
+
+        System.out.println("Estimated fees = " + estimatedFees + tradingData.getCounterName());
     }
 }
 

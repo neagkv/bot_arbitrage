@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 
 public class TradingData {
 
+
     Currency base;
     Currency counter;
     BigDecimal oldBaseBuy;
@@ -34,6 +35,13 @@ public class TradingData {
     BigDecimal differenceBidAsk;
     BigDecimal realDifferenceFormated;
     BigDecimal differenceTotalBase;
+    BigDecimal estimatedFee;
+    String buyExchange;
+    String sellExchange;
+    String baseName;
+    String counterName;
+    BigDecimal expectedDifference;
+    BigDecimal expectedDifferenceFormatted;
 
 
     public TradingData(TickerDataTrading lowAsk, TickerDataTrading highBid, Wallet walletBuy, Wallet walletSell) {
@@ -59,6 +67,17 @@ public class TradingData {
         this.differenceBidAsk = realBid.divide(realAsk, 5, RoundingMode.HALF_EVEN);
         this.realDifferenceFormated = differenceBidAsk.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
         this.differenceTotalBase = newTotalBase.divide(oldTotalBase, 5, BigDecimal.ROUND_HALF_EVEN).add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
+        this.buyExchange = lowAsk.getExchange().getExchangeSpecification().getExchangeName();
+        this.sellExchange = highBid.getExchange().getExchangeSpecification().getExchangeName();
+        this.baseName = lowAsk.getCurrencyPair().base.toString();
+        this.counterName = lowAsk.getCurrencyPair().counter.toString();
+        this.expectedDifference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+        this.expectedDifferenceFormatted = expectedDifference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
+        this.estimatedFee = expectedDifferenceFormatted.subtract(realDifferenceFormated);
+    }
+
+    public BigDecimal getEstimatedFee() {
+        return estimatedFee;
     }
 
     public BigDecimal getDifferenceCounterSell() {
@@ -144,5 +163,29 @@ public class TradingData {
 
     public BigDecimal getDifferenceTotalBase() {
         return differenceTotalBase;
+    }
+
+    public String getBuyExchange() {
+        return buyExchange;
+    }
+
+    public String getSellExchange() {
+        return sellExchange;
+    }
+
+    public String getBaseName() {
+        return baseName;
+    }
+
+    public String getCounterName() {
+        return counterName;
+    }
+
+    public BigDecimal getExpectedDifference() {
+        return expectedDifference;
+    }
+
+    public BigDecimal getExpectedDifferenceFormatted() {
+        return expectedDifferenceFormatted;
     }
 }

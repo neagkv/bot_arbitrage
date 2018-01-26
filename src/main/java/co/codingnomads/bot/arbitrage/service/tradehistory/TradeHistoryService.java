@@ -17,15 +17,12 @@ public class TradeHistoryService {
     @Autowired
     TradeHistoryMapper tradeHistoryMapper;
 
-    public void insertTradeHistoryRecords(TradingData tradingData){
-        tradeHistoryMapper.insertTradeHistory(tradingData.getBase(),tradingData.getCounter(),tradingData.getOldBaseBuy(),tradingData.getOldCounterSell(),
-                tradingData.getNewBaseBuy(),tradingData.getNewCounterBuy(),tradingData.getNewBaseSell(),tradingData.getNewCounterSell(),
-                tradingData.getOldTotalBase(),tradingData.getNewTotalBase(),tradingData.getDifferenceBaseBuy(),tradingData.getDifferenceCounterSell(),
-                tradingData.getRealAsk(), tradingData.getRealBid(), tradingData.getDifferenceBidAsk(),tradingData.getRealDifferenceFormated(),tradingData.getDifferenceTotalBase());
 
+    public void insertTrades(TradingData tradingData){
+        tradeHistoryMapper.insertTrades(tradingData.getBaseName(), tradingData.getCounterName(), tradingData.getBuyExchange(), tradingData.getSellExchange(),
+                tradingData.getOldTotalBase(), tradingData.getNewTotalBase(), tradingData.getDifferenceBaseBuy(), tradingData.getDifferenceCounterBuy(),
+                tradingData.getDifferenceBaseSell(), tradingData.getDifferenceCounterSell(), tradingData.getRealAsk(), tradingData.getRealBid(),
+                tradingData.getRealDifferenceFormated(),tradingData.getExpectedDifference(), tradingData.getEstimatedFee());
     }
 
-    public void insertBase(TradingData tradingData){
-        tradeHistoryMapper.insertBase(tradingData.getOldBaseBuy());
-    }
 }

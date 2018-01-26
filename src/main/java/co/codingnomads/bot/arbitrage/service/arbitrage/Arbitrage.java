@@ -86,11 +86,11 @@ public class Arbitrage {
                     throw new ExchangeDataException("You must enter correct exchange specs for " + exchange.GetSetupedExchange().getExchangeName());
                 }
 
-                //prints balance out for the selectedExchanges
-                balanceCalc.Balance(selectedExchanges, currencyPair);
             }
 
         }
+
+
 
         //precaution
         double tradeValueBase = 1;
@@ -101,6 +101,10 @@ public class Arbitrage {
 
         //sets the tradeValueBase given in the controller for arbitrageTradingAction
         if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
+
+        if (tradingMode)
+            //prints balance out for the selectedExchanges
+            balanceCalc.Balance(selectedExchanges, currencyPair);
 
 
         //convert the double tradeValueBase to a big decimal
