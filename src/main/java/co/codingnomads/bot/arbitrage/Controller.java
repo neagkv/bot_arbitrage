@@ -5,7 +5,6 @@ import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
-import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
@@ -14,13 +13,9 @@ import co.codingnomads.bot.arbitrage.service.detection.Detection;
 import co.codingnomads.bot.arbitrage.service.detection.DetectionService;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
 import co.codingnomads.bot.arbitrage.service.arbitrage.Arbitrage;
-import co.codingnomads.bot.arbitrage.service.general.BalanceCalc;
 import co.codingnomads.bot.arbitrage.service.tradehistory.TradeHistoryService;
 import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.service.trade.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,14 +62,27 @@ public class Controller {
     DetectionPrintAction detectionPrintAction;
 
 
+    /**
+     *
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws EmailLimitException
+     * @throws WaitTimeException
+     * @throws ExchangeDataException
+     */
+
     public void runBot() throws IOException, InterruptedException, EmailLimitException, WaitTimeException, ExchangeDataException{
 
-//set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
+//      set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
-        ExchangeList.add(new KrakenSpecs());//enter api key and secret for arbitrage trade action
-        ExchangeList.add(new GDAXSpecs());//enter api key secret and passphrase for arbitrage trade action
-        //ExchangeList.add(new PoloniexSpecs());
-
+//        ExchangeList.add(new PoloniexSpecs());
+//        ExchangeList.add(new BinanceSpecs());
+//        ExchangeList.add(new GeminiSpecs());
+//        ExchangeList.add(new BitfinexSpecs());
+//        ExchangeList.add(new BitstampSpecs());
+//        ExchangeList.add(new BittrexSpecs());
+//        ExchangeList.add(new KrakenSpecs());
+//        ExchangeList.add(new GDAXSpecs());
 
         //choose one and only one of the following Arbitrage or Detection trade actions
 
@@ -89,24 +97,21 @@ public class Controller {
 
 
 //        Example of an Arbitrage trade action
-          //arbitrage.setLoopIterations(100);
-          //arbitrage.setTimeIntervalRepeater(15000);
-          arbitrageTradingAction.setArbitrageMargin(0.3);
-          arbitrageTradingAction.setTradeValueBase(0.020);
-          arbitrage.run(
-                CurrencyPair.ETH_USD,
-                ExchangeList,
-                arbitrageTradingAction);
+//        arbitrageTradingAction.setArbitrageMargin(0.03); //percentage of
+//        arbitrageTradingAction.setTradeValueBase(0.020);
+//        arbitrage.run(
+//                CurrencyPair.ETH_USD,
+//                ExchangeList,
+//                arbitrageTradingAction);
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
 //        set arbitragemargin
-
-//        arbitragePrintAction.setArbitrageMargin(0.01);
-//          arbitrage.run(
-//                    CurrencyPair.ETH_USD,
-//                    ExchangeList,
-//                    arbitragePrintAction);
+        arbitragePrintAction.setArbitrageMargin(0.01);
+        arbitrage.run(
+                    CurrencyPair.ETH_USD,
+                    ExchangeList,
+                    arbitragePrintAction);
 
 
 
@@ -126,11 +131,12 @@ public class Controller {
 
 
         //List of currencyPairs you would like to check, for Detection only
-        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-        currencyPairList.add(CurrencyPair.ETH_USD);
-        currencyPairList.add(CurrencyPair.BTC_USD);
-        currencyPairList.add(CurrencyPair.BTC_USD);
-        currencyPairList.add(CurrencyPair.ETC_BTC);
+//        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+//        currencyPairList.add(CurrencyPair.ETH_USD);
+//        currencyPairList.add(CurrencyPair.ETH_BTC);
+//        currencyPairList.add(CurrencyPair.BTC_USD);
+//        currencyPairList.add(CurrencyPair.BTC_USD);
+//        currencyPairList.add(CurrencyPair.ETC_BTC);
 
 //    Example of a Detection print action
 //    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();

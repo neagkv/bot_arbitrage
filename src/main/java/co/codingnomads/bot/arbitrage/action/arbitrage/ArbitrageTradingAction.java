@@ -80,22 +80,11 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
             //if the best price difference is greater than the value of the arbitrage margin you want
             if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) < 0) {
 
-                if(highBid.getBid().intValue() == -1){
+                //sometimes exchange apis spit out -1, when wallet is empty
+                if(highBid.getBid().intValue() == -1) {
 
                     throw new ExchangeDataException("You do not have the required funds for this trade");
                 }
-
-                System.out.println("congrats you made it inside this if statement");
-
-                System.out.println(lowAsk.getExchange().getExchangeSpecification().getExchangeName());
-
-                System.out.println("buy is  " + lowAsk.getAsk());
-
-                System.out.println("sell is  " + highBid.getBid());
-
-                System.out.println("differenc is " + difference);
-
-                System.out.println("big decimal arbitrage margin" + BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin()));
             }
 
             //amount chosen to trade

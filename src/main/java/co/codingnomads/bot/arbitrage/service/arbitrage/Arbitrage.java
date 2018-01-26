@@ -88,12 +88,15 @@ public class Arbitrage {
 
             }
 
+            //prints balance out for the selectedExchanges
+            balanceCalc.Balance(selectedExchanges, currencyPair);
+
         }
 
 
 
-        //precaution
-        double tradeValueBase = 1;
+        //set tradeValueBase to -1
+        double tradeValueBase = -1;
 
 
         //create a new array list of Activated Exchanges and sets it equal to the selected exchanges set in the controller
@@ -101,11 +104,6 @@ public class Arbitrage {
 
         //sets the tradeValueBase given in the controller for arbitrageTradingAction
         if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
-
-        if (tradingMode)
-            //prints balance out for the selectedExchanges
-            balanceCalc.Balance(selectedExchanges, currencyPair);
-
 
         //convert the double tradeValueBase to a big decimal
         BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
@@ -157,10 +155,10 @@ public class Arbitrage {
 
                 if (arbitrageTradingAction.canTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection) == true){
                     arbitrageTradingAction.makeTrade(lowAsk, highBid, (ArbitrageTradingAction) arbitrageActionSelection);
-
                 }
 
             }
+
             //if the timeIntervalRepeater is set and is greater than 5 seconds, sleeps the thread that time
             if (timeIntervalRepeater >= 5000) {
                 Thread.sleep(timeIntervalRepeater);

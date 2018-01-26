@@ -8,7 +8,6 @@ import org.knowm.xchange.bitstamp.BitstampExchange;
  *
  * Extension of the specs for Bistamp
  */
-// todo implement but have no key yet
 public class BitstampSpecs extends ExchangeSpecs {
 
     protected BitstampSpecs(String apiKey, String secretKey) {
