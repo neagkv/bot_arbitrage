@@ -5,9 +5,6 @@ A bot designed to detect arbitrage opportunities for cryptocurrencies by checkin
 **Warning:**  Any liabilities or damages
 induced by the use of this tool is the sole responsibility of the user of this tool and not the developers.
 
-## Before you start
-
-
 ## Description
 
 This is a bot that utilizes the XChange Java library <url>http://knowm.org/open-source/xchange/)</url> to interact with the apis
