@@ -27,7 +27,7 @@ with the lowest ask and highest bid to capitalize on the arbitrage, and insert i
 
 Exchanges:
 
-```
+
 * GDAX (https://docs.gdax.com/)
 
 * Kraken (https://www.kraken.com/help/api)
@@ -43,8 +43,6 @@ Exchanges:
 * Bitfinex (https://docs.bitfinex.com/docs) non US residents only
 
 * Binance (https://support.binance.com/hc/en-us/articles/115003235691-Binance-API-Trading-Rules)
-
-```
 
 
 ## Getting Started
