@@ -1,8 +1,11 @@
 # Cryptocurrency arbitrage and detection bot.
 
-**Warning:** This project is a work in progress and should NOT be used as is. Any liabilities or damages
+A bot designed to detect arbitrage opportunities for cryptocurrencies by checking the price on various exchanges for the purpose of trading and information gathering and logging.
+
+**Warning:**  Any liabilities or damages
 induced by the use of this tool is the sole responsibility of the user of this tool and not the developers.
-Other features will be eventually implemented to improve the functionality and services of this project.
+
+## Before you start
 
 
 ## Description
@@ -10,18 +13,43 @@ Other features will be eventually implemented to improve the functionality and s
 This is a bot that utilizes the XChange Java library <url>http://knowm.org/open-source/xchange/)</url> to interact with the apis
 of over 60 leading cryptocurrency exchanges. The bot has two primary functions, arbitrage and detection. For the the detection function,
 the user must enter the exchanges and currency pairs they would like to check as well as an action selection. The detection action selections
-are print and log. The bot will then either print the currency pair and exchanges with the greatest difference in price to the console or log the highest ask price, lowest ask price and price difference for each request to a
-database repeatedly at a desired time interval, depending on the action request from the user. For the arbitrage function there are three actions,
-print, email and trading. For each of the actions the user must enter a currency pair a list of exchanges a desired arbitrage margin and an action.
-The print action will print the best arbitrage opportunity found for the given pair and exchanges to the console. The email action will additionally
-require an email address that is verified by amazon aws in the call. The email address will send an arbitrage update with the best arbitrage opportunity to the given email address.
-For the final arbitrage action (trading) the user must give a trade value base (a trade value in the base currency selected) along with the call.
-The bot will then trade on the exchange with the lowest ask and highest bid to capitalize on the arbitrage.
+are print and log. The bot will then either print the currency pair and exchanges with the greatest difference in price to the console or log
+the highest ask price, lowest ask price and price difference for each request to a database repeatedly at a desired time interval, depending on
+the action request from the user. For the arbitrage function there are three actions,print, email and trading. For each of the actions the user
+must enter a currency pair a list of exchanges a desired arbitrage margin and an action. The print action will print the best arbitrage opportunity
+found for the given pair and exchanges to the console. The email action will additionally require an email address that is verified by amazon aws in
+the call. The email address will send an arbitrage update with the best arbitrage opportunity to the given email address. For the final arbitrage action
+(trading) the user must give a trade value base (a trade value in the base currency selected) along with the call. The bot will then trade on the exchange
+with the lowest ask and highest bid to capitalize on the arbitrage, and insert information related to the trade into a database.
+
+
+## Exchange List and API Documentation
+
+Exchanges:
+
+```
+* GDAX (https://docs.gdax.com/)
+
+* Kraken (https://www.kraken.com/help/api)
+
+* Poloniex (https://poloniex.com/support/api/) no fiat currencies
+
+* Gemini (https://docs.gemini.com/rest-api/)
+
+* Bittrex (https://bittrex.com/home/api)
+
+* Bitstamp (https://www.bitstamp.net/api/)
+
+* Bitfinex (https://docs.bitfinex.com/docs) non US residents only
+
+* Binance (https://support.binance.com/hc/en-us/articles/115003235691-Binance-API-Trading-Rules)
+
+```
 
 
 ## Getting Started
 
-requires a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  to be
+requires a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) to be
 installed on the machine you are going to use to run the program.
 
 you must have an active account on amazon aws and the required credentials (https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
@@ -36,7 +64,9 @@ Clone the project on your desired location
 ```
 $ git clone https://github.com/Thleruth/bot_arbitrage
 $ cd bot_arbitrage
-$ mvn clean install
+$ mvn clean package
+$ mvn spring-boot:run
+
 ```
 
 ### Maven
@@ -44,6 +74,7 @@ Add the following dependencies in your [`pom.xml`](https://github.com/Thleruth/b
 
 #### Dependencies
 ```xml
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -95,6 +126,11 @@ Add the following dependencies in your [`pom.xml`](https://github.com/Thleruth/b
         </dependency>
         <dependency>
             <groupId>org.knowm.xchange</groupId>
+            <artifactId>xchange-binance</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.knowm.xchange</groupId>
             <artifactId>xchange-bitstamp</artifactId>
             <version>4.3.1</version>
         </dependency>
@@ -111,6 +147,11 @@ Add the following dependencies in your [`pom.xml`](https://github.com/Thleruth/b
         <dependency>
             <groupId>org.knowm.xchange</groupId>
             <artifactId>xchange-bittrex</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.knowm.xchange</groupId>
+            <artifactId>xchange-gemini</artifactId>
             <version>4.3.1</version>
         </dependency>
         <dependency>
