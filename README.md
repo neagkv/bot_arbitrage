@@ -7,39 +7,59 @@ induced by the use of this tool is the sole responsibility of the user of this t
 
 ## Description
 
-This is a bot that utilizes the XChange Java library <url>http://knowm.org/open-source/xchange/)</url> to interact with the apis
-of over 60 leading cryptocurrency exchanges. The bot has two primary functions, arbitrage and detection. For the the detection function,
+This is a bot that utilizes the [XChange Java library](http://knowm.org/open-source/xchange/) to interact with the apis
+of leading cryptocurrency exchanges. The bot has two primary functions, arbitrage and detection. For the the detection function,
 the user must enter the exchanges and currency pairs they would like to check as well as an action selection. The detection action selections
 are print and log. The bot will then either print the currency pair and exchanges with the greatest difference in price to the console or log
-the highest ask price, lowest ask price and price difference for each request to a database repeatedly at a desired time interval, depending on
-the action request from the user. For the arbitrage function there are three actions,print, email and trading. For each of the actions the user
-must enter a currency pair a list of exchanges a desired arbitrage margin and an action. The print action will print the best arbitrage opportunity
-found for the given pair and exchanges to the console. The email action will additionally require an email address that is verified by amazon aws in
-the call. The email address will send an arbitrage update with the best arbitrage opportunity to the given email address. For the final arbitrage action
-(trading) the user must give a trade value base (a trade value in the base currency selected) along with the call. The bot will then trade on the exchange
-with the lowest ask and highest bid to capitalize on the arbitrage, and insert information related to the trade into a database.
+the highest ask price, lowest ask price and price difference for each request to a database repeatedly at a desired time interval. For the arbitrage
+function there are three actions,print, email and trading. For each of the actions the user must enter a currency pair a list of exchanges a desired
+arbitrage margin and an action. The print action will print the best arbitrage opportunity found for the given pair and exchanges to the console.
+The email action will additionally require an email address that is verified by amazon aws in the call. The email address will send an arbitrage update
+with the best arbitrage opportunity to the given email address. For the final arbitrage action (trading) the user must give a trade value base (a trade value
+in the base currency selected) along with the call. The bot will then trade on the exchange with the lowest ask and highest bid to capitalize on the arbitrage,
+and insert information related to the trade into a database.
 
 
 ## Exchange List and API Documentation
 
-Exchanges:
+###Exchanges:
+
+###exchanges set up to be used are:
+
+* [GDAX](https://docs.gdax.com/)
+
+* [Kraken](https://www.kraken.com/help/api)
+
+* [Poloniex](https://poloniex.com/support/api/) no fiat currencies
+
+* [Gemini](https://docs.gemini.com/rest-api/)
+
+* [Bittrex](https://bittrex.com/home/api)
+
+* [Bitstamp](https://www.bitstamp.net/api/)
+
+* [Bitfinex](https://docs.bitfinex.com/docs) non US residents only
+
+* [Binance](https://support.binance.com/hc/en-us/articles/115003235691-Binance-API-Trading-Rules)
 
 
-* [GDAX] (https://docs.gdax.com/)
 
-* [Kraken] (https://www.kraken.com/help/api)
+-for best use, make sure that the currency pair or pairs you are using are supported by the selected exchanges.
 
-* [Poloniex] (https://poloniex.com/support/api/) no fiat currencies
+-for arbitrage trade action, you will need to create an account on each exchange you would like to use and obtain the api key, api secret key
+and any other needed api specifications.
 
-* [Gemini] (https://docs.gemini.com/rest-api/)
+-for each currency pair the first currency is the base currency and the second is the counter currency. For example for the currency pair ETH_BTC,
+ETH (ethereum) is the base currency and BTC (bitcoin) is the counter currency.
 
-* [Bittrex] (https://bittrex.com/home/api)
+-you must set the tradeValueBase or amount of base currency you would like to trade in the arbitrage trade action method. Different exchanges have different
+minimums on the amount of each currency they will allow you to trade. Find the limits of each exchange before you trade.
 
-* [Bitstamp] (https://www.bitstamp.net/api/)
+-to be able to complete an arbitrage trade you must make sure that you have at least enough base currency on the wallets of each exchange as the tradeValueBase set in the method.
+additionally you will need enough counter currency to purchase the amount of baseCurrency set in the method. For example for the CurrencyPair ETH_BTC, if you set the
+tradeValue base as 0.02 in the method, it means you wish to trade 0.02 ETH, you must make sure that you have at least 0.02 ETH on each exchange you are selecting and that
+you have enough BTC to purchase 0.02 ETH on each exchange as well.
 
-* [Bitfinex] (https://docs.bitfinex.com/docs) non US residents only
-
-* [Binance] (https://support.binance.com/hc/en-us/articles/115003235691-Binance-API-Trading-Rules)
 
 
 ## Getting Started
