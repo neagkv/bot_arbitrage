@@ -86,12 +86,12 @@ public class Controller {
 
 //      set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
-//      ExchangeList.add(new PoloniexSpecs());
-//      ExchangeList.add(new BinanceSpecs());
-//      ExchangeList.add(new GeminiSpecs());
-//      ExchangeList.add(new BitfinexSpecs());
-//      ExchangeList.add(new BitstampSpecs());
-//      ExchangeList.add(new BittrexSpecs());
+        ExchangeList.add(new PoloniexSpecs());
+        ExchangeList.add(new BinanceSpecs());
+        ExchangeList.add(new GeminiSpecs());
+        ExchangeList.add(new BitfinexSpecs());
+        ExchangeList.add(new BitstampSpecs());
+        ExchangeList.add(new BittrexSpecs());
         ExchangeList.add(new KrakenSpecs());
         ExchangeList.add(new GDAXSpecs());
 

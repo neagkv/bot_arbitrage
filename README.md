@@ -25,21 +25,21 @@ with the lowest ask and highest bid to capitalize on the arbitrage, and insert i
 Exchanges:
 
 
-* GDAX (https://docs.gdax.com/)
+* [GDAX] (https://docs.gdax.com/)
 
-* Kraken (https://www.kraken.com/help/api)
+* [Kraken] (https://www.kraken.com/help/api)
 
-* Poloniex (https://poloniex.com/support/api/) no fiat currencies
+* [Poloniex] (https://poloniex.com/support/api/) no fiat currencies
 
-* Gemini (https://docs.gemini.com/rest-api/)
+* [Gemini] (https://docs.gemini.com/rest-api/)
 
-* Bittrex (https://bittrex.com/home/api)
+* [Bittrex] (https://bittrex.com/home/api)
 
-* Bitstamp (https://www.bitstamp.net/api/)
+* [Bitstamp] (https://www.bitstamp.net/api/)
 
-* Bitfinex (https://docs.bitfinex.com/docs) non US residents only
+* [Bitfinex] (https://docs.bitfinex.com/docs) non US residents only
 
-* Binance (https://support.binance.com/hc/en-us/articles/115003235691-Binance-API-Trading-Rules)
+* [Binance] (https://support.binance.com/hc/en-us/articles/115003235691-Binance-API-Trading-Rules)
 
 
 ## Getting Started
@@ -51,7 +51,7 @@ you must have an active account on amazon aws and the required credentials (http
 
 
 Required:
-* [JDK 8](ttp://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Maven](http://maven.apache.org/download.cgi)
 
 Clone the project on your desired location
@@ -61,7 +61,6 @@ $ git clone https://github.com/Thleruth/bot_arbitrage
 $ cd bot_arbitrage
 $ mvn clean package
 $ mvn spring-boot:run
-
 ```
 
 ### Maven
