@@ -13,6 +13,12 @@ public class TickerDataTrading extends TickerData {
     BigDecimal baseFund;
     BigDecimal counterFund;
 
+    /**
+     * Constructor for the tickerDataTrading
+     * @param tickerData
+     * @param baseFund
+     * @param counterFund
+     */
     public TickerDataTrading(TickerData tickerData, BigDecimal baseFund, BigDecimal counterFund) {
         super(tickerData.getCurrencyPair(), tickerData.getExchange(), tickerData.getBid(), tickerData.getAsk());
         this.baseFund = baseFund;

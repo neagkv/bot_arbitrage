@@ -17,6 +17,10 @@ public class GetWalletWrapperThread implements Callable<WalletWrapper> {
     TickerData tickerData;
 
 
+    /**
+     * call method that gets the exchange name and your wallet and puts it in a walletWrapper object
+     * @return walletWrapper with you wallet and exchange name
+     */
     @Override
     public WalletWrapper call() {
         try {
@@ -29,7 +33,10 @@ public class GetWalletWrapperThread implements Callable<WalletWrapper> {
         }
     }
 
-
+    /**
+     * Constructor
+     * @param tickerData
+     */
     public GetWalletWrapperThread(TickerData tickerData) {
         this.tickerData = tickerData;
     }

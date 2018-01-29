@@ -29,11 +29,13 @@ public class ExchangeGetter {
 
         ArrayList<ActivatedExchange> list = new ArrayList<>();
 
+        //for each exchange spec in the arrayList sumbit into the executor pool
         for (ExchangeSpecs selected : selectedExchanges) {
             GetExchangeThread temp = new GetExchangeThread(selected);
             pool.submit(temp);
         }
-
+        //for the length of the exchange take it from the pool and if it is not null
+        //add it to the array list of activated exchange
         for (int i = 0; i < selectedExchanges.size(); i++) {
             try {
                 ActivatedExchange activatedExchange = pool.take().get();
@@ -45,7 +47,7 @@ public class ExchangeGetter {
             }
         }
         executor.shutdown();
-
+        //if trading mode set each exchange as an activated exchange
         if (tradingMode) {
             for (ActivatedExchange activatedExchange : list) {
                 activatedExchange.setActivated(activatedExchange.isTradingMode());

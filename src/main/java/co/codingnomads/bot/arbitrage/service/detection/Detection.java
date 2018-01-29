@@ -37,6 +37,17 @@ public class Detection {
     DataUtil dataUtil = new DataUtil();
 
 
+    /**
+     * run method for both detection print and log actions. Determines which action is being run and either prints
+     * detection information to the console or log it to a database.
+     * @param currencyPairList
+     * @param selectedExchanges
+     * @param detectionActionSelection
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws WaitTimeException
+     * @throws ExchangeDataException
+     */
     public void run(ArrayList<CurrencyPair> currencyPairList,
                     ArrayList<ExchangeSpecs> selectedExchanges,
                     DetectionActionSelection detectionActionSelection) throws IOException, InterruptedException, WaitTimeException, ExchangeDataException {
@@ -45,12 +56,18 @@ public class Detection {
         Boolean printMode = detectionActionSelection instanceof DetectionPrintAction;
 
         double tradeValueBase = -1;
+        //convert the value of the trade value base to a big decimal
         BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
+        //to count how many rounds log has printed into the database
         int logCounter = 1;
 
+        //get all the selected exchanges
         ArrayList<ActivatedExchange> activatedExchanges =
                 exchangeGetter.getAllSelectedExchangeServices(selectedExchanges, false);
 
+        //for each differencewrapper in the the difference wrapper list
+        //for each currency pair in the currency pair list
+        //if the data is not null add it to a new differenceWrapper list
         do {
             ArrayList<DifferenceWrapper> differenceWrapperList = new ArrayList<>();
 
@@ -66,14 +83,16 @@ public class Detection {
                     continue;
                 }
 
+                //find the lowest ask and highest bid
                 TickerData lowAsk = dataUtil.lowAskFinder(listTickerData);
                 TickerData highBid = dataUtil.highBidFinder(listTickerData);
 
-
+                //find the difference of the highbid and low ask and create a new big decimal
                 BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+                //multiple the difference by 100
                 BigDecimal differenceFormatted = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
 
-
+                //add the differenceWrapper to the differenceWrapperList
                 differenceWrapperList.add(new DifferenceWrapper(
                         currencyPair,
                         differenceFormatted,
@@ -86,13 +105,15 @@ public class Detection {
             }
 
             if (printMode) {
-
+                //if it is a print action, print the differenceWrapperList
                 DetectionPrintAction detectionPrintAction = (DetectionPrintAction) detectionActionSelection;
                 detectionPrintAction.print(differenceWrapperList);
 
             }
             if (logMode) {
-
+                //if it is a log action insert the differenceWrapperList into to the database
+                //at the set waitTime interval
+                //print how many times the differenceWrapper has been inserted into the database
                 DetectionLogAction detectionLogAction = (DetectionLogAction) detectionActionSelection;
 
                 int dbInsertWaitTime = detectionLogAction.getWaitInterval();

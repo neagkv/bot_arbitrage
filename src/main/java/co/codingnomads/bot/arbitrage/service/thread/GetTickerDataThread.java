@@ -36,6 +36,7 @@ public class GetTickerDataThread implements Callable<TickerData> {
         BigDecimal baseNeed;
         BigDecimal counterNeed;
 
+        //tickerData object that uses the exchange data getter to get activated exchanges and currency pairs
         TickerData tickerData = ExchangeDataGetter.getTickerData(activatedExchange.getExchange(), currencyPair);
 
         // the part below format specially TickerData for the trading action having one more check (sufficient fund)
@@ -50,6 +51,7 @@ public class GetTickerDataThread implements Callable<TickerData> {
             baseNeed = tradeAmountBase;
             counterNeed = tradeAmountBase.multiply(tickerData.getBid());
 
+            //Ticker data trading object made up of the tickerdata basefund and counterund
             TickerDataTrading tickerDataTrading = new TickerDataTrading(tickerData, baseFund, counterFund);
 
             if (counterFund.compareTo(counterNeed) < 0) {

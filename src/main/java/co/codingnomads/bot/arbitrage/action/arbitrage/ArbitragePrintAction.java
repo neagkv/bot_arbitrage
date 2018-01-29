@@ -15,11 +15,17 @@ import java.math.RoundingMode;
 @Service
 public class ArbitragePrintAction extends ArbitrageActionSelection {
 
-
+    /**
+     * Fully qualified constructor
+     * @param arbitrageMargin
+     */
     public ArbitragePrintAction(double arbitrageMargin) {
         super(arbitrageMargin);
     }
 
+    /**
+     * empty constructor
+     */
     public ArbitragePrintAction(){
 
     }

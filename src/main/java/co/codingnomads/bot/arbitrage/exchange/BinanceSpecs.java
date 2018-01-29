@@ -6,6 +6,8 @@ import org.knowm.xchange.binance.BinanceExchange;
 
 /**
  * @author Kevin Neag
+ *
+ * Extension of the specs for Binance
  */
 public class BinanceSpecs extends ExchangeSpecs {
 

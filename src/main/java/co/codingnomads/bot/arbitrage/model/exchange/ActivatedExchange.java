@@ -18,6 +18,11 @@ public class ActivatedExchange implements Callable<ActivatedExchange> {
     private boolean activated = true;
     private boolean tradingMode = false;
 
+    /**
+     * Activated Exchange Constructor
+     * @param exchange
+     * @param tradingMode
+     */
     public ActivatedExchange(Exchange exchange, boolean tradingMode) {
         this.exchange = exchange;
         this.tradingMode = tradingMode;

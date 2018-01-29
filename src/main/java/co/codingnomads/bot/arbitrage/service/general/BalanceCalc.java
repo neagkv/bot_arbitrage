@@ -25,6 +25,10 @@ import java.util.ArrayList;
 /**
  * @author Kevin Neag
  */
+
+/**
+ * A method for calculating your base and counter balance for the currency pair you specified and printing it to the console
+ */
 public class BalanceCalc {
 
     public void Balance(ArrayList<ExchangeSpecs> selected, CurrencyPair currencyPair) throws IOException {

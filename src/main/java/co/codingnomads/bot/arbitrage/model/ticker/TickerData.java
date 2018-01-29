@@ -17,6 +17,13 @@ public class TickerData {
     private BigDecimal bid;
     private BigDecimal ask;
 
+    /**
+     * Constructor for the TickerData class
+     * @param currencyPair
+     * @param exchange
+     * @param bid
+     * @param ask
+     */
     public TickerData(CurrencyPair currencyPair, Exchange exchange, BigDecimal bid, BigDecimal ask) {
         this.currencyPair = currencyPair;
         this.exchange = exchange;

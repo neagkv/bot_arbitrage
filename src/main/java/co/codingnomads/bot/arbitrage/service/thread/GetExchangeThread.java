@@ -15,12 +15,21 @@ public class GetExchangeThread implements Callable<ActivatedExchange> {
 
     ExchangeSpecs exchangeSpecs;
 
+
+    /**
+     * call method to get exchange specifications for exchange
+     * @return ActivatedExchange
+     */
     @Override
     public ActivatedExchange call() {
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(exchangeSpecs.GetSetupedExchange());
         return new ActivatedExchange(exchange, exchangeSpecs.getTradingMode());
     }
 
+    /**
+     * Constructor for getExchangeThread
+     * @param exchangeSpecs
+     */
     public GetExchangeThread(ExchangeSpecs exchangeSpecs) {
         this.exchangeSpecs = exchangeSpecs;
     }

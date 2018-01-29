@@ -16,9 +16,10 @@ public class MakeOrderThread implements Callable<OrderIDWrapper> {
     MarketOrder marketOrder;
     TickerData tickerData;
 
-    // Ryan: general note some in-line commenting could be nice in here
-
-
+    /**
+     * call Method that retrieves an order Id  and exchange name from the tickerdata
+     * @return OrderIDWrapper with the orderID and name of exchange it was traded on
+     */
     @Override
     public OrderIDWrapper call() {
         try {
@@ -31,7 +32,11 @@ public class MakeOrderThread implements Callable<OrderIDWrapper> {
         }
     }
 
-
+    /**
+     * Make Order Thread constructor
+     * @param marketOrder
+     * @param tickerData
+     */
     public MakeOrderThread(MarketOrder marketOrder, TickerData tickerData) {
         this.marketOrder = marketOrder;
         this.tickerData = tickerData;

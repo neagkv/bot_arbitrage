@@ -63,7 +63,18 @@ public class Controller {
 
 
     /**
-     *
+     * runBot method, choose one of the three arbitrage actions or two detection actions to run
+     * choose the exchange specifications you would like to use, for arbitrage trade action you will need to manually add your api key,
+     * api secret key and other exchange specifications depending on the exchange. For all arbitrage actions you have to option to manually set
+     * the number of times you would like the method to run (loopIterations) and the time interval you would like the action to repeat at in milliseconds,
+     * must be at least 5000. for all arbitrage actions you must set the arbitrage margin or percentage of return you would like to check for form the arbitrage.
+     * For example a 0.03 would equal a 3 percent price difference between the exchanges.You must also pass the arbitrage method the currency pair you would like
+     * to check for. For arbitrage trade action you must set the trade value base or amount of base currency you would like to trade, for example the currency
+     * pair ETH_BTC the base currency is ETH. For best results please make sure you are trading the minimum amount of base currency set by your exchange, and you
+     * have enough counter currency to purchase the min amount of base currency. Check the exchanges you are attempting to use. For arbitrage email action, enter your
+     * email address that you would like to receive, must be verified by aws. for Detection actions, in addition to setting exchange list, choose currency pairs, for
+     * best results make sure that each exchange you selects supports the currency pairs you select. For detection log action set the time interval
+     * you want the send results to the database.
      * @throws IOException
      * @throws InterruptedException
      * @throws EmailLimitException
@@ -75,14 +86,14 @@ public class Controller {
 
 //      set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
-//        ExchangeList.add(new PoloniexSpecs());
-//        ExchangeList.add(new BinanceSpecs());
-//        ExchangeList.add(new GeminiSpecs());
-//        ExchangeList.add(new BitfinexSpecs());
-//        ExchangeList.add(new BitstampSpecs());
-//        ExchangeList.add(new BittrexSpecs());
-//        ExchangeList.add(new KrakenSpecs());
-//        ExchangeList.add(new GDAXSpecs());
+//      ExchangeList.add(new PoloniexSpecs());
+//      ExchangeList.add(new BinanceSpecs());
+//      ExchangeList.add(new GeminiSpecs());
+//      ExchangeList.add(new BitfinexSpecs());
+//      ExchangeList.add(new BitstampSpecs());
+//      ExchangeList.add(new BittrexSpecs());
+        ExchangeList.add(new KrakenSpecs());
+        ExchangeList.add(new GDAXSpecs());
 
         //choose one and only one of the following Arbitrage or Detection trade actions
 
@@ -106,19 +117,17 @@ public class Controller {
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
-//        set arbitragemargin
+        arbitrage.setLoopIterations(5);
+        arbitrage.setTimeIntervalRepeater(5000);
         arbitragePrintAction.setArbitrageMargin(0.01);
         arbitrage.run(
-                    CurrencyPair.ETH_USD,
+                    CurrencyPair.ETH_BTC,
                     ExchangeList,
                     arbitragePrintAction);
 
-
-
-
 //    Example of an Arbitrage email action
-//    arbitrageEmailAction.setArbitrageMargin(1.00);
-//    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+//    arbitrageEmailAction.setArbitrageMargin(0.03);
+//    arbitrageEmailAction.getEmail().setTO("your-email-address");
 //    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
 //    arbitrage.run(
 //                CurrencyPair.BTC_USD,
@@ -131,12 +140,12 @@ public class Controller {
 
 
         //List of currencyPairs you would like to check, for Detection only
-//        ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-//        currencyPairList.add(CurrencyPair.ETH_USD);
-//        currencyPairList.add(CurrencyPair.ETH_BTC);
-//        currencyPairList.add(CurrencyPair.BTC_USD);
-//        currencyPairList.add(CurrencyPair.BTC_USD);
-//        currencyPairList.add(CurrencyPair.ETC_BTC);
+//      ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+//      currencyPairList.add(CurrencyPair.ETH_USD);
+//      currencyPairList.add(CurrencyPair.ETH_BTC);
+//      currencyPairList.add(CurrencyPair.BTC_USD);
+//      currencyPairList.add(CurrencyPair.BTC_USD);
+//      currencyPairList.add(CurrencyPair.ETC_BTC);
 
 //    Example of a Detection print action
 //    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();

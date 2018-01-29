@@ -7,7 +7,6 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.concurrent.*;
@@ -40,12 +39,14 @@ public class ExchangeDataGetter {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         CompletionService<TickerData> pool = new ExecutorCompletionService<>(executor);
 
+        //for each activated exchange submit into the executor pool
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated()) {
                 GetTickerDataThread temp = new GetTickerDataThread(activatedExchange, currencyPair, tradeValueBase);
                 pool.submit(temp);
             }
         }
+        //for each activated exchange if it is activated take from the executor pool and return those activated exchanges
         for (ActivatedExchange activatedExchange : activatedExchanges) {
             if (activatedExchange.isActivated()) {
                 try {

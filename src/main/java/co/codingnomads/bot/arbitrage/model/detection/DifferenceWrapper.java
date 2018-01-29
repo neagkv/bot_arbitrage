@@ -21,6 +21,15 @@ public class DifferenceWrapper {
     private String highBidExchange;
 
 
+    /**
+     * Constructor for DifferenceWrapper class
+     * @param currencyPair
+     * @param difference
+     * @param lowAsk
+     * @param lowAskExchange
+     * @param highBid
+     * @param highBidExchange
+     */
     public DifferenceWrapper(CurrencyPair currencyPair, BigDecimal difference, BigDecimal lowAsk, String lowAskExchange, BigDecimal highBid, String highBidExchange) {
         timestamp = new Timestamp(System.currentTimeMillis());
         this.currencyPair = currencyPair;

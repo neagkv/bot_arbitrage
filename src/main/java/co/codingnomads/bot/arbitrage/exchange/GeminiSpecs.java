@@ -5,6 +5,7 @@ import org.knowm.xchange.gemini.v1.GeminiExchange;
 
 /**
  * @author Kevin Neag
+ *  Extension of the specs for Gemini
  */
 public class GeminiSpecs  extends ExchangeSpecs {
 

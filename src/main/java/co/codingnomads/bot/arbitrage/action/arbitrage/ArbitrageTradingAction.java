@@ -34,12 +34,21 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
     private double tradeValueBase;
 
+    //variable to keep track of how many trades you would like to make
     int round =0;
 
+    /**
+     * Empty constructor for arbitrage trade action
+     */
     public ArbitrageTradingAction() {
 
     }
 
+    /**
+     * Fully qualified constructor for the
+     * @param arbitrageMargin
+     * @param tradeValueBase
+     */
     public ArbitrageTradingAction(double arbitrageMargin, double tradeValueBase) {
         super(arbitrageMargin);
         this.tradeValueBase = tradeValueBase;
@@ -54,11 +63,19 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
     }
 
 
+    /**
+     * CanTrade method that determines if there is an arbitrage opportunity and if you are able to execute it.
+     * @param lowAsk
+     * @param highBid
+     * @param arbitrageTradingAction
+     * @return true if able to trade
+     * @throws ExchangeDataException
+     */
     public boolean canTrade(TickerData lowAsk,
                             TickerData highBid,
                             ArbitrageTradingAction arbitrageTradingAction) throws ExchangeDataException {
 
-
+        //if the lowAsk exchange is the same as the highBid exchange print to console, this usually means to you do not have the required funds to trades
         if (highBid.getExchange().getExchangeSpecification().getExchangeName() == lowAsk.getExchange().getExchangeSpecification().getExchangeName()) {
 
             System.out.println("###########################################################");
@@ -131,7 +148,12 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         }
 
 
-
+    /**
+     * Make trade method that executes trades on the low ask exchange and the high bid exchange
+     * @param lowAsk
+     * @param highBid
+     * @param arbitrageTradingAction
+     */
     public void makeTrade(TickerData lowAsk,
                           TickerData highBid,
                           ArbitrageTradingAction arbitrageTradingAction) {
@@ -234,7 +256,7 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         }
         executorWalletWrapper.shutdown();
 
-        // calculate a bunch of data
+        // create the tradingData based on trades
         TradingData tradingData =
                 new TradingData(
                         (TickerDataTrading) lowAsk,
@@ -244,14 +266,8 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
 
 
 
-
+        //insert the tradingData into database
         tradeHistoryService.insertTrades(tradingData);
-
-       // tradeHistoryService.insertInfo(tradingData);
-
-        //tradeHistoryService.insertTradeHistory(tradingData);
-
-
 
         System.out.println();
         System.out.println("real bid was " + tradingData.getRealBid()
