@@ -69,6 +69,8 @@ installed on the machine you are going to use to run the program.
 
 * For arbitrage email action you must have an active account on amazon [aws](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html) and the required credentials.
 
+* Make sure you set region=us-east-1 as your region.
+
 * You must have a valid email address verified by aws that you can hardcode into the From variable in the [Email class](https://github.com/Thleruth/bot_arbitrage/tree/master/src/main/java/co/codingnomads/bot/arbitrage/model/email)
   in replace of cryptoarbitragebot25@gmail.com.
 
@@ -84,13 +86,11 @@ Required:
 * [Maven](http://maven.apache.org/download.cgi)
 * [MySQL](https://dev.mysql.com/downloads/mysql/)
 
-Clone the project on your desired location
+Clone the project to your desired location
 
 ```
 $ git clone https://github.com/Thleruth/bot_arbitrage
-$ cd bot_arbitrage
-$ mvn clean package
-$ mvn spring-boot:run
+
 ```
 
 
@@ -108,17 +108,47 @@ $ touch credentials
 $ vim credentials
 ```
 
-past credentials and save
+paste credentials and save
 
 
 Set up database:
 
 ```
-$ mysql u root -p
-
+$ mysql -u root -p
  > mysql CREATE DATABASE bot.arbitrage;
  > mysql USE bot.arbitrage;
- > mysql source dumpForMySQL;
+ > mysql SOURCE /../bot_arbitrage/src/main/mysql/bot.arbitrage.sql;
+```
+
+configure and run:
+
+```
+$ cd bot_arbitrage
+$ cd /bot_arbitrage/src/main/java/co/codingnomads/bot/arbitrage/
+$ open Controller.java
+
+```
+
+### choose 1 of the following actions to run, (default is set to arbitrage print action). You may uncomment the examples of the actions to use them.
+
+* Arbitrage Print Action - prints the lowest ask, highest bid and the exchanges for each to console.
+
+* Arbitrage Email Action - emails arbitrage update of lowest ask, highest bid and exchanges. Enters email info into database.
+
+* Arbitrage Trade Action - trades counter currency for base currency on the exchanges with the lowest ask and highest bid. Enters trade history into database.
+
+* Detection print Action - Checks multiple exchanges for multiple currency pairs and prints the exchanges with the greatest difference to the console.
+
+* Detection log Action - logs the exchanges and currency pairs with the greatest differences to the database at a given time interval.
+
+### enter desired parameters see ACTION EXAMPLES below for more information
+
+once you are all set up
+
+```
+$ cd bot_arbitrage
+$ mvn clean package
+$ mvn spring-boot:run
 
 ```
 
@@ -222,7 +252,7 @@ Add the following dependencies in your [`pom.xml`](https://github.com/Thleruth/b
      </plugin>
 ```
 
-## Configuration
+# Action Examples
 
 WIP
 

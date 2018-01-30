@@ -1,6 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `bot.arbitrage` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
-USE `bot.arbitrage`;
--- MySQL dump 10.13  Distrib 5.6.17, for osx10.6 (i386)
+-- MySQL dump 10.13  Distrib 5.7.19, for macos10.12 (x86_64)
 --
 -- Host: localhost    Database: bot.arbitrage
 -- ------------------------------------------------------
@@ -117,4 +115,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-29 16:02:17
+-- Dump completed on 2018-01-29 22:51:37
+
