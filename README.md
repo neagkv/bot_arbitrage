@@ -22,9 +22,8 @@ and insert information related to the trade into a database.
 
 ## Exchange List and API Documentation
 
-###Exchanges:
+Exchanges:
 
-###exchanges set up to be used are:
 
 * [GDAX](https://docs.gdax.com/)
 
@@ -43,19 +42,20 @@ and insert information related to the trade into a database.
 * [Binance](https://support.binance.com/hc/en-us/articles/115003235691-Binance-API-Trading-Rules)
 
 
+## Exchange Notes:
 
--for best use, make sure that the currency pair or pairs you are using are supported by the selected exchanges.
+* For best use, make sure that the currency pair or pairs you are using are supported by the selected exchanges.
 
--for arbitrage trade action, you will need to create an account on each exchange you would like to use and obtain the api key, api secret key
+* For arbitrage trade action, you will need to create an account on each exchange you would like to use and obtain the api key, api secret key
 and any other needed api specifications.
 
--for each currency pair the first currency is the base currency and the second is the counter currency. For example for the currency pair ETH_BTC,
+* For each currency pair the first currency is the base currency and the second is the counter currency. For example for the currency pair ETH_BTC,
 ETH (ethereum) is the base currency and BTC (bitcoin) is the counter currency.
 
--you must set the tradeValueBase or amount of base currency you would like to trade in the arbitrage trade action method. Different exchanges have different
+* You must set the tradeValueBase or amount of base currency you would like to trade in the arbitrage trade action method. Different exchanges have different
 minimums on the amount of each currency they will allow you to trade. Find the limits of each exchange before you trade.
 
--to be able to complete an arbitrage trade you must make sure that you have at least enough base currency on the wallets of each exchange as the tradeValueBase set in the method.
+* To be able to complete an arbitrage trade you must make sure that you have at least enough base currency on the wallets of each exchange as the tradeValueBase set in the method.
 additionally you will need enough counter currency to purchase the amount of baseCurrency set in the method. For example for the CurrencyPair ETH_BTC, if you set the
 tradeValue base as 0.02 in the method, it means you wish to trade 0.02 ETH, you must make sure that you have at least 0.02 ETH on each exchange you are selecting and that
 you have enough BTC to purchase 0.02 ETH on each exchange as well.
@@ -64,15 +64,19 @@ you have enough BTC to purchase 0.02 ETH on each exchange as well.
 
 ## Getting Started
 
-requires a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) to be
+* Requires a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) to be
 installed on the machine you are going to use to run the program.
 
-you must have an active account on amazon aws and the required credentials (https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
+* For arbitrage email action you must have an active account on amazon [aws] and the required credentials(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
+
+* Requires MySQL to be installed on the machine and running.
 
 
 Required:
+
 * [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Maven](http://maven.apache.org/download.cgi)
+* [MySQL](https://dev.mysql.com/downloads/mysql/)
 
 Clone the project on your desired location
 

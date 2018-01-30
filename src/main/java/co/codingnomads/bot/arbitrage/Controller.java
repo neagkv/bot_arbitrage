@@ -5,6 +5,7 @@ import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageTradingAction;
 import co.codingnomads.bot.arbitrage.action.arbitrage.ArbitrageEmailAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionLogAction;
 import co.codingnomads.bot.arbitrage.action.detection.DetectionPrintAction;
+import co.codingnomads.bot.arbitrage.action.detection.selection.DetectionActionSelection;
 import co.codingnomads.bot.arbitrage.exception.ExchangeDataException;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.exception.WaitTimeException;
@@ -86,12 +87,12 @@ public class Controller {
 
 //      set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
-        ExchangeList.add(new PoloniexSpecs());
-        ExchangeList.add(new BinanceSpecs());
-        ExchangeList.add(new GeminiSpecs());
-        ExchangeList.add(new BitfinexSpecs());
-        ExchangeList.add(new BitstampSpecs());
-        ExchangeList.add(new BittrexSpecs());
+//        ExchangeList.add(new PoloniexSpecs());
+//        ExchangeList.add(new BinanceSpecs());
+//        ExchangeList.add(new GeminiSpecs());
+//        ExchangeList.add(new BitfinexSpecs());
+//        ExchangeList.add(new BitstampSpecs());
+//        ExchangeList.add(new BittrexSpecs());
         ExchangeList.add(new KrakenSpecs());
         ExchangeList.add(new GDAXSpecs());
 
@@ -117,13 +118,13 @@ public class Controller {
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
-        arbitrage.setLoopIterations(5);
-        arbitrage.setTimeIntervalRepeater(5000);
-        arbitragePrintAction.setArbitrageMargin(0.01);
-        arbitrage.run(
-                    CurrencyPair.ETH_BTC,
-                    ExchangeList,
-                    arbitragePrintAction);
+//        arbitrage.setLoopIterations(5);
+//        arbitrage.setTimeIntervalRepeater(5000);
+//        arbitragePrintAction.setArbitrageMargin(0.01);
+//        arbitrage.run(
+//                    CurrencyPair.ETH_BTC,
+//                    ExchangeList,
+//                    arbitragePrintAction);
 
 //    Example of an Arbitrage email action
 //    arbitrageEmailAction.setArbitrageMargin(0.03);
@@ -140,16 +141,15 @@ public class Controller {
 
 
         //List of currencyPairs you would like to check, for Detection only
-//      ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-//      currencyPairList.add(CurrencyPair.ETH_USD);
-//      currencyPairList.add(CurrencyPair.ETH_BTC);
-//      currencyPairList.add(CurrencyPair.BTC_USD);
-//      currencyPairList.add(CurrencyPair.BTC_USD);
+      ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+      currencyPairList.add(CurrencyPair.ETH_USD);
+      currencyPairList.add(CurrencyPair.ETH_BTC);
+      currencyPairList.add(CurrencyPair.BTC_USD);
 //      currencyPairList.add(CurrencyPair.ETC_BTC);
 
 //    Example of a Detection print action
-//    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-//    detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+    detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
 //    Example of a Detection log action
 //    DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);
