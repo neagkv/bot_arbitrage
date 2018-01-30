@@ -142,7 +142,6 @@ once you are all set up
 $ cd  bot_arbitrage
 $ mvn clean package
 $ mvn spring-boot:run
-
 ```
 
 ### Maven
@@ -247,7 +246,7 @@ Add the following dependencies in your [`pom.xml`](https://github.com/Thleruth/b
 
 # Action Examples
 
-###To set Actions and parameters
+### To set Actions and parameters
 
 ```
 $ cd  bot_arbitrage/src/main/java/co/codingnomads/bot/arbitrage
@@ -257,32 +256,69 @@ open Controller.java
 
 * For best use only use one of the following actions
 
-## Arbitrage
-
-* Set the exchanges you would like to use, keep in mind that the exchanges should support the currency pair you plan on selecting
+* For all actions Arbitrage & Detection, set the exchanges you would like to use, keep in mind that the exchanges should support the currency pair you plan on selecting
 
 ![Exchange List Example](https://user-images.githubusercontent.com/21184509/35549904-d36ef312-0555-11e8-8bc2-df4b42400d6f.png)
 
+## Arbitrage
+
+* Optionally if you would like the Arbitrage Action to repeate you can set the loopIterations (how many times the action will run) &
+the TimeIntervalRepeater(amount of time before action repeats in milliseconds) must be at least 5000 ms.
+
+![Repeating Actions](https://user-images.githubusercontent.com/21184509/35549976-271804ae-0556-11e8-92d1-6ceb2d4d264a.png)
+
+* Then choose your action
 
 ### Arbitrage Print Action example(default)
 
+* set arbitrage margin (percentage of base difference you would like to search for). For a difference of 3% set 0.03
 
+* set the currencyPair you would like to check
 
+![arbitragePrintAction](https://user-images.githubusercontent.com/21184509/35549974-1e826c62-0556-11e8-9d18-90082280bb46.png)
 
+### Arbitrage Email Action
 
+* In addition to the arbitrage margin and currencyPair, you must set the email address you would like to receive emails.
 
+![arbitrageEmailAction](https://user-images.githubusercontent.com/21184509/35549986-2f116ea2-0556-11e8-8786-e593f3c8f04f.png)
 
+### Arbitrage Trade Action
 
-### Arbitrage Print Action
+* You must first enter the exchange specifications for the exchanges you wish to use
 
+![exchangeSpecifications](https://user-images.githubusercontent.com/21184509/35549930-eb750104-0555-11e8-9f13-735a54517ebd.png)
+
+* You must also set the volume of base currency you would like to trade
+
+![arbitrageTradeAction](https://user-images.githubusercontent.com/21184509/35549967-11d78088-0556-11e8-961b-5ad2b88dcc7c.png)
+
+## Detection
+
+* For all detection actions set the currency pairs you would like to find the best price differences for.
+
+![currencyPairs](https://user-images.githubusercontent.com/21184509/35549962-085deaf6-0556-11e8-9c52-5cc39ca0c600.png)
+
+### Detection Print Action
+
+![detectionPrintAction](https://user-images.githubusercontent.com/21184509/35549936-f80d6000-0555-11e8-8282-5e9c5978aec6.png)
+
+### Detection Log Action
+
+* You must set the time interval you would like the detection log action to repeatedly enter the best price difference into the database. Must be at least 6000 ms.
+
+![detectionLogAction](https://user-images.githubusercontent.com/21184509/35550014-5c5585ce-0556-11e8-83d3-7fc4a47036c7.png)
 
 ## Contributors
 
 * [Thomas Leruth](https://github.com/Thleruth)
+
 * [Kevin Neag](https://github.com/neagkv)
 
-
 ## Acknowledgements
-*
+
+* special thanks to the team working on the [XChange project](https://github.com/timmolter/XChange) for providing a beautifully streamlined exchange api library.
+
+* thanks to [CodingNomads](http://codingnomads.co) for help and supportg
 
 
