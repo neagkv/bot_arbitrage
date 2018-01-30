@@ -261,9 +261,11 @@ open Controller.java
 
 * Set the exchanges you would like to use, keep in mind that the exchanges should support the currency pair you plan on selecting
 
-![Exchange List Example](exchangeList.png)
+![Exchange List Example](https://user-images.githubusercontent.com/21184509/35549904-d36ef312-0555-11e8-8bc2-df4b42400d6f.png)
+
 
 ### Arbitrage Print Action example(default)
+
 
 
 
