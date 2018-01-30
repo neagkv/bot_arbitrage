@@ -1,6 +1,6 @@
 # Cryptocurrency arbitrage and detection bot.
 
-A bot designed to detect arbitrage opportunities for cryptocurrencies by checking the price on various exchanges for the purpose of trading and information gathering and logging.
+### A bot designed to detect arbitrage opportunities for cryptocurrencies by checking the price on various exchanges for the purpose of trading and information gathering and logging.
 
 **Warning:**  Any liabilities or damages
 induced by the use of this tool is the sole responsibility of the user of this tool and not the developers.
@@ -60,6 +60,8 @@ additionally you will need enough counter currency to purchase the amount of bas
 tradeValue base as 0.02 in the method, it means you wish to trade 0.02 ETH, you must make sure that you have at least 0.02 ETH on each exchange you are selecting and that
 you have enough BTC to purchase 0.02 ETH on each exchange as well.
 
+* Make sure to check fee information on the exchanges you are using, and make sure that the arbitrage margin you set is enough to cover the cost of them.
+
 
 
 ## Getting Started
@@ -90,9 +92,7 @@ Clone the project to your desired location
 
 ```
 $ git clone https://github.com/Thleruth/bot_arbitrage
-
 ```
-
 
 Set up aws credentials:
 
@@ -114,20 +114,13 @@ paste credentials and save
 Set up database:
 
 ```
-$ mysql -u root -p
+ $ mysql -u root -p
  > mysql CREATE DATABASE bot.arbitrage;
  > mysql USE bot.arbitrage;
  > mysql SOURCE /../bot_arbitrage/src/main/mysql/bot.arbitrage.sql;
 ```
 
 configure and run:
-
-```
-$ cd bot_arbitrage
-$ cd /bot_arbitrage/src/main/java/co/codingnomads/bot/arbitrage/
-$ open Controller.java
-
-```
 
 ### choose 1 of the following actions to run, (default is set to arbitrage print action). You may uncomment the examples of the actions to use them.
 
@@ -146,7 +139,7 @@ $ open Controller.java
 once you are all set up
 
 ```
-$ cd bot_arbitrage
+$ cd  bot_arbitrage
 $ mvn clean package
 $ mvn spring-boot:run
 
@@ -254,7 +247,32 @@ Add the following dependencies in your [`pom.xml`](https://github.com/Thleruth/b
 
 # Action Examples
 
-WIP
+###To set Actions and parameters
+
+```
+$ cd  bot_arbitrage/src/main/java/co/codingnomads/bot/arbitrage
+open Controller.java
+```
+* manually set the following actions to your desired specifications
+
+* For best use only use one of the following actions
+
+## Arbitrage
+
+* Set the exchanges you would like to use, keep in mind that the exchanges should support the currency pair you plan on selecting
+
+![Exchange List Example](exchangeList.png)
+
+### Arbitrage Print Action example(default)
+
+
+
+
+
+
+
+### Arbitrage Print Action
+
 
 ## Contributors
 
