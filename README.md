@@ -75,7 +75,7 @@ installed on the machine you are going to use to run the program.
 * Once you have one email address verified you can verify [additional email addresses](https://console.aws.amazon.com/ses/home?region=us-east-1#verified-senders-email) and set them in the [controller](https://github.com/Thleruth/bot_arbitrage/blob/master/src/main/java/co/codingnomads/bot/arbitrage/Controller.java)
   in arbitrageEmailAction method in replace of "your-email-address" to have an arbitrage update sent to that address.
 
-* Requires MySQL to be installed on the machine and running.
+* For arbitrage trade action, arbitrage email action and detection log action, requires [MySQL](https://dev.mysql.com/downloads/mysql/) version 5.7 or higher to be installed on the machine and running.
 
 
 Required:
@@ -91,6 +91,35 @@ $ git clone https://github.com/Thleruth/bot_arbitrage
 $ cd bot_arbitrage
 $ mvn clean package
 $ mvn spring-boot:run
+```
+
+
+Set up aws credentials:
+
+obtain [aws credentials](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
+
+copy credentials
+
+```
+$ cd /~
+$ mkdir .aws
+$ cd .aws
+$ touch credentials
+$ vim credentials
+```
+
+past credentials and save
+
+
+Set up database:
+
+```
+$ mysql u root -p
+
+ > mysql CREATE DATABASE bot.arbitrage;
+ > mysql USE bot.arbitrage;
+ > mysql source dumpForMySQL;
+
 ```
 
 ### Maven
