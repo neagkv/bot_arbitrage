@@ -319,6 +319,6 @@ the TimeIntervalRepeater(amount of time before action repeats in milliseconds) m
 
 * special thanks to the team working on the [XChange project](https://github.com/timmolter/XChange) for providing a beautifully streamlined exchange api library.
 
-* thanks to [CodingNomads](http://codingnomads.co) for help and supportg
+* thanks to [CodingNomads](http://codingnomads.co) for help and support
 
 
