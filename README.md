@@ -67,7 +67,13 @@ you have enough BTC to purchase 0.02 ETH on each exchange as well.
 * Requires a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) to be
 installed on the machine you are going to use to run the program.
 
-* For arbitrage email action you must have an active account on amazon [aws] and the required credentials(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
+* For arbitrage email action you must have an active account on amazon [aws](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html) and the required credentials.
+
+* You must have a valid email address verified by aws that you can hardcode into the From variable in the [Email class](https://github.com/Thleruth/bot_arbitrage/tree/master/src/main/java/co/codingnomads/bot/arbitrage/model/email)
+  in replace of cryptoarbitragebot25@gmail.com.
+
+* Once you have one email address verified you can verify [additional email addresses](https://console.aws.amazon.com/ses/home?region=us-east-1#verified-senders-email) and set them in the [controller](https://github.com/Thleruth/bot_arbitrage/blob/master/src/main/java/co/codingnomads/bot/arbitrage/Controller.java)
+  in arbitrageEmailAction method in replace of "your-email-address" to have an arbitrage update sent to that address.
 
 * Requires MySQL to be installed on the machine and running.
 
