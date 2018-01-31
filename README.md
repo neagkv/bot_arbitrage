@@ -88,28 +88,28 @@ Required:
 * [Maven](http://maven.apache.org/download.cgi)
 * [MySQL](https://dev.mysql.com/downloads/mysql/)
 
-Clone the project to your desired location
+### Clone the project to your desired location:
 
 ```
-$ git clone https://github.com/neagkv/bot_arbitrage
+$ git clone https:/github.com/neagkv/bot_arbitrage
 ```
 
-Set up aws credentials:
+### Set up aws credentials:
 
-obtain [aws credentials](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
+* obtain [aws credentials](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
 
-[Verify email on aws](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses.html):
+* verify [email](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses.html)
 
 ```
 $ cd bot_arbitrage/src/main/java/co/codingnomads/bot/arbitrage/model/email
 $ open Email.java
 ```
-change String FROM to your aws verified email address that you would like to send emails
+* change String FROM to your aws verified email address that you would like to send emails
 
 ![FromEmail](https://user-images.githubusercontent.com/21184509/35652131-54492bdc-06b0-11e8-9af9-df02a1432e90.png)
 
 
-set up aws configuration:
+* set up aws configuration:
 
 ```
 $ cd /~
@@ -117,14 +117,14 @@ $ mkdir .aws
 $ touch config
 $ vim config
 ```
-set config:
+* set config:
 
 ```
 [default]
 region=us-east-1
 ```
 
-copy credentials:
+* copy credentials:
 
 ```
 $ cd /~
@@ -133,7 +133,7 @@ $ touch credentials
 $ vim credentials
 ```
 
-paste credentials
+* paste credentials
 
 ```
 [default]
@@ -141,7 +141,7 @@ aws_access_key_id =
 aws_secret_access_key =
 ```
 
-Set up database:
+## Set up database:
 
 ```
  $ mysql -u root -p
@@ -150,7 +150,7 @@ Set up database:
  mysql > SOURCE /../bot_arbitrage/src/main/mysql/botarbitrage.sql;
 ```
 
-configure and run:
+# configure and run:
 
 ### choose 1 of the following actions to run, (default is set to arbitrage print action). You may uncomment the examples of the actions to use them.
 
