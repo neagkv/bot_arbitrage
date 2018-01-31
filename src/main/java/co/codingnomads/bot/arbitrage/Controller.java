@@ -125,7 +125,7 @@ public class Controller {
 
 //    Example of an Arbitrage email action
 //    arbitrageEmailAction.setArbitrageMargin(0.03);
-//    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+//    arbitrageEmailAction.getEmail().setTO("your-email-address");
 //    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
 //    arbitrage.run(
 //                CurrencyPair.ETH_USD,

@@ -1,5 +1,5 @@
 CREATE DATABASE  IF NOT EXISTS `botarbitrage` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
-USE `bot.arbitrage`;
+USE `botarbitrage`;
 -- MySQL dump 10.13  Distrib 5.6.17, for osx10.6 (i386)
 --
 -- Host: 127.0.0.1    Database: botarbitrage
@@ -68,7 +68,6 @@ CREATE TABLE `email_info` (
 
 LOCK TABLES `email_info` WRITE;
 /*!40000 ALTER TABLE `email_info` DISABLE KEYS */;
-INSERT INTO `email_info` VALUES (45,'2018-01-31 06:03:31','neagkv@gmail.com',NULL),(46,'2018-01-31 06:06:53','neagkv@gmail.com',NULL),(47,'2018-01-31 06:07:42','neagkv@gmail.com',NULL),(48,'2018-01-31 06:11:01','neagkv@gmail.com',NULL),(49,'2018-01-31 06:35:15','neagkv@gmail.com',NULL),(50,'2018-01-31 07:32:36','neagkv@gmail.com',NULL),(51,'2018-01-31 07:34:54','neagkv@gmail.com',NULL);
 /*!40000 ALTER TABLE `email_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,4 +117,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-31 16:42:23
+-- Dump completed on 2018-01-31 17:41:48

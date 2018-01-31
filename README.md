@@ -98,26 +98,56 @@ Set up aws credentials:
 
 obtain [aws credentials](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html)
 
-copy credentials
+[Verify email on aws](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses.html):
+
+```
+$ cd bot_arbitrage/src/main/java/co/codingnomads/bot/arbitrage/model/email
+$ open Email.java
+```
+change String FROM to your aws verified email address that you would like to send emails
+
+![FromEmail](https://user-images.githubusercontent.com/21184509/35652131-54492bdc-06b0-11e8-9af9-df02a1432e90.png)
+
+
+set up aws configuration:
 
 ```
 $ cd /~
 $ mkdir .aws
+$ touch config
+$ vim config
+```
+set config:
+
+```
+[default]
+region=us-east-1
+```
+
+copy credentials:
+
+```
+$ cd /~
 $ cd .aws
 $ touch credentials
 $ vim credentials
 ```
 
-paste credentials and save
+paste credentials
 
+```
+[default]
+aws_access_key_id =
+aws_secret_access_key =
+```
 
 Set up database:
 
 ```
  $ mysql -u root -p
- > mysql CREATE DATABASE botarbitrage;
- > mysql USE botarbitrage;
- > mysql SOURCE /../bot_arbitrage/src/main/mysql/botarbitrage.sql;
+ mysql > CREATE DATABASE botarbitrage;
+ mysql > USE botarbitrage;
+ mysql > SOURCE /../bot_arbitrage/src/main/mysql/botarbitrage.sql;
 ```
 
 configure and run:
@@ -145,7 +175,7 @@ $ mvn spring-boot:run
 ```
 
 ### Maven
-Add the following dependencies in your [`pom.xml`](https://github.com/Thleruth/bot_arbitrage/blob/master/pom.xml)
+Add the following dependencies in your [`pom.xml`](https://github.com/neagkv/bot_arbitrage/blob/master/pom.xml)
 
 #### Dependencies
 ```xml
