@@ -69,7 +69,7 @@ public class Controller {
      * api secret key and other exchange specifications depending on the exchange. For all arbitrage actions you have to option to manually set
      * the number of times you would like the method to run (loopIterations) and the time interval you would like the action to repeat at in milliseconds,
      * must be at least 5000. for all arbitrage actions you must set the arbitrage margin or percentage of return you would like to check for form the arbitrage.
-     * For example a 0.03 would equal a 3 percent price difference between the exchanges.You must also pass the arbitrage method the currency pair you would like
+     * For example a 0.03 would equal a 0.03 percent price difference between the exchanges.You must also pass the arbitrage method the currency pair you would like
      * to check for. For arbitrage trade action you must set the trade value base or amount of base currency you would like to trade, for example the currency
      * pair ETH_BTC the base currency is ETH. For best results please make sure you are trading the minimum amount of base currency set by your exchange, and you
      * have enough counter currency to purchase the min amount of base currency. Check the exchanges you are attempting to use. For arbitrage email action, enter your
