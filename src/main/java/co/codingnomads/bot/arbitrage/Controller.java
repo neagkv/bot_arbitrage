@@ -108,7 +108,7 @@ public class Controller {
 
 
 //        Example of an Arbitrage trade action
-//        arbitrageTradingAction.setArbitrageMargin(0.03); //0.03 = 3%
+//        arbitrageTradingAction.setArbitrageMargin(0.03);
 //        arbitrageTradingAction.setTradeValueBase(0.020);
 //        arbitrage.run(
 //                CurrencyPair.ETH_USD,
@@ -117,20 +117,20 @@ public class Controller {
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
-//      arbitragePrintAction.setArbitrageMargin(0.03);
-//      arbitrage.run(
-//                    CurrencyPair.ETH_USD,
-//                    ExchangeList,
-//                    arbitragePrintAction);
+      arbitragePrintAction.setArbitrageMargin(0.03);  //0.03 = 0.03 %
+      arbitrage.run(
+                    CurrencyPair.ETH_USD,
+                    ExchangeList,
+                    arbitragePrintAction);
 
 //    Example of an Arbitrage email action
-    arbitrageEmailAction.setArbitrageMargin(0.03);
-    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
-    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
-    arbitrage.run(
-                CurrencyPair.ETH_USD,
-                ExchangeList,
-                arbitrageEmailAction);
+//    arbitrageEmailAction.setArbitrageMargin(0.03);
+//    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+//    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
+//    arbitrage.run(
+//                CurrencyPair.ETH_USD,
+//                ExchangeList,
+//                arbitrageEmailAction);
 
 
 

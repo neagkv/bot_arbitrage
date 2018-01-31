@@ -262,7 +262,7 @@ the TimeIntervalRepeater(amount of time before action repeats in milliseconds) m
 
 ### Arbitrage Print Action example(default)
 
-* set arbitrage margin (percentage of base difference you would like to search for). For a difference of 3% set 0.03
+* set arbitrage margin (percentage of base difference you would like to search for). For 0.03% set 0.03.
 
 * set the currencyPair you would like to check
 

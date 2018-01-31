@@ -7,6 +7,7 @@ import co.codingnomads.bot.arbitrage.model.trading.OrderIDWrapper;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerDataTrading;
 import co.codingnomads.bot.arbitrage.model.trading.TradingData;
 import co.codingnomads.bot.arbitrage.model.trading.WalletWrapper;
+import co.codingnomads.bot.arbitrage.service.general.MarginDiffCompare;
 import co.codingnomads.bot.arbitrage.service.thread.GetWalletWrapperThread;
 import co.codingnomads.bot.arbitrage.service.thread.MakeOrderThread;
 import co.codingnomads.bot.arbitrage.service.tradehistory.TradeHistoryService;
@@ -16,7 +17,6 @@ import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.*;
@@ -88,35 +88,24 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         }
 
 
-            //find the difference between the highest bid and lowest ask
-            BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
-            System.out.println("difference" + difference);
+        MarginDiffCompare marginDiffCompare = new MarginDiffCompare();
 
+        //percentage of returns you will make
+        BigDecimal expectedDifference = marginDiffCompare.findDiff(lowAsk,highBid);
 
+        //the difference between the arbitrage margin and percentage of returns
+        BigDecimal marginSubDiff = marginDiffCompare.diffWithMargin(lowAsk,highBid,arbitrageTradingAction.getArbitrageMargin());
 
-            //if the best price difference is greater than the value of the arbitrage margin you want
-            if (difference.compareTo(BigDecimal.valueOf(arbitrageTradingAction.getArbitrageMargin())) < 0) {
+        //amount chosen to trade
+        BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
+        System.out.println("trade amount" + tradeAmount);
 
-                //sometimes exchange apis spit out -1, when wallet is empty
-                if(highBid.getBid().intValue() == -1) {
+        //currency pair of the lowest ask
+        CurrencyPair tradedPair = lowAsk.getCurrencyPair();
+        System.out.println(tradedPair);
 
-                    throw new ExchangeDataException("You do not have the required funds for this trade");
-                }
-            }
-
-            //amount chosen to trade
-            BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
-            System.out.println("trade amount" + tradeAmount);
-
-            //currency pair of the lowest ask
-            CurrencyPair tradedPair = lowAsk.getCurrencyPair();
-            System.out.println(tradedPair);
-
-            //expected difference from trade
-            BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
-            System.out.println("difference formatted " + expectedDifferenceFormated);
-
-            if (expectedDifferenceFormated.compareTo(BigDecimal.ZERO) > 0) {
+        //if the abrbitrage margin - the expected percentage of returns is greater than 0
+        if (marginSubDiff.compareTo(BigDecimal.ZERO) > 0) {
 
                 //print the expected trade
                 System.out.println("==========================================================");
@@ -127,7 +116,7 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                         + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
                         + " for " + highBid.getBid());
                 System.out.println("initiating trade of " + tradeAmount + " " + tradedPair.base.toString() + " you should make a return (before fees) of "
-                        + expectedDifferenceFormated + "%");
+                        + expectedDifference + "%");
                 System.out.println();
                 System.out.println("==========================================================");
                 round++;
@@ -158,14 +147,19 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
                           TickerData highBid,
                           ArbitrageTradingAction arbitrageTradingAction) {
 
-        //difference between the highest ask and lowest sell
-        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
-        //
+        MarginDiffCompare marginDiffCompare = new MarginDiffCompare();
+
+        //percentage of returns you will make
+        BigDecimal expectedDifference = marginDiffCompare.findDiff(lowAsk,highBid);
+
+        //the difference between the arbitrage margin and percentage of returns
+        BigDecimal marginSubDiff = marginDiffCompare.diffWithMargin(lowAsk,highBid,arbitrageTradingAction.getArbitrageMargin());
+
+        //the volume you wish to trade
         BigDecimal tradeAmount = BigDecimal.valueOf(arbitrageTradingAction.getTradeValueBase());
+
         //currency pair of the lowest ask
         CurrencyPair tradedPair = lowAsk.getCurrencyPair();
-        //expected difference from trade
-        BigDecimal expectedDifferenceFormated = difference.add(BigDecimal.valueOf(-1)).multiply(BigDecimal.valueOf(100));
 
         //MarketOrder object for the buy and sell
         MarketOrder marketOrderBuy = new MarketOrder(Order.OrderType.BID, tradeAmount, tradedPair);
@@ -269,13 +263,12 @@ public class ArbitrageTradingAction extends ArbitrageActionSelection {
         //insert the tradingData into database
         tradeHistoryService.insertTrades(tradingData);
 
-        System.out.println();
         System.out.println("real bid was " + tradingData.getRealBid()
                 + " and real ask was " + tradingData.getRealAsk()
                 + " for a difference (after fees) of " + tradingData.getRealDifferenceFormated()
-                + "% vs an expected of " + expectedDifferenceFormated + " %");
+                + "% vs an expected of " + expectedDifference + " %");
 
-        BigDecimal estimatedFees = expectedDifferenceFormated.subtract(tradingData.getRealDifferenceFormated());
+        BigDecimal estimatedFees = expectedDifference.subtract(tradingData.getRealDifferenceFormated());
 
         System.out.println("Estimated fees = " + estimatedFees + tradingData.getCounterName());
     }
