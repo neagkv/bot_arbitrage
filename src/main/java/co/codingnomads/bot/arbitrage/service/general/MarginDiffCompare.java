@@ -27,29 +27,15 @@ public class MarginDiffCompare {
 
         MathContext mc = new MathContext(10);
 
-        System.out.println("highbid" + highBid.getBid());
-
-        System.out.println("lowask" + lowAsk.getAsk());
-
         BigDecimal highBidMinusLowAsk = highBid.getBid().subtract(lowAsk.getAsk());
-
-        System.out.println("highBidMinusLowAsk" + highBidMinusLowAsk);
 
         BigDecimal difference = highBidMinusLowAsk.divide(highBid.getBid(), mc);
 
-        System.out.println("difference" + difference);
-
         BigDecimal diffPercent = difference.multiply(BigDecimal.valueOf(100));
-
-        System.out.println("diffPercent" + diffPercent);
 
         BigDecimal differenceOfMarginFormatted = BigDecimal.valueOf(arbitrageMargin);
 
-        System.out.println("diffOfMarg" + differenceOfMarginFormatted);
-
         BigDecimal arbitragePerDiffSubMarg = diffPercent.subtract(differenceOfMarginFormatted);
-
-        System.out.println("diffOfMarg - diff " + arbitragePerDiffSubMarg);
 
         return arbitragePerDiffSubMarg;
 
