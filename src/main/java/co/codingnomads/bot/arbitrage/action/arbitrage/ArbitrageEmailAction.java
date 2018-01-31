@@ -5,6 +5,7 @@ import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
 import co.codingnomads.bot.arbitrage.model.email.Email;
 import co.codingnomads.bot.arbitrage.exception.EmailLimitException;
 import co.codingnomads.bot.arbitrage.service.email.EmailService;
+import co.codingnomads.bot.arbitrage.service.general.MarginDiffCompare;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
@@ -99,12 +100,11 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
      * @param email     object from Email Class
      * @param lowAsk    the lowest ask found (buy)
      * @param highBid   the highest bid found (sell)
-     * @param difference    price difference between the lowest ask and highest bid
      * @param margin    the margin difference accepted (not a valid arbitrage if below that value)
      * @throws EmailLimitException
      */
     public void email(Email email,
-                      TickerData lowAsk, TickerData highBid, BigDecimal difference, double margin) throws EmailLimitException {
+                      TickerData lowAsk, TickerData highBid, double margin) throws EmailLimitException {
 
 
         if (!emailService.underEmailLimit()) {
@@ -112,8 +112,8 @@ public class ArbitrageEmailAction extends ArbitrageActionSelection {
 
             throw new EmailLimitException("Email limit reached for the day, please try again tomorrow");
         }
-        email.buildHTMLBody(lowAsk,highBid,difference,margin);
-        email.buildTextBody(lowAsk,highBid,difference,margin);
+        email.buildHTMLBody(lowAsk,highBid,margin);
+        email.buildTextBody(lowAsk,highBid,margin);
         email.setSUBJECT("Arbitrage Update");
         try {
 

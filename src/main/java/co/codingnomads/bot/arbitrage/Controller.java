@@ -87,29 +87,28 @@ public class Controller {
 
 //      set the exchanges you wish to use, you may optionally set the specific exchange specifications to enable trading action
         ArrayList<ExchangeSpecs> ExchangeList = new ArrayList<>();
-//        ExchangeList.add(new PoloniexSpecs());
-//        ExchangeList.add(new BinanceSpecs());
-//        ExchangeList.add(new GeminiSpecs());
-//        ExchangeList.add(new BitfinexSpecs());
-//        ExchangeList.add(new BitstampSpecs());
-//        ExchangeList.add(new BittrexSpecs());
         ExchangeList.add(new KrakenSpecs());
         ExchangeList.add(new GDAXSpecs());
+        ExchangeList.add(new BittrexSpecs());
+        ExchangeList.add(new BinanceSpecs());
+        ExchangeList.add(new PoloniexSpecs());
+        ExchangeList.add(new BittrexSpecs());
+        ExchangeList.add(new GeminiSpecs());
 
         //choose one and only one of the following Arbitrage or Detection trade actions
 
 //Arbitrage
 
         //optional set how many times you would like the arbitrage action to run, if null will run once
-        //arbitrage.setLoopIterations(5);
+//        arbitrage.setLoopIterations(5);
 
         //optional set to the time interval you would like the arbitrage action to rerun in milliseconds
         //if not set, the action will run every 5 seconds untill the loopIteration is complete
-        //arbitrage.setTimeIntervalRepeater(5000);
+//        arbitrage.setTimeIntervalRepeater(5000);
 
 
 //        Example of an Arbitrage trade action
-//        arbitrageTradingAction.setArbitrageMargin(0.03); //percentage of
+//        arbitrageTradingAction.setArbitrageMargin(0.03); //0.03 = 3%
 //        arbitrageTradingAction.setTradeValueBase(0.020);
 //        arbitrage.run(
 //                CurrencyPair.ETH_USD,
@@ -118,38 +117,34 @@ public class Controller {
 
 
 //      Example of an Arbitrage print action that finds the best trading pair every hour
-//        arbitrage.setLoopIterations(5);
-//        arbitrage.setTimeIntervalRepeater(5000);
-//        arbitragePrintAction.setArbitrageMargin(0.01);
-//        arbitrage.run(
-//                    CurrencyPair.ETH_BTC,
+//      arbitragePrintAction.setArbitrageMargin(0.03);
+//      arbitrage.run(
+//                    CurrencyPair.ETH_USD,
 //                    ExchangeList,
 //                    arbitragePrintAction);
 
 //    Example of an Arbitrage email action
-//    arbitrageEmailAction.setArbitrageMargin(0.03);
-//    arbitrageEmailAction.getEmail().setTO("your-email-address");
-//    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
-//    arbitrage.run(
-//                CurrencyPair.BTC_USD,
-//                ExchangeList,
-//                arbitrageEmailAction);
+    arbitrageEmailAction.setArbitrageMargin(0.03);
+    arbitrageEmailAction.getEmail().setTO("neagkv@gmail.com");
+    emailService.insertEmailRecords(arbitrageEmailAction.getEmail());
+    arbitrage.run(
+                CurrencyPair.ETH_USD,
+                ExchangeList,
+                arbitrageEmailAction);
 
 
 
 //Detection
 
-
         //List of currencyPairs you would like to check, for Detection only
-      ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
-      currencyPairList.add(CurrencyPair.ETH_USD);
-      currencyPairList.add(CurrencyPair.ETH_BTC);
-      currencyPairList.add(CurrencyPair.BTC_USD);
-//      currencyPairList.add(CurrencyPair.ETC_BTC);
+//      ArrayList<CurrencyPair> currencyPairList = new ArrayList<>();
+//      currencyPairList.add(CurrencyPair.ETH_USD);
+//      currencyPairList.add(CurrencyPair.ETH_BTC);
+//      currencyPairList.add(CurrencyPair.BTC_USD);
 
 //    Example of a Detection print action
-    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
-    detection.run(currencyPairList, ExchangeList, detectionActionSelection);
+//    DetectionActionSelection detectionActionSelection = new DetectionPrintAction();
+//    detection.run(currencyPairList, ExchangeList, detectionActionSelection);
 
 //    Example of a Detection log action
 //    DetectionActionSelection detectionActionSelection1 = new DetectionLogAction(60000);

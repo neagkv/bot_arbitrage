@@ -3,11 +3,10 @@ package co.codingnomads.bot.arbitrage.action.arbitrage;
 import co.codingnomads.bot.arbitrage.action.arbitrage.selection.ArbitrageActionSelection;
 import co.codingnomads.bot.arbitrage.exchange.ExchangeSpecs;
 import co.codingnomads.bot.arbitrage.model.ticker.TickerData;
+import co.codingnomads.bot.arbitrage.service.general.MarginDiffCompare;
 import org.knowm.xchange.ExchangeSpecification;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 /**
  * Created by Thomas Leruth on 12/17/17
  * class for the information to use the print method as acting behavior
@@ -46,11 +45,17 @@ public class ArbitragePrintAction extends ArbitrageActionSelection {
      */
     public void print(TickerData lowAsk, TickerData highBid, double arbitrageMargin) {
 
-        //
-        BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+        MarginDiffCompare marginDiffCompare = new MarginDiffCompare();
 
-        if (difference.compareTo(BigDecimal.valueOf(arbitrageMargin)) > 0) {
-            BigDecimal differenceFormated = (difference.add(BigDecimal.valueOf(-1))).multiply(BigDecimal.valueOf(100));
+        //percentage of returns you will make
+        BigDecimal difference = marginDiffCompare.findDiff(lowAsk,highBid);
+
+        //the difference between the arbitrage margin and percentage of returns
+        BigDecimal marginSubDiff = marginDiffCompare.diffWithMargin(lowAsk,highBid,arbitrageMargin);
+
+        //if the arbitrage margin - the percent difference between the highestBid and lowAsk is greater than zero arbitrage detected
+        if (marginSubDiff.compareTo(BigDecimal.ZERO) > 0) {
+
             System.out.println("=======================================================================================");
             System.out.println("=======================================================================================");
             System.out.println();
@@ -60,7 +65,7 @@ public class ArbitragePrintAction extends ArbitrageActionSelection {
                     + " and sell on " + highBid.getExchange().getDefaultExchangeSpecification().getExchangeName()
                     + " for " + highBid.getBid()
                     + " and make a return (before fees) of "
-                    + differenceFormated
+                    + difference
                     + "%");
             System.out.println();
             System.out.println("=======================================================================================");

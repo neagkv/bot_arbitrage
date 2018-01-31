@@ -90,7 +90,6 @@ public class Arbitrage {
 
             //prints balance out for the selectedExchanges
             balanceCalc.Balance(selectedExchanges, currencyPair);
-
         }
 
 
@@ -104,6 +103,7 @@ public class Arbitrage {
 
         //sets the tradeValueBase given in the controller for arbitrageTradingAction
         if (tradingMode) tradeValueBase = ((ArbitrageTradingAction) arbitrageActionSelection).getTradeValueBase();
+
 
         //convert the double tradeValueBase to a big decimal
         BigDecimal valueOfTradeValueBase = BigDecimal.valueOf(tradeValueBase);
@@ -135,7 +135,7 @@ public class Arbitrage {
 
 
             //new BigDecimal set to the difference of the best sell price and the best buy price
-            BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
+            //BigDecimal difference = highBid.getBid().divide(lowAsk.getAsk(), 5, RoundingMode.HALF_EVEN);
 
 
             //if the call is an instance of print action, run the print method form arbitrage print action
@@ -146,7 +146,7 @@ public class Arbitrage {
             //if the call is an instance of email action, run the email method from the arbitrage email action
             if (emailMode) {
                 ArbitrageEmailAction arbitrageEmailAction = (ArbitrageEmailAction) arbitrageActionSelection;
-                arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid, difference, arbitrageActionSelection.getArbitrageMargin());
+                arbitrageEmailAction.email(arbitrageEmailAction.getEmail(), lowAsk, highBid,arbitrageActionSelection.getArbitrageMargin());
 
             }
             //if the call is an instance of trading action, run the trade method from the arbitrage trading action
