@@ -19,7 +19,7 @@ public interface DetectionWrapperMapper {
     /**
      * Method to enter Difference Wrapper to put into database
      */
-    String INSERT_DifferenceWrapper = "INSERT INTO `bot.arbitrage`.`Detection` (`timestamp`, `currencyPair`, `Difference`, `lowAsk`, `lowaskExchange`, `highBid`, `highBidExchange`) VALUES " +
+    String INSERT_DifferenceWrapper = "INSERT INTO `botarbitrage`.`Detection` (`timestamp`, `currencyPair`, `Difference`, `lowAsk`, `lowaskExchange`, `highBid`, `highBidExchange`) VALUES " +
             "(#{arg0}, #{arg1}, #{arg2}, #{arg3}, #{arg4}, #{arg5}, #{arg6})";
 
     /**

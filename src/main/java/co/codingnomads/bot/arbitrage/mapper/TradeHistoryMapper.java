@@ -18,7 +18,7 @@ public interface TradeHistoryMapper {
     /**
      * Method to insert trade information into the database
      */
-    String INSERT_Trades = "INSERT INTO `bot.arbitrage`. `trades` (`baseName`, `counterName`, `buyExchange`, `sellExchange`, " +
+    String INSERT_Trades = "INSERT INTO `botarbitrage`. `trades` (`baseName`, `counterName`, `buyExchange`, `sellExchange`, " +
             "`oldTotalBase`, `newTotalBase`, `differenceBaseBuy`, `differenceCounterBuy`, `differenceBaseSell`, `differenceCounterSell`, " +
             "`realAsk`, `realBid`, `realDifference`, `expectedDifferenceFormatted`, `estimatedFee`) VALUES " +
             "(#{arg0}, #{arg1}, #{arg2}, #{arg3}, #{arg4}, #{arg5}, #{arg6}, #{arg7}, #{arg8}, #{arg9}, #{arg10}, #{arg11}, #{arg12}, #{arg13}, #{arg14})";

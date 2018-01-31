@@ -14,12 +14,12 @@ public interface EmailTimeMapper {
     /**
      * Enters TimeEmailSent, the TO address and the SUBJECT into the bot.arbitrage schema in the email_info table
      */
-    String INSERT_EmailRecord = "INSERT INTO `bot.arbitrage`.`email_info` (`TimeOfCall`, `EmailAddress`, `Type`) VALUES " + "(#{arg0}, #{arg1}, #{arg2})";
+    String INSERT_EmailRecord = "INSERT INTO `botarbitrage`.`email_info` (`TimeOfCall`, `EmailAddress`, `Type`) VALUES " + "(#{arg0}, #{arg1}, #{arg2})";
 
     /**
      * Selects the numbers of emails sent fot today's date fromt the bot.arbitrage schema in the email_info table
      */
-    String Get_Total_Calls_Today = "SELECT count(id) FROM `bot.arbitrage`.email_info where TimeOfCall > 'CURDATE()'";
+    String Get_Total_Calls_Today = "SELECT count(id) FROM `botarbitrage`.email_info where TimeOfCall > 'CURDATE()'";
 
     /**
      * Inserts the results of INSERT_EmailRecord above

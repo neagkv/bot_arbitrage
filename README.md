@@ -115,9 +115,9 @@ Set up database:
 
 ```
  $ mysql -u root -p
- > mysql CREATE DATABASE bot.arbitrage;
- > mysql USE bot.arbitrage;
- > mysql SOURCE /../bot_arbitrage/src/main/mysql/bot.arbitrage.sql;
+ > mysql CREATE DATABASE botarbitrage;
+ > mysql USE botarbitrage;
+ > mysql SOURCE /../bot_arbitrage/src/main/mysql/botarbitrage.sql;
 ```
 
 configure and run:
