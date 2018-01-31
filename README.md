@@ -91,7 +91,7 @@ Required:
 ### Clone the project to your desired location:
 
 ```
-$ git clone https:/github.com/neagkv/bot_arbitrage
+$ git clone https://github.com/neagkv/bot_arbitrage
 ```
 
 ### Set up aws credentials:
